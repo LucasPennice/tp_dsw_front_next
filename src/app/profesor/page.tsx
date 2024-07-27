@@ -1,47 +1,25 @@
-import Image from "next/image";
-
-import { useEffect } from "react";
-import { Profesor, Sexo } from "./lib/definitions";
+"use client"
+import { useState } from "react";
+import { Profesor, Sexo, Response} from "../lib/definitions"
 import { FaStar } from "react-icons/fa";
-import Link from "next/link.js";
 
+export default async function Page() {
+    const [loading, setLoading] = useState(true)
 
+    const res = await fetch("https://tp-dsw-back.onrender.com/api/profesor")
+    
+    const response = await res.json() as Response<Profesor[]>
+    
+    setLoading(false)
 
+    const profesores = response.data ?? []
 
-export default function Home() {
-  
-  const mock1 : Profesor = {
-    _id: "qwdqd",
-    nombre: "Profesor",
-    apellido: "Mariano",
-    fechaNacimiento: new Date(),
-    dni: 12321123,
-    cargos: ["Analisis Numerico I", "Analisis Numerico II"],
-    horariosDeClase: [],
-    puntuacionGeneral: 2,
-    sexo: Sexo.Hombre
-}
+    if(loading){
+        return <div>loading</div>
+    }
 
-const mock2 : Profesor = {
-    _id: "qwdqdaaa",
-    nombre: "Software",
-    apellido: "Mariano",
-    fechaNacimiento: new Date(),
-    dni: 12321123,
-    cargos: ["Dev 1", "Algo y DS"],
-    horariosDeClase: [],
-    puntuacionGeneral: 3,
-    sexo: Sexo.Mujer
-}
-
-const profesores : Profesor[] = [mock1, mock2]
-
-  return (<div className="max-w-5xl flex flex-col items-center justify-center gap-4 p-4">
-    <p className="text-3xl">El servidor de backend tarda aprox 50 segundos en arrancar. El getAll esta hecho en este link pero se ve asi</p>
-
-    <Link href={"/profesor"} >Ir a lista profesores</Link>
-
-    {profesores.map((profesor)=>{
+    return <div className="max-w-5xl flex flex-col items-center justify-center gap-4 p-4">
+        {profesores.map((profesor)=>{
             return <div className="bg-gray-900 w-[800px] p-4 rounded-2xl" key={profesor._id}>
                 <div className="flex items-baseline gap-4">
                     <p className="text-2xl">{profesor.nombre} {profesor.apellido}</p>
@@ -71,6 +49,5 @@ const profesores : Profesor[] = [mock1, mock2]
 
                 </div>
         })}
-</div>
-  );
+    </div>
 }

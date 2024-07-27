@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    transpilePackages: ['@acme/ui', 'lodash-es'],
+};
 
 export default nextConfig;
