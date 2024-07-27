@@ -14,7 +14,7 @@ export default function Home() {
     _id: "qwdqd",
     nombre: "Profesor",
     apellido: "Mariano",
-    fechaNacimiento: new Date(),
+    fechaNacimiento: "12/07/1923",
     dni: 12321123,
     cargos: ["Analisis Numerico I", "Analisis Numerico II"],
     horariosDeClase: [],
@@ -26,7 +26,7 @@ const mock2 : Profesor = {
     _id: "qwdqdaaa",
     nombre: "Software",
     apellido: "Mariano",
-    fechaNacimiento: new Date(),
+    fechaNacimiento: "22/07/1956",
     dni: 12321123,
     cargos: ["Dev 1", "Algo y DS"],
     horariosDeClase: [],
@@ -60,7 +60,7 @@ const profesores : Profesor[] = [mock1, mock2]
                         })}</div>
                     </div>
 
-                    <p>{profesor.fechaNacimiento.toLocaleDateString()}</p>
+                    <p>{profesor.fechaNacimiento}</p>
                 </div>
 
                 <div className="flex gap-4 flex-wrap pt-4">    

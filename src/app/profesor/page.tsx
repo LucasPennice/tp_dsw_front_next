@@ -32,7 +32,7 @@ export default async function Page() {
                         })}</div>
                     </div>
 
-                    <p>{profesor.fechaNacimiento.toLocaleDateString()}</p>
+                    <p>{profesor.fechaNacimiento}</p>
                 </div>
 
                 <div className="flex gap-4 flex-wrap pt-4">    

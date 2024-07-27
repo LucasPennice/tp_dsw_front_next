@@ -7,7 +7,7 @@ export type Profesor = {
     _id : string
     nombre : string
     apellido : string
-    fechaNacimiento : Date
+    fechaNacimiento : string
     dni: number
     cargos : string[]
     horariosDeClase: string[] // "DIA_SEMANA - HH:MM" formato 24hs
