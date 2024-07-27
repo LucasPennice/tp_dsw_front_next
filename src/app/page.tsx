@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 
 import { useEffect } from "react";
@@ -39,7 +40,7 @@ const profesores : Profesor[] = [mock1, mock2]
   return (<div className="max-w-5xl flex flex-col items-center justify-center gap-4 p-4">
     <p className="text-3xl">El servidor de backend tarda aprox 50 segundos en arrancar. El getAll esta hecho en este link pero se ve asi</p>
 
-    <Link href={"/profesor"} >Ir a lista profesores</Link>
+    <a href={"/profesor"}>Ir a lista profesores</a>
 
     {profesores.map((profesor)=>{
             return <div className="bg-gray-900 w-[800px] p-4 rounded-2xl" key={profesor._id}>
