@@ -9,14 +9,8 @@ export default async function Page() {
     const res = await fetch("https://tp-dsw-back.onrender.com/api/profesor")
     
     const response = await res.json() as Response<Profesor[]>
-    
-    setLoading(false)
 
     const profesores = response.data ?? []
-
-    if(loading){
-        return <div>loading</div>
-    }
 
     return <div className="max-w-5xl flex flex-col items-center justify-center gap-4 p-4">
         {profesores.map((profesor)=>{
