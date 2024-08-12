@@ -6,7 +6,7 @@ import { Profesor, Sexo } from "./lib/definitions";
 import { FaStar } from "react-icons/fa";
 import Link from "next/link.js";
 
-
+ 
 
 
 export default function Home() {
@@ -72,6 +72,9 @@ const profesores : Profesor[] = [mock1, mock2]
 
                 </div>
         })}
+        <div className="col-md-1">
+            <p className="">LALALALALALALALAALALAL SOY UN COSO DE BOOTSTRAP Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil non totam earum dolore eius, iusto sunt iste nisi suscipit officia velit ullam, sapiente mollitia? Quaerat incidunt reprehenderit repellendus aspernatur earum.</p>
+        </div>
 </div>
   );
 }
