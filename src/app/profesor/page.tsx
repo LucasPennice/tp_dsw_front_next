@@ -6,8 +6,24 @@ import { FaStar } from "react-icons/fa";
 export default async function Page() {
     const [loading, setLoading] = useState(true)
 
+    // const deleteProfesor = async (id: string): Promise<void> => {
+    //     try {
+    //       const response = await fetch(`https://tp-dsw-back.onrender.com/api/profesor/${id}`, {
+    //         method: 'DELETE',
+    //       });
+      
+    //       if (response.ok) {
+    //         alert('Profesor eliminado correctamente');
+    //       } else {
+    //         alert('Error al eliminar el profesor');
+    //       }
+    //     } catch (error) {
+    //       console.error('Error:', error);
+    //     }
+    //   };
+
     const res = await fetch("https://tp-dsw-back.onrender.com/api/profesor")
-    
+
     const response = await res.json() as Response<Profesor[]>
 
     const profesores = response.data ?? []
@@ -34,13 +50,13 @@ export default async function Page() {
                     {profesores.map((profesor)=>{
                     return( 
                         <>
-                            <tr>
+                            <tr  key={profesor._id}>
                                 <td>{profesor.nombre}</td>
                                 <td>{profesor.apellido}</td>
                                 <td>{profesor.fechaNacimiento.split('T')[0]}</td>
                                 <td>{profesor.dni}</td>
                                 <td>
-                                    <ul className="remove-points">{profesor.cargos.map((cargo) => <li>{cargo}</li>)}
+                                    <ul className="remove-points">{profesor.cargos.map((cargo) => <li key={profesor._id + cargo}>{cargo}</li>)}
                                     </ul>
                                 </td>
                                 <td>{profesor.horariosDeClase}</td>
@@ -48,7 +64,7 @@ export default async function Page() {
                                 <td>{profesor.sexo}</td>
                                 <td>
                                     <a href="" className="btn btn-warning cus-mr-10">Edit</a>
-                                    <a href="" className="btn btn-danger cus-mr-10">Remove</a>
+                                    <button onClick={() => console.log("HOLAAAAAAAAAAAA")} className="btn btn-danger cus-mr-10">Remove</button>
                                 </td>
                             </tr>
                         </>
