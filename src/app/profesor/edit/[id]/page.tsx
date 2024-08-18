@@ -11,7 +11,7 @@ export default function Page() {
   const params = useParams();
   const router = useRouter();
 
-  const _id = params.id as string;
+  const id = params.id as string;
 
 
   const editProfesor = async (id: string): Promise<void> => {
@@ -45,7 +45,7 @@ export default function Page() {
       <div className="container">
         <form onSubmit={(e) => { 
           e.preventDefault(); 
-          editProfesor(_id);
+          editProfesor(id);
         }}>
           <div className="form-group mb-5 pt-5">
             <label htmlFor="formGroupExampleInput">Nombre</label>

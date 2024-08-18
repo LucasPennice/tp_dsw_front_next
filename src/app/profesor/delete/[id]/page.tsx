@@ -6,9 +6,9 @@ export default async function Delete() {
   
   const params = useParams()
   const router = useRouter();
-  const _id = params.id as string
+  const id = params.id as string
 
-  const res = await fetch(`https://tp-dsw-back.onrender.com/api/profesor/${_id}`, {
+  const res = await fetch(`https://tp-dsw-back.onrender.com/api/profesor/${id}`, {
     method: "Delete"
   })
   .then(() => router.push('src/app/profesor'))

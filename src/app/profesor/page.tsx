@@ -74,7 +74,7 @@ export default async function Page() {
     // return <div className="max-w-5xl flex flex-col items-center justify-center gap-4 p-4">
     //     {profesores.map((profesor)=>{
     //         return (
-    //             <div className="bg-gray-900 w-[800px] p-4 rounded-2xl" key={profesor._id}>
+    //             <div className="bg-gray-900 w-[800px] p-4 rounded-2xl" key={profesor.id}>
     //                 <div className="flex items-baseline gap-4">
     //                     <p className="text-2xl">{profesor.nombre} {profesor.apellido}</p>
     //                     <p>({profesor.sexo === Sexo.Hombre ? "H" : "M"})</p>
