@@ -40,3 +40,9 @@ body {
 .cus-mr-10{
   margin-right: 10px;
 }
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 30px;
+}

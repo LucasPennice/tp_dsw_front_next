@@ -1,36 +1,26 @@
-"use client"
-import { useState } from "react";
+'use client'
+
+import Link from "next/link";
 import { Profesor, Sexo, Response} from "../lib/definitions"
-import { FaStar } from "react-icons/fa";
 
 export default async function Page() {
-    const [loading, setLoading] = useState(true)
 
-    // const deleteProfesor = async (id: string): Promise<void> => {
-    //     try {
-    //       const response = await fetch(`https://tp-dsw-back.onrender.com/api/profesor/${id}`, {
-    //         method: 'DELETE',
-    //       });
-      
-    //       if (response.ok) {
-    //         alert('Profesor eliminado correctamente');
-    //       } else {
-    //         alert('Error al eliminar el profesor');
-    //       }
-    //     } catch (error) {
-    //       console.error('Error:', error);
-    //     }
-    //   };
 
-    const res = await fetch("https://tp-dsw-back.onrender.com/api/profesor")
+    const res = await fetch("https://tp-dsw-back.onrender.com/api/profesor", {
+        headers: {
+            'Content-Type': 'application/json'
+          }
+    })
 
     const response = await res.json() as Response<Profesor[]>
 
     const profesores = response.data ?? []
 
+    console.log(profesores)
+
     return (
     <section>
-        <table className="table">
+       <table className="table">
             <thead>
                 <tr>
                     {/* <th scope="col">ID</th> */}
@@ -38,8 +28,7 @@ export default async function Page() {
                     <th scope="col">Apellido</th>
                     <th scope="col">Fecha Nac</th>
                     <th scope="col">DNI</th>
-                    <th scope="col">Cargos</th>
-                    <th scope="col">Horarios de Clase</th>
+                    <th scope="col">Cursadas</th>
                     <th scope="col">Puntuacion General</th>
                     <th scope="col">Sexo</th>
                     <th scope="col">Acción</th>
@@ -50,21 +39,24 @@ export default async function Page() {
                     {profesores.map((profesor)=>{
                     return( 
                         <>
-                            <tr  key={profesor._id}>
+                            <tr  key={profesor.id}>
                                 <td>{profesor.nombre}</td>
                                 <td>{profesor.apellido}</td>
                                 <td>{profesor.fechaNacimiento.split('T')[0]}</td>
                                 <td>{profesor.dni}</td>
                                 <td>
-                                    <ul className="remove-points">{profesor.cargos.map((cargo) => <li key={profesor._id + cargo}>{cargo}</li>)}
+                                    <ul className="remove-points">{profesor.cursadas.map((cursada) => <li key={profesor.id + cursada}>{cursada}</li>)}
                                     </ul>
                                 </td>
-                                <td>{profesor.horariosDeClase}</td>
                                 <td>{profesor.puntuacionGeneral}/5</td>
                                 <td>{profesor.sexo}</td>
                                 <td>
-                                    <a href="" className="btn btn-warning cus-mr-10">Edit</a>
-                                    <button onClick={() => console.log("HOLAAAAAAAAAAAA")} className="btn btn-danger cus-mr-10">Remove</button>
+                                    <Link href={`/profesor/edit/${profesor.id}`} className="btn btn-warning cus-mr-10">
+                                        Edit
+                                    </Link>
+                                    <Link href={`/profesor/delete/${profesor.id}`} className="btn btn-danger cus-mr-10">
+                                        Delete
+                                    </Link>
                                 </td>
                             </tr>
                         </>
@@ -72,6 +64,11 @@ export default async function Page() {
                     )})}
             </tbody>
             </table>
+            <div className="button-container">
+                <Link href={`/profesor/add`} className="btn btn-primary">
+                    Add
+                </Link>
+            </div>
         
     </section>)
     // return <div className="max-w-5xl flex flex-col items-center justify-center gap-4 p-4">

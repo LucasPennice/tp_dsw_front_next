@@ -4,13 +4,12 @@ export enum Sexo {
 }
 
 export type Profesor = {
-    _id : string
+    id : string
     nombre : string
     apellido : string
     fechaNacimiento : string
     dni: number
-    cargos : string[]
-    horariosDeClase: string[] // "DIA_SEMANA - HH:MM" formato 24hs
+    cursadas: Cursado[] // "DIA_SEMANA - HH:MM" formato 24hs
     puntuacionGeneral: number
     sexo: Sexo
 }
@@ -18,4 +17,22 @@ export type Profesor = {
 export type Response<T> = {
     message: String,
     data: T | undefined
+}
+
+export type Cursado = {
+    id: string;
+    diaCursado: string
+    horaCursado: string
+    comision: number
+    turno: string
+    año: number
+    materia: Materia
+    profesor: Profesor
+}
+
+export type Materia = {
+
+    id: string;
+    nombre: string
+
 }
