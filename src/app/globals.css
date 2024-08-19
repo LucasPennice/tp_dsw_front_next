@@ -32,12 +32,12 @@ body {
   }
 } */
 
-.remove-points{
+.remove-points {
   list-style-type: none;
   padding-left: 0;
 }
 
-.cus-mr-10{
+.cus-mr-10 {
   margin-right: 10px;
 }
 
@@ -47,7 +47,7 @@ body {
   padding-right: 30px;
 }
 
-#dropdown-basic{
+#dropdown-basic {
   margin-bottom: 20px;
   margin-top: 20px;
 }
