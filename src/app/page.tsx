@@ -12,7 +12,7 @@ import Link from "next/link.js";
 export default function Home() {
   
   const mock1 : Profesor = {
-    _id: "qwdqd",
+    id: "qwdqd",
     nombre: "Profesor",
     apellido: "Mariano",
     fechaNacimiento: "12/07/1923",
@@ -24,7 +24,7 @@ export default function Home() {
 }
 
 const mock2 : Profesor = {
-    _id: "qwdqdaaa",
+    id: "qwdqdaaa",
     nombre: "Software",
     apellido: "Mariano",
     fechaNacimiento: "22/07/1956",
@@ -43,7 +43,7 @@ const profesores : Profesor[] = [mock1, mock2]
     <a href={"/profesor"}>Ir a lista profesores</a>
 
     {profesores.map((profesor)=>{
-            return <div className="bg-gray-900 w-[800px] p-4 rounded-2xl" key={profesor._id}>
+            return <div className="bg-gray-900 w-[800px] p-4 rounded-2xl" key={profesor.id}>
                 <div className="flex items-baseline gap-4">
                     <p className="text-2xl">{profesor.nombre} {profesor.apellido}</p>
                     <p>({profesor.sexo === Sexo.Hombre ? "H" : "M"})</p>

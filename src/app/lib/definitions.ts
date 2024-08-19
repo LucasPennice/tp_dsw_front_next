@@ -3,15 +3,15 @@ export enum Sexo {
     Mujer = "Mujer",
 }
 
-export type Profesor = {
+export enum UserRole {
+    Regular = "Regular",
+    Administrador = "Administrador"
+}
+
+export type Area = {
     id : string
     nombre : string
-    apellido : string
-    fechaNacimiento : string
-    dni: number
-    cursados: Cursado[] // "DIA_SEMANA - HH:MM" formato 24hs
-    puntuacionGeneral: number
-    sexo: Sexo
+    materias : [Materia]
 }
 
 export type Response<T> = {
@@ -20,19 +20,51 @@ export type Response<T> = {
 }
 
 export type Cursado = {
-    id: string;
+    id : string
     diaCursado: string
     horaCursado: string
     comision: number
     turno: string
     año: number
-    materia: Materia
-    profesor: Profesor
+    materia : Materia
+    profesor:Profesor
+    usuarios : [Usuario]
 }
 
 export type Materia = {
+    id : string
+    nombre : string
+    cursados :[Cursado]
+    area:Area
+}
 
-    id: string;
-    nombre: string
+export type Profesor = {
+    id : string
+    nombre : string
+    apellido : string
+    fechaNacimiento : Date
+    dni: number
+    cursados : [Cursado]
+    puntuacionGeneral: number
+    sexo: Sexo
+}
 
+export type Review = {
+    id : string
+    descripcion : string
+    puntuacion : number
+    usuario: Usuario
+}
+
+export type Usuario = {
+    id : string
+    legajo: string
+    nombre : string
+    apellido : string
+    username : string
+    fechaNacimiento : string // "DD/MM/YYY"
+    sexo : Sexo
+    rol : UserRole
+    reviews : [Review]
+    cursados : [Cursado]
 }
