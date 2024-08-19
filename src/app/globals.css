@@ -33,21 +33,21 @@ body {
 } */
 
 .remove-points {
-  list-style-type: none;
-  padding-left: 0;
+    list-style-type: none;
+    padding-left: 0;
 }
 
 .cus-mr-10 {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .button-container {
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 30px;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 30px;
 }
 
 #dropdown-basic {
-  margin-bottom: 20px;
-  margin-top: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
