@@ -2,21 +2,51 @@
 
 import Link from "next/link";
 import { Profesor, Sexo, Response} from "../lib/definitions"
+import { useEffect, useState } from "react";
+import React from "react";
 
-export default async function Page() {
+
+export default function Page() {
+
+    const [data, setData] = useState<Profesor[]>([])
+    const [isLoading, setLoading] = useState(true)
+   
+    useEffect(() => {
+      fetch("https://tp-dsw-back.onrender.com/api/profesor", 
+        {        headers: {
+        'Content-Type': 'application/json'
+      }})
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data.data)
+          setLoading(false)
+        })
+    }, [])
+   
+    if (isLoading) return <p>Loading...</p>
+    if (!data) return <p>No profile data</p>
 
 
-    const res = await fetch("https://tp-dsw-back.onrender.com/api/profesor", {
-        headers: {
-            'Content-Type': 'application/json'
-          }
-    })
-
-    const response = await res.json() as Response<Profesor[]>
-
-    const profesores = response.data ?? []
+    const profesores = data ?? []
 
     console.log(profesores)
+
+    const deleteProfesor = async(_id: string) => {
+        
+        
+        await fetch(`https://tp-dsw-back.onrender.com/api/profesor/${_id}`, {
+            method: "Delete"
+          })
+            fetch("https://tp-dsw-back.onrender.com/api/profesor", 
+              {        headers: {
+              'Content-Type': 'application/json'
+            }})
+              .then((res) => res.json())
+              .then((data) => {
+                setData(data.data)
+                setLoading(false)
+              })
+    }
 
     return (
     <section>
@@ -28,7 +58,7 @@ export default async function Page() {
                     <th scope="col">Apellido</th>
                     <th scope="col">Fecha Nac</th>
                     <th scope="col">DNI</th>
-                    <th scope="col">Cursadas</th>
+                    <th scope="col">Cursados</th>
                     <th scope="col">Puntuacion General</th>
                     <th scope="col">Sexo</th>
                     <th scope="col">Acción</th>
@@ -38,28 +68,28 @@ export default async function Page() {
                 
                     {profesores.map((profesor)=>{
                     return( 
-                        <>
-                            <tr  key={profesor.id}>
+                        <React.Fragment key = {profesor.id}>
+                            <tr>
                                 <td>{profesor.nombre}</td>
                                 <td>{profesor.apellido}</td>
                                 <td>{profesor.fechaNacimiento.split('T')[0]}</td>
                                 <td>{profesor.dni}</td>
                                 <td>
-                                    <ul className="remove-points">{profesor.cursadas.map((cursada) => <li key={profesor.id + cursada}>{cursada}</li>)}
+                                    <ul className="remove-points">{profesor.cursados.map((cursado) => <li key={profesor.id + cursado}>{cursado.materia.nombre}</li>)}
                                     </ul>
                                 </td>
                                 <td>{profesor.puntuacionGeneral}/5</td>
                                 <td>{profesor.sexo}</td>
                                 <td>
-                                    <Link href={`/profesor/edit/${profesor.id}`} className="btn btn-warning cus-mr-10">
+                                    <Link href={{pathname: `/profesor/edit/${profesor.id}`, query: { name: profesor.nombre, apellido: profesor.apellido }}} className="btn btn-warning cus-mr-10">
                                         Edit
                                     </Link>
-                                    <Link href={`/profesor/delete/${profesor.id}`} className="btn btn-danger cus-mr-10">
+                                    <button  className="btn btn-danger cus-mr-10" onClick={() => {deleteProfesor(profesor.id)}}>
                                         Delete
-                                    </Link>
+                                    </button>
                                 </td>
                             </tr>
-                        </>
+                        </React.Fragment>
 
                     )})}
             </tbody>

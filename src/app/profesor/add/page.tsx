@@ -1,18 +1,30 @@
 'use client'
 
+import { Sexo } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Form, InputGroup } from "react-bootstrap";
+import Dropdown from 'react-bootstrap/Dropdown';
+
 
 export default function Page() {
 
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [dni, setDni] = useState('');
-  const [nacimiento, setNacimiento] = useState('');
-  const [cargos, setCargos] = useState('');
-  const [horarios, setHorarios] = useState('');
-  const [puntuacion, setPuntuacion] = useState('');
   const [sexo, setSexo] = useState('');
+
+  const [dia,setDia] = useState("")
+  const [mes,setMes] = useState("")
+  const [year,setYear] = useState("")
+
+const limitTo = (n: number, old:string,newS:string) => {
+  if (newS.length > n ){
+return old
+}else{
+return newS
+}
+}
 
   const router = useRouter();
 
@@ -27,11 +39,9 @@ export default function Page() {
         body: JSON.stringify({
           nombre: nombre,
           apellido: apellido,
-          fechaNacimiento: nacimiento,
+          fechaNacimiento: `${dia}/${mes}/${year}`,
           dni: dni,
-          cargos: cargos,
-          horariosDeClase: horarios,
-          puntuacionGeneral: puntuacion,
+          puntuacionGeneral: 0,
           sexo: sexo
         }),
       });
@@ -62,7 +72,7 @@ export default function Page() {
               type="text" 
               className="form-control mt-2" 
               id="formGroupExampleInput" 
-              placeholder="Example input" 
+              placeholder="Nombre" 
               value={nombre} 
               onChange={(e) => setNombre(e.target.value)}
             />
@@ -73,77 +83,42 @@ export default function Page() {
               type="text" 
               className="form-control mt-2" 
               id="formGroupExampleInput2" 
-              placeholder="Another input" 
+              placeholder="Apellido" 
               value={apellido} 
               onChange={(e) => setApellido(e.target.value)}
             />
           </div>
-          <div className="form-group mb-2">
-            <label htmlFor="formGroupExampleInput2">Fecha Nacimiento</label>
-            <input 
-              type="text" 
-              className="form-control mt-2" 
-              id="formGroupExampleInput2" 
-              placeholder="Another input" 
-              value={nacimiento} 
-              onChange={(e) => setNacimiento(e.target.value)}
-            />
-          </div>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>Fecha Nacimiento</InputGroup.Text>
+            <Form.Control placeholder ="DD" value={dia} onChange={t => {setDia((t.target.value))
+            }} />
+            <Form.Control placeholder ="MM" value={mes} onChange={t => {setMes(t.target.value)}} />
+            <Form.Control placeholder ="AAAA" value={year} onChange={t => {setYear(t.target.value)}}/>
+          </InputGroup>
+
           <div className="form-group mb-2">
             <label htmlFor="formGroupExampleInput2">DNI</label>
             <input 
               type="text" 
               className="form-control mt-2" 
               id="formGroupExampleInput2" 
-              placeholder="Another input" 
+              placeholder="DNI" 
               value={dni} 
               onChange={(e) => setDni(e.target.value)}
             />
           </div>
-          <div className="form-group mb-2">
-            <label htmlFor="formGroupExampleInput2">Cargos</label>
-            <input 
-              type="text" 
-              className="form-control mt-2" 
-              id="formGroupExampleInput2" 
-              placeholder="Another input" 
-              value={cargos} 
-              onChange={(e) => setCargos(e.target.value)}
-            />
-          </div>
-          <div className="form-group mb-2">
-            <label htmlFor="formGroupExampleInput2">Horarios</label>
-            <input 
-              type="text" 
-              className="form-control mt-2" 
-              id="formGroupExampleInput2" 
-              placeholder="Another input" 
-              value={horarios} 
-              onChange={(e) => setHorarios(e.target.value)}
-            />
-          </div>
-          <div className="form-group mb-2">
-            <label htmlFor="formGroupExampleInput2">Puntuacion</label>
-            <input 
-              type="text" 
-              className="form-control mt-2" 
-              id="formGroupExampleInput2" 
-              placeholder="Another input" 
-              value={puntuacion} 
-              onChange={(e) => setPuntuacion(e.target.value)}
-            />
-          </div>
-          <div className="form-group mb-2">
-            <label htmlFor="formGroupExampleInput2">Sexo</label>
-            <input 
-              type="text" 
-              className="form-control mt-2 custom-select" 
-              id="formGroupExampleInput2" 
-              placeholder="Another input" 
-              value={sexo} 
-              onChange={(e) => setSexo(e.target.value)}
-            />
-          </div>
+          
+        <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+            {sexo == "" ? "Sexo" : sexo}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1" onClick={()=>setSexo(Sexo.Hombre)}>Hombre</Dropdown.Item>
+              <Dropdown.Item href="#/action-2" onClick={()=>setSexo(Sexo.Mujer)}>Mujer</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+
 
           <button type="submit" className="btn btn-primary cus-mr-10">Aceptar</button>
         </form>

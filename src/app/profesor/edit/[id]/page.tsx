@@ -1,17 +1,23 @@
 'use client'
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function Page() {
 
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-
   const params = useParams();
+  const _id = params.id as string;
+  const searchParams = useSearchParams();
+  let property1 = searchParams.get("name");
+  let property2 = searchParams.get("apellido");
+
+
+  const [nombre, setNombre] = useState(property1 ?? "");
+  const [apellido, setApellido] = useState(property2 ?? "");
+
+
   const router = useRouter();
 
-  const _id = params.id as string;
 
 
   const editProfesor = async (id: string): Promise<void> => {

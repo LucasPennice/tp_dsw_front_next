@@ -9,7 +9,7 @@ export type Profesor = {
     apellido : string
     fechaNacimiento : string
     dni: number
-    cursadas: Cursado[] // "DIA_SEMANA - HH:MM" formato 24hs
+    cursados: Cursado[] // "DIA_SEMANA - HH:MM" formato 24hs
     puntuacionGeneral: number
     sexo: Sexo
 }

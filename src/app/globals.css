@@ -46,3 +46,8 @@ body {
   justify-content: flex-end;
   padding-right: 30px;
 }
+
+#dropdown-basic{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
