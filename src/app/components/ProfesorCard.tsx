@@ -11,7 +11,7 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
         <motion.tr initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx / 15, type: "spring", stiffness: 100 }}>
             <td>{profesor.nombre}</td>
             <td>{profesor.apellido}</td>
-            <td>{profesor.fechaNacimiento.toString()}</td>
+            <td>{profesor.fechaNacimiento.toString().split("T")[0]}</td>
             <td>{profesor.dni}</td>
             <td>
                 <ul className="remove-points">
