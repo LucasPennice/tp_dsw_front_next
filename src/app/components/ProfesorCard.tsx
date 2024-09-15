@@ -1,8 +1,8 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { Profesor } from "../lib/definitions.js";
+import { motion } from "framer-motion";
 import Link from "next/link.js";
 import { useState } from "react";
-import { Button, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
+import { Profesor } from "../lib/definitions.js";
 
 function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; deleteProfesor: (_id: string) => Promise<void>; idx: number }) {
     const [isLoading, setLoading] = useState(false);

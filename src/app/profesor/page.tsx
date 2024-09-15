@@ -3,10 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button, Spinner, Table } from "react-bootstrap";
+import { Spinner, Table } from "react-bootstrap";
+import { toast } from "react-toastify";
 import ProfesorCard from "../components/ProfesorCard";
 import { Profesor } from "../lib/definitions";
-import { toast } from "react-toastify";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
