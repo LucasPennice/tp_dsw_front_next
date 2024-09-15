@@ -52,8 +52,11 @@ export type Profesor = {
 export type Review = {
     id: string;
     descripcion: string;
+    fecha: Date;
     puntuacion: number;
     usuario: Usuario;
+    cursado: Cursado;
+    censurada: boolean;
 };
 
 export type Usuario = {
