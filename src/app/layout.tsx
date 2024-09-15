@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import ToastProvider from "./components/ToastProvider";
+import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className} style={{ padding: 16 }}>
+            <body className={inter.className}>
+                <Navbar />
                 <ToastProvider>{children}</ToastProvider>
             </body>
         </html>
