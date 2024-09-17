@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import ToastProvider from "./components/ToastProvider";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import MobileFloatingButton from "./components/MobileFloatingButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +23,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={inter.className}>
+            <body className={`${inter.className} flex flex-col min-h-screen`}>
                 <Navbar />
-                <ToastProvider>{children}</ToastProvider>
+                <main>
+                    <ToastProvider>{children}</ToastProvider>
+                </main>
+                <Footer />
+                <MobileFloatingButton />
             </body>
         </html>
     );

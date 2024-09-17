@@ -1,86 +1,48 @@
 import { FaStar } from "react-icons/fa";
-import { Profesor, Sexo } from "./lib/definitions";
+import { Profesor, Sexo, UserRole, Usuario, Review } from "./lib/definitions";
+import Link from "next/link";
 
 export default function Home() {
-    const mock1: Profesor = {
-        id: "qwdqd",
-        nombre: "Profesor",
-        apellido: "Mariano",
-        fechaNacimiento: new Date(),
-        dni: 12321123,
-        //@ts-ignore
-        cursados: [],
-        horariosDeClase: [],
-        puntuacionGeneral: 2,
-        sexo: Sexo.Hombre,
-    };
-
-    const mock2: Profesor = {
-        id: "qwdqdaaa",
-        nombre: "Software",
-        apellido: "Mariano",
-        fechaNacimiento: new Date(),
-        dni: 12321123,
-        //@ts-ignore
-        cursados: [],
-        horariosDeClase: [],
-        puntuacionGeneral: 3,
+    const usuario = {
+        id: "aaasss",
+        legajo: "50979",
+        nombre: "Brunella",
+        apellido: "Impacienzia",
+        username: "brunellaimpacienzia",
+        fechaNacimiento: "02/09/1930", // "DD/MM/YYY"
         sexo: Sexo.Mujer,
+        rol: UserRole.Regular,
     };
-
-    const profesores: Profesor[] = [mock1, mock2];
 
     return (
-        <div className="max-w-5xl flex flex-col items-center justify-center gap-4 p-4">
-            <p className="text-3xl">El servidor de backend tarda aprox 50 segundos en arrancar. El getAll esta hecho en este link pero se ve asi</p>
-
-            <a href={"/profesor"}>Ir a lista profesores</a>
-
-            {profesores.map((profesor) => {
-                return (
-                    <div className="bg-gray-900 w-[800px] p-4 rounded-2xl" key={profesor.id}>
-                        <div className="flex items-baseline gap-4">
-                            <p className="text-2xl">
-                                {profesor.nombre} {profesor.apellido}
-                            </p>
-                            <p>({profesor.sexo === Sexo.Hombre ? "H" : "M"})</p>
-
-                            <div className="flex-1"></div>
-
-                            <p>DNI: {profesor.dni}</p>
-                        </div>
-
-                        <div className="flex justify-between">
-                            <div className="flex justify-between">
-                                <div className="flex">
-                                    {Array.from(Array(5).keys()).map((i, idx) => {
-                                        let color = i < profesor.puntuacionGeneral ? "gold" : "gray";
-                                        return <FaStar color={color} key={idx} />;
-                                    })}
-                                </div>
-                            </div>
-
-                            <p>{profesor.fechaNacimiento.toString()}</p>
-                        </div>
-
-                        <div className="flex gap-4 flex-wrap pt-4">
-                            {profesor.cursados.map((cursado, idx) => {
-                                return (
-                                    <p className="text-md bg-gray-700 px-4 py-1 rounded-full" key={idx}>
-                                        {cursado.materia.nombre}
-                                    </p>
-                                );
-                            })}
+        <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
+            {/* <a href={"/profesor"}>Ir a lista profesores</a> */}
+            <p className="text-3xl font-semibold text-gray-800 pt-8 pb-8">Hola {usuario.nombre + " " + usuario.apellido}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Link href="/crear-review" className="col-span-full">
+                    <div className="relative h-72 rounded-2xl overflow-hidden group transition-transform duration-300 transform hover:scale-105">
+                        {/* <img src="/placeholder.svg?height=192&width=768" alt="Crear Nueva Review" className="w-full h-full object-cover" /> */}
+                        <div className="absolute inset-0 bg-slate-600 bg-opacity-75 flex items-center justify-center">
+                            <h2 className="text-3xl text-center font-bold text-white">Crear Nueva Review</h2>
                         </div>
                     </div>
-                );
-            })}
-            <div className="col-md-1">
-                <p className="">
-                    LALALALALALALALAALALAL SOY UN COSO DE BOOTSTRAP Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil non totam earum
-                    dolore eius, iusto sunt iste nisi suscipit officia velit ullam, sapiente mollitia? Quaerat incidunt reprehenderit repellendus
-                    aspernatur earum.
-                </p>
+                </Link>
+                <Link href="/ano">
+                    <div className="relative h-72 rounded-2xl overflow-hidden group transition-transform duration-300 transform hover:scale-105">
+                        {/* <img src="/placeholder.svg?height=192&width=384" alt="Materias" className="w-full h-full object-cover" /> */}
+                        <div className="absolute inset-0 bg-slate-400 bg-opacity-75 flex items-center justify-center">
+                            <h2 className="text-3xl font-bold text-white">Materias</h2>
+                        </div>
+                    </div>
+                </Link>
+                <Link href="/profesor">
+                    <div className="relative h-72 rounded-2xl overflow-hidden group transition-transform duration-300 transform hover:scale-105">
+                        {/* <img src="/placeholder.svg?height=192&width=384" alt="Profesores" className="w-full h-full object-cover" /> */}
+                        <div className="absolute inset-0 bg-slate-400 bg-opacity-75 flex items-center justify-center">
+                            <h2 className="text-3xl font-bold text-white">Profesores</h2>
+                        </div>
+                    </div>
+                </Link>
             </div>
         </div>
     );
