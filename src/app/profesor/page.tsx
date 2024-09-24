@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import GridProfesor from "./components/gridProfesor";
 import { Profesor } from "../lib/definitions";
 import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -33,19 +35,35 @@ export default function Page() {
 
     return (
         <>
-            <header className="flex justify-between items-center py-4 px-6 bg-background">
-                <h1 className="text-4xl font-normal text-gray-700">Profesores</h1>
-                <div className="relative w-64">
-                    <Input
-                        type="text"
-                        placeholder="Buscar Profesor"
-                        name="input filtrado"
-                        className="pl-10 pr-4 py-2 w-full bg-gray-100 border-none rounded-md"
-                        onChange={(event) => setFilter(event.target.value)}
-                    />
-                </div>
-            </header>
-            <GridProfesor profesores={filtrados} />
+            <AnimatePresence>
+                {isLoading && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", width: "100vw" }}>
+                        <Spinner as="span" animation="grow" variant="dark" role="status" aria-hidden="true" />
+                    </motion.div>
+                )}
+
+                {!isLoading && (
+                    <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <header className="flex justify-between items-center py-4 px-6 bg-background">
+                            <h1 className="text-4xl font-normal text-gray-800">Profesores</h1>
+                            <div className="relative w-64">
+                                <Input
+                                    type="text"
+                                    placeholder="Buscar Profesor"
+                                    name="input filtrado"
+                                    className="pl-10 pr-4 py-2 w-full bg-gray-100 border-none rounded-md"
+                                    onChange={(event) => setFilter(event.target.value)}
+                                />
+                            </div>
+                        </header>
+                        <GridProfesor profesores={filtrados} />
+                    </motion.section>
+                )}
+            </AnimatePresence>
         </>
     );
 }

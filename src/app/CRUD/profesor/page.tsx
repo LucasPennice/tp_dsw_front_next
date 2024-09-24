@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import ProfesorCard from "../components/ProfesorCard";
-import { Profesor } from "../lib/definitions";
+import ProfesorCard from "../../components/ProfesorCard";
+import { Profesor } from "../../lib/definitions";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
