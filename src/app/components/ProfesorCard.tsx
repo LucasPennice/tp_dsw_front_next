@@ -20,8 +20,13 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
                     href={{
                         pathname: `/CRUD/profesor/edit/${profesor.id}`,
                         query: {
-                            name: profesor.nombre,
+                            nombre: profesor.nombre,
                             apellido: profesor.apellido,
+                            dni: profesor.dni,
+                            sexo: profesor.sexo,
+                            dia: profesor.fechaNacimiento.toString().split("T")[0].split("-")[0],
+                            mes: profesor.fechaNacimiento.toString().split("T")[0].split("-")[1],
+                            year: profesor.fechaNacimiento.toString().split("T")[0].split("-")[2],
                         },
                     }}
                     className="btn btn-warning cus-mr-10">
