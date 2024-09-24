@@ -5,95 +5,10 @@ import { useEffect, useState } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-    ArrowLeft,
-    StarIcon,
-    //@ts-ignore
-} from "lucide-react";
+import { StarIcon } from "lucide-react";
 //@ts-ignore
-import { useParams, useRouter } from "next/navigation";
-import { Cursado, Review, Sexo, UserRole, Usuario } from "@/app/lib/definitions";
-import Link from "next/link";
-
-const mockUsuario: Usuario = {
-    id: " string",
-    legajo: "string",
-    nombre: "Peter",
-    apellido: "Capusoto",
-    username: "PeterCapusoto1029",
-    fechaNacimiento: "19/01/1991",
-    sexo: Sexo.Hombre,
-    rol: UserRole.Regular,
-    //@ts-ignore
-    reviews: [],
-    //@ts-ignore
-    cursados: [],
-};
-
-const mockCursado = {
-    id: "string",
-    diaCursado: "string",
-    horaCursado: "string",
-    comision: 2,
-    turno: "string",
-    año: 12,
-    materia: {
-        nombre: "Analisis",
-    },
-};
-
-// Sample review data
-const reviews: [Review] = [
-    {
-        id: "1",
-        usuario: mockUsuario,
-        puntuacion: 5,
-        //@ts-ignore
-        cursado: mockCursado,
-        descripcion: "Excellent product! Highly recommended.",
-        fecha: new Date(),
-    },
-    {
-        id: "2",
-        usuario: mockUsuario,
-        puntuacion: 4,
-        //@ts-ignore
-        cursado: mockCursado,
-        descripcion: "Good quality, but a bit pricey.",
-        helpful: 28,
-        notHelpful: 5,
-        fecha: new Date(),
-    },
-    {
-        id: "3",
-        usuario: mockUsuario,
-        //@ts-ignore
-        cursado: mockCursado,
-        puntuacion: 3,
-        descripcion: "Average product. Does the job.",
-        helpful: 15,
-        notHelpful: 7,
-        fecha: new Date(),
-    },
-    {
-        id: "4",
-        usuario: mockUsuario,
-        //@ts-ignore
-        cursado: mockCursado,
-        puntuacion: 5,
-        descripcion: "Absolutely love it! Will buy again.",
-        fecha: new Date(),
-    },
-    {
-        id: "5",
-        usuario: mockUsuario,
-        //@ts-ignore
-        cursado: mockCursado,
-        puntuacion: 2,
-        descripcion: "Disappointed. Not worth the price.",
-        fecha: new Date(),
-    },
-];
+import { Profesor, Review } from "@/app/lib/definitions";
+import { useParams } from "next/navigation";
 
 enum Orden {
     todos = "Todos",
@@ -107,6 +22,8 @@ export default function Component() {
 
     const [data, setData] = useState<Review[]>([]);
 
+    const [profesor, setProfesor] = useState<Profesor | null>(null);
+
     useEffect(() => {
         fetch(`https://tp-dsw-back.onrender.com/api/profesor/${idProfesor}/reviews`, {
             headers: {
@@ -117,10 +34,20 @@ export default function Component() {
             .then((data) => {
                 setData(data.data);
             });
+
+        fetch(`https://tp-dsw-back.onrender.com/api/profesor/${idProfesor}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setProfesor(data.data);
+            });
     }, []);
     const [order, setOrder] = useState<Orden>(Orden.todos);
 
-    const sortedReviews = reviews.toSorted((reviewA, reviewB) => {
+    const sortedReviews = data.toSorted((reviewA, reviewB) => {
         if (order === Orden.mejorPuntuacion) return reviewB.puntuacion - reviewA.puntuacion;
         if (order === Orden.peorPuntuacion) return reviewA.puntuacion - reviewB.puntuacion;
 
@@ -129,11 +56,7 @@ export default function Component() {
 
     return (
         <div className="container mx-auto p-6 max-w-4xl px-4 py-8">
-            <nav className="flex items-center justify-between mb-6">
-                <Link href="/profesor" className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200">
-                    <ArrowLeft className="mr-2 h-5 w-5" />
-                    Profesores
-                </Link>
+            <nav className="flex-col items-center justify-between mb-6">
                 <span className="text-gray-600">
                     <Breadcrumb>
                         <BreadcrumbList>
@@ -142,14 +65,18 @@ export default function Component() {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href={`/ano/${idProfesor}`}>Sergio Quaroni</BreadcrumbLink>
+                                <BreadcrumbLink href={`/ano/${idProfesor}`}>
+                                    {profesor == null ? "Cargando..." : `${profesor.nombre} ${profesor.apellido}`}
+                                </BreadcrumbLink>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                 </span>
             </nav>
 
-            <h1 className="text-3xl font-bold mt-8 mb-4">Reviews de Sergio</h1>
+            <h1 className="text-3xl font-bold mt-8 mb-4">
+                {profesor == null ? "Cargando..." : `Reviews de ${profesor.nombre} ${profesor.apellido}`}
+            </h1>
 
             <div className="flex gap-4 mb-8 flex-wrap">
                 {/* @ts-ignore */}
@@ -172,7 +99,7 @@ export default function Component() {
                         <CardContent className="p-6">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <h2 className="text-xl font-semibold pb-1">{mockUsuario.username}</h2>
+                                    <h2 className="text-xl font-semibold pb-1">{review.usuario.username}</h2>
                                     <h3 className="text-md font-medium opacity-30 pb-2">Analisis Numerico</h3>
                                     <div className="flex">
                                         <div className="flex items-center mt-1 gap-2">
