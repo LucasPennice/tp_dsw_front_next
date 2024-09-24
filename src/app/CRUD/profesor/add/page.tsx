@@ -60,10 +60,10 @@ export default function Page() {
 
             if (response.ok) {
                 toast.success("Profesor agregado correctamente");
-                router.push("/profesor");
+                router.push("/CRUD/profesor");
             } else {
                 toast.error("Error al agregar el profesor");
-                router.push("/profesor");
+                router.push("/CRUD/profesor");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -74,9 +74,9 @@ export default function Page() {
     };
 
     return (
-        <>
+        <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
             <div className="container">
-                <Link href={`/profesor`} className="btn btn-primary">
+                <Link href={`/CRUD/profesor`} className="btn btn-primary">
                     Volver
                 </Link>
 
@@ -196,6 +196,6 @@ export default function Page() {
                     </motion.button>
                 </form>
             </div>
-        </>
+        </div>
     );
 }

@@ -9,23 +9,16 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
 
     return (
         <motion.tr initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx / 15, type: "spring", stiffness: 100 }}>
-            <td>{profesor.nombre}</td>
-            <td>{profesor.apellido}</td>
-            <td>{profesor.fechaNacimiento.toString().split("T")[0]}</td>
-            <td>{profesor.dni}</td>
-            <td>
-                <ul className="remove-points">
-                    {profesor.cursados.map((cursado) => (
-                        <li key={profesor.id + cursado}>{cursado.materia.nombre}</li>
-                    ))}
-                </ul>
-            </td>
-            <td>{profesor.puntuacionGeneral}/5</td>
-            <td>{profesor.sexo}</td>
+            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.nombre}</td>
+            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.apellido}</td>
+            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.fechaNacimiento.toString().split("T")[0]}</td>
+            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.dni}</td>
+            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.puntuacionGeneral}/5</td>
+            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.sexo}</td>
             <td>
                 <Link
                     href={{
-                        pathname: `/profesor/edit/${profesor.id}`,
+                        pathname: `/CRUD/profesor/edit/${profesor.id}`,
                         query: {
                             name: profesor.nombre,
                             apellido: profesor.apellido,
@@ -36,8 +29,10 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
                 </Link>
                 <motion.div
                     animate={{ width: isLoading ? 50 : 85 }}
-                    className="btn btn-danger cus-mr-10 transition-all"
+                    className={`btn cus-mr-10 transition-all ${profesor.borradoLogico == false ? "btn-danger" : "bg-gray-200 text-gray-300"} `}
                     onClick={async () => {
+                        if (profesor.borradoLogico == true) return;
+
                         if (isLoading) return;
 
                         setLoading(true);

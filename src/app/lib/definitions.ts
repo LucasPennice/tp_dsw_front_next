@@ -37,6 +37,7 @@ export type Materia = {
     nombre: string;
     cursados: [Cursado];
     area: Area;
+    borradoLogico: boolean;
 };
 
 export type Profesor = {
@@ -48,6 +49,7 @@ export type Profesor = {
     cursados: [Cursado];
     puntuacionGeneral: number;
     sexo: Sexo;
+    borradoLogico: boolean;
 };
 
 export type Review = {
