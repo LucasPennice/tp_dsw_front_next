@@ -1,5 +1,4 @@
 "use client";
-
 import { Materia, Profesor } from "@/app/lib/definitions";
 import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
@@ -132,7 +131,7 @@ export default function CursadoForm() {
                         type="text"
                         className="form-control"
                         id="diaCursado"
-                        placeholder="lunes, martes, etc"
+                        placeholder="Dia Cursado"
                         value={diaCursado}
                         onChange={(e) => setDiaCursado(e.target.value)}
                     />
@@ -144,7 +143,7 @@ export default function CursadoForm() {
                         type="text"
                         className="form-control"
                         id="horaInicio"
-                        placeholder="13:00"
+                        placeholder="Hora Inicio"
                         value={horaInicio}
                         onChange={(e) => setHoraInicio(e.target.value)}
                     />
@@ -156,7 +155,7 @@ export default function CursadoForm() {
                         type="text"
                         className="form-control"
                         id="horaFin"
-                        placeholder="18:00"
+                        placeholder="Hora Fin"
                         value={horaFin}
                         onChange={(e) => setHoraFin(e.target.value)}
                     />
@@ -245,8 +244,7 @@ export default function CursadoForm() {
                         !materiaId ||
                         !profesorId ||
                         !validarHora(horaInicio) ||
-                        !validarHora(horaFin) ||
-                        horaFin <= horaInicio
+                        !validarHora(horaFin)
                     }
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}>
