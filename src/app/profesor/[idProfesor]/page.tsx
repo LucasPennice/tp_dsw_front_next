@@ -6,12 +6,14 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+    ArrowLeft,
     StarIcon,
     //@ts-ignore
 } from "lucide-react";
 //@ts-ignore
 import { useParams, useRouter } from "next/navigation";
 import { Cursado, Review, Sexo, UserRole, Usuario } from "@/app/lib/definitions";
+import Link from "next/link";
 
 const mockUsuario: Usuario = {
     id: " string",
@@ -126,18 +128,26 @@ export default function Component() {
     });
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <Breadcrumb>
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/profesor">Profesores</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href={`/ano/${idProfesor}`}>Sergio Quaroni</BreadcrumbLink>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
+        <div className="container mx-auto p-6 max-w-4xl px-4 py-8">
+            <nav className="flex items-center justify-between mb-6">
+                <Link href="/profesor" className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                    <ArrowLeft className="mr-2 h-5 w-5" />
+                    Profesores
+                </Link>
+                <span className="text-gray-600">
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/profesor">Profesores</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href={`/ano/${idProfesor}`}>Sergio Quaroni</BreadcrumbLink>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
+                </span>
+            </nav>
 
             <h1 className="text-3xl font-bold mt-8 mb-4">Reviews de Sergio</h1>
 
