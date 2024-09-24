@@ -13,7 +13,7 @@ export default function Page() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/profesor", {
+        fetch("https://tp-dsw-back.onrender.com/api/profesor/conBorrado", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -36,7 +36,7 @@ export default function Page() {
 
         toast.success("Profesor borrado exitosamente");
 
-        fetch("https://tp-dsw-back.onrender.com/api/profesor", {
+        fetch("https://tp-dsw-back.onrender.com/api/profesor/conBorrado", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -49,20 +49,33 @@ export default function Page() {
     };
 
     return (
-        <div>
+        <div className="max-w-12xl mx-auto p-6 mb-14 space-y-6">
             <AnimatePresence>
                 {isLoading && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", width: "100vw" }}>
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100vh",
+                            width: "100vw",
+                            maxWidth: "56rem",
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                        }}>
                         <Spinner as="span" animation="grow" variant="dark" role="status" aria-hidden="true" />
                     </motion.div>
                 )}
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        <Link href="/CRUD" className="btn btn-primary p-b">
+                            Volver
+                        </Link>
+
                         <Table className="table" borderless hover>
                             <thead>
                                 <tr>
@@ -71,7 +84,6 @@ export default function Page() {
                                     <th scope="col">Apellido</th>
                                     <th scope="col">Fecha Nac</th>
                                     <th scope="col">DNI</th>
-                                    <th scope="col">Cursados</th>
                                     <th scope="col">Puntuacion General</th>
                                     <th scope="col">Sexo</th>
                                     <th scope="col">Acción</th>
@@ -84,7 +96,7 @@ export default function Page() {
                             </tbody>
                         </Table>
                         <div className="button-container">
-                            <Link href={`/profesor/add`} className="btn btn-primary">
+                            <Link href={`/CRUD/profesor/add`} className="btn btn-primary">
                                 Add
                             </Link>
                         </div>
