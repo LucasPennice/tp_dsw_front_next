@@ -9,6 +9,7 @@ export enum UserRole {
 }
 
 export type Area = {
+    borradoLogico: boolean;
     id: string;
     nombre: string;
     materias: [Materia];
