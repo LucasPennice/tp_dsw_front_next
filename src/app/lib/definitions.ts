@@ -21,15 +21,17 @@ export type Response<T> = {
 };
 
 export type Cursado = {
+    borradoLogico: boolean;
     id: string;
     diaCursado: string;
-    horaCursado: string;
+    horaInicio: string;
+    horaFin: string;
     comision: number;
     turno: string;
-    año: number;
+    tipoCursado: string; // ver
+    ano: number;
     materia: Materia;
     profesor: Profesor;
-    usuarios: [Usuario];
 };
 
 export type Materia = {
