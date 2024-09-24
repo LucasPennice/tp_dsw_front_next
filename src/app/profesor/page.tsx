@@ -47,7 +47,7 @@ export default function Page() {
                 )}
 
                 {!isLoading && (
-                    <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto p-6 max-w-4xl">
                         <header className="flex justify-between items-center py-4 px-6 bg-background">
                             <h1 className="text-4xl font-normal text-gray-800">Profesores</h1>
                             <div className="relative w-64">

@@ -14,8 +14,9 @@ export default function GridProfesor({ profesores }: GridProfesor) {
                     href={{
                         pathname: `/profesor/${profesor.id}`,
                     }}
+                    className="transition-all duration-300 hover:shadow-lg hover:scale-105"
                     key={profesor.id}>
-                    <div className="relative bg-emerald-500 rounded-lg p-4 text-white shadow-md">
+                    <div className="relative bg-blue-200 rounded-lg p-4 text-white shadow-md">
                         <div className="flex justify-between items-start">
                             <div>
                                 <h2 className="text-xl font-semibold">{profesor.nombre + " " + profesor.apellido}</h2>
