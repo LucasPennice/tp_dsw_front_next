@@ -8,6 +8,17 @@ export enum UserRole {
     Administrador = "Administrador",
 }
 
+export enum Turnos {
+    Manana = "Mañana",
+    Tarde = "Tarde",
+    Noche = "Noche",
+}
+
+export enum TiposDocente {
+    Teoria = "Teoria",
+    Practica = "Practica",
+}
+
 export type Area = {
     borradoLogico: boolean;
     id: string;

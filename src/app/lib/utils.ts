@@ -1,3 +1,5 @@
+import { Turnos } from "./definitions";
+
 export const dateFromString = (input: string): Date => {
     const [day, month, year] = input.split("/").map(Number);
 
@@ -25,4 +27,14 @@ function validarComision(cadena: string): boolean {
     return regex.test(cadena);
 }
 
-export { validarAnio, validarComision, validarDiaSemana, validarHora };
+function validarTurno(turno: string, horarioInicio: string, horarioFin: string): boolean {
+    if (!validarHora(horarioInicio) || !validarHora(horarioFin)) return false;
+
+    if (turno == Turnos.Manana && horarioFin < "12:00") return true;
+    if (turno == Turnos.Tarde && horarioInicio >= "12:00" && horarioFin < "18:00") return true;
+    if (turno == Turnos.Noche && horarioInicio >= "18:00" && horarioFin < "24:00") return true;
+
+    return false;
+}
+
+export { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno };

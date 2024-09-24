@@ -1,7 +1,7 @@
 "use client";
 
-import { Materia, Profesor } from "@/app/lib/definitions";
-import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
+import { Materia, Profesor, TiposDocente, Turnos } from "@/app/lib/definitions";
+import { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,8 +26,8 @@ export default function CursadoForm() {
     const [profesorId, setProfesorId] = useState<string | null>(null);
     const [profesores, setProfesores] = useState<Profesor[]>([]);
 
-    const turnos = ["Mañana", "Tarde", "Noche"];
-    const tipos = ["Teoria", "Practica"];
+    const turnos: Turnos[] = [Turnos.Manana, Turnos.Tarde, Turnos.Noche];
+    const tipos: TiposDocente[] = [TiposDocente.Teoria, TiposDocente.Practica];
 
     const router = useRouter();
 
@@ -239,7 +239,7 @@ export default function CursadoForm() {
                     disabled={
                         !validarDiaSemana(diaCursado) ||
                         !validarComision(comision) ||
-                        !turno ||
+                        !validarTurno(turno, horaInicio, horaFin) ||
                         !tipoCursado ||
                         !validarAnio(ano) ||
                         !materiaId ||
