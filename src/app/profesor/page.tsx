@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
     const [filter, setFilter] = useState("");
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/profesor", {
+        fetch("https://tp-dsw-back.onrender.com/api/profesor/conBorrado", {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -18,6 +19,7 @@ export default function Page() {
             .then((res) => res.json())
             .then((data) => {
                 setData(data.data);
+                setLoading(false);
             });
     }, []);
 
@@ -29,8 +31,6 @@ export default function Page() {
         return (p.nombre + p.apellido).toLowerCase().startsWith(filter.replace(/\s+/g, "").toLowerCase());
     });
 
-    console.log(filtrados);
-
     return (
         <>
             <header className="flex justify-between items-center py-4 px-6 bg-background">
@@ -39,6 +39,7 @@ export default function Page() {
                     <Input
                         type="text"
                         placeholder="Buscar Profesor"
+                        name="input filtrado"
                         className="pl-10 pr-4 py-2 w-full bg-gray-100 border-none rounded-md"
                         onChange={(event) => setFilter(event.target.value)}
                     />
