@@ -15,11 +15,10 @@ import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { URI } from "../lib/utils";
 
-export default function Navbar() {
+export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { reviewModalOpen: boolean; setReviewModalOpen: (v: boolean) => void }) {
     const [isOpen, setIsOpen] = useState(false);
-
-    const [reviewModalOpen, setReviewModalOpen] = useState(false);
     const [year, setYear] = useState<string>();
     const [materiaId, setMateriaId] = useState<string>("");
     const [profesorId, setProfesorId] = useState<string>("");
@@ -43,14 +42,12 @@ export default function Navbar() {
 
     const MockUserId = "213123-123-123-123-123";
 
-    const sendReview = async (): Promise<void> => {
+    const sendReview = async (e: any): Promise<void> => {
         try {
+            e.preventDefault();
             setSendingReview(true);
 
-            // me quede aca, me falta un endpoint que me devuelva el cursado dado materia año y profesor.
-            // Tambien meter un usuario para hardcodear las ids
-
-            const response = await fetch(`https://tp-dsw-back.onrender.com/api/review`, {
+            const response = await fetch(`${URI}/api/review`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -60,7 +57,9 @@ export default function Navbar() {
                     descripcion: review,
                     puntuacion,
                     usuarioId: MockUserId,
-                    cursadoId: "cu",
+                    anio: year![0],
+                    profesorId,
+                    materiaId,
                 }),
             });
 
@@ -86,7 +85,7 @@ export default function Navbar() {
 
         setLoadingMaterias(true);
 
-        fetch(`https://tp-dsw-back.onrender.com/api/materia/porAno/${year}`, {
+        fetch(`${URI}/api/materia/porAno/${year}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -109,7 +108,7 @@ export default function Navbar() {
 
         setLoadingProfesores(true);
 
-        fetch(`https://tp-dsw-back.onrender.com/api/profesor/porMateriaYAno/${year[0]}/${materiaId}`, {
+        fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -174,7 +173,7 @@ export default function Navbar() {
                                         <DialogTitle>Nueva Review</DialogTitle>
                                         <DialogDescription>Recuerda no escribir insultos o mensajes ofensivos</DialogDescription>
                                     </DialogHeader>
-                                    <form onSubmit={() => {}}>
+                                    <form onSubmit={sendReview}>
                                         <div className="grid gap-4 py-4">
                                             <div className="grid grid-cols-4 items-center gap-4">
                                                 <Label className="text-right">Año</Label>
@@ -258,10 +257,7 @@ export default function Navbar() {
                                             <span className={`${review.length < 5 ? "text-red-600" : "text-muted-foreground"}`}>{review.length}</span>
                                         </p>
                                         <DialogFooter className="pt-4">
-                                            <Button
-                                                disabled={review.length < 5 || sendingReview == true || puntuacion == 0}
-                                                type="submit"
-                                                onSubmit={sendReview}>
+                                            <Button disabled={review.length < 5 || sendingReview == true || puntuacion == 0} type="submit">
                                                 {!sendingReview ? "Save changes" : <Spinner size="sm" />}
                                             </Button>
                                         </DialogFooter>

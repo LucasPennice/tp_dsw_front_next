@@ -37,4 +37,7 @@ function validarTurno(turno: string, horarioInicio: string, horarioFin: string):
     return false;
 }
 
-export { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno };
+// const URI = "https://tp-dsw-back.onrender.com";
+const URI = "http://localhost:3000";
+
+export { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno, URI };
