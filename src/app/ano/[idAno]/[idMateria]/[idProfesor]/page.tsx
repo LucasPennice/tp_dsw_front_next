@@ -5,13 +5,11 @@ import { useEffect, useState } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-    StarIcon,
-    //@ts-ignore
-} from "lucide-react";
+import { StarIcon } from "lucide-react";
 //@ts-ignore
-import { useParams, useRouter } from "next/navigation";
-import { Cursado, Materia, Profesor, Review, Sexo, UserRole, Usuario } from "@/app/lib/definitions";
+import { Materia, Profesor, Review } from "@/app/lib/definitions";
+import { URI } from "@/app/lib/utils";
+import { useParams } from "next/navigation";
 
 enum Orden {
     todos = "Todos",
@@ -33,7 +31,7 @@ export default function Component() {
     const [materia, setMateria] = useState<Materia | null>(null);
 
     useEffect(() => {
-        fetch(`https://tp-dsw-back.onrender.com/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
+        fetch(`${URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -43,7 +41,7 @@ export default function Component() {
                 setData(data.data);
             });
 
-        fetch(`https://tp-dsw-back.onrender.com/api/profesor/${idProfesor}`, {
+        fetch(`${URI}/api/profesor/${idProfesor}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -53,7 +51,7 @@ export default function Component() {
                 setProfesor(data.data);
             });
 
-        fetch(`https://tp-dsw-back.onrender.com/api/materia/${idMateria}`, {
+        fetch(`${URI}/api/materia/${idMateria}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -68,7 +66,7 @@ export default function Component() {
         if (order === Orden.mejorPuntuacion) return reviewB.puntuacion - reviewA.puntuacion;
         if (order === Orden.peorPuntuacion) return reviewA.puntuacion - reviewB.puntuacion;
 
-        return reviewB.fecha.getTime() - reviewA.fecha.getTime();
+        return new Date(reviewB.fecha).getTime() - new Date(reviewA.fecha).getTime();
     });
 
     return (

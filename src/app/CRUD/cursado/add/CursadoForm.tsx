@@ -1,7 +1,6 @@
 "use client";
-
-import { Materia, Profesor, TiposDocente, Turnos } from "@/app/lib/definitions";
-import { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno } from "@/app/lib/utils";
+import { Materia, Profesor } from "@/app/lib/definitions";
+import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,8 +25,8 @@ export default function CursadoForm() {
     const [profesorId, setProfesorId] = useState<string | null>(null);
     const [profesores, setProfesores] = useState<Profesor[]>([]);
 
-    const turnos: Turnos[] = [Turnos.Manana, Turnos.Tarde, Turnos.Noche];
-    const tipos: TiposDocente[] = [TiposDocente.Teoria, TiposDocente.Practica];
+    const turnos = ["Mañana", "Tarde", "Noche"];
+    const tipos = ["Teoria", "Practica"];
 
     const router = useRouter();
 
@@ -132,7 +131,7 @@ export default function CursadoForm() {
                         type="text"
                         className="form-control"
                         id="diaCursado"
-                        placeholder="lunes, martes, etc"
+                        placeholder="Dia Cursado"
                         value={diaCursado}
                         onChange={(e) => setDiaCursado(e.target.value)}
                     />
@@ -144,7 +143,7 @@ export default function CursadoForm() {
                         type="text"
                         className="form-control"
                         id="horaInicio"
-                        placeholder="13:00"
+                        placeholder="Hora Inicio"
                         value={horaInicio}
                         onChange={(e) => setHoraInicio(e.target.value)}
                     />
@@ -156,7 +155,7 @@ export default function CursadoForm() {
                         type="text"
                         className="form-control"
                         id="horaFin"
-                        placeholder="18:00"
+                        placeholder="Hora Fin"
                         value={horaFin}
                         onChange={(e) => setHoraFin(e.target.value)}
                     />
@@ -239,14 +238,13 @@ export default function CursadoForm() {
                     disabled={
                         !validarDiaSemana(diaCursado) ||
                         !validarComision(comision) ||
-                        !validarTurno(turno, horaInicio, horaFin) ||
+                        !turno ||
                         !tipoCursado ||
                         !validarAnio(ano) ||
                         !materiaId ||
                         !profesorId ||
                         !validarHora(horaInicio) ||
-                        !validarHora(horaFin) ||
-                        horaFin <= horaInicio
+                        !validarHora(horaFin)
                     }
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}>

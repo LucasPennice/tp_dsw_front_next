@@ -1,37 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useParams } from "next/navigation";
+import Link from "next/link";
+import { years } from "../lib/definitions";
 
 export default function YearSelection() {
-    // const params = useParams();
-
-    // const idAno = params.idAno as string;
-
-    const years = [
-        {
-            id: "1er",
-            type: "1er Año",
-        },
-        {
-            id: "2do",
-            type: "2do Año",
-        },
-        {
-            id: "3er",
-            type: "3er Año",
-        },
-        {
-            id: "4to",
-            type: "4to Año",
-        },
-        {
-            id: "5to",
-            type: "5to Año",
-        },
-    ];
-
     return (
         <div className="max-w-4xl mx-auto p-6">
             <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">

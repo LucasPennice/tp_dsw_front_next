@@ -8,6 +8,40 @@ export enum UserRole {
     Administrador = "Administrador",
 }
 
+export enum Turnos {
+    Manana = "Mañana",
+    Tarde = "Tarde",
+    Noche = "Noche",
+}
+
+export const years: { id: string; type: string }[] = [
+    {
+        id: "1er",
+        type: "1er Año",
+    },
+    {
+        id: "2do",
+        type: "2do Año",
+    },
+    {
+        id: "3er",
+        type: "3er Año",
+    },
+    {
+        id: "4to",
+        type: "4to Año",
+    },
+    {
+        id: "5to",
+        type: "5to Año",
+    },
+];
+
+export enum TiposDocente {
+    Teoria = "Teoria",
+    Practica = "Practica",
+}
+
 export type Area = {
     borradoLogico: boolean;
     id: string;
