@@ -29,7 +29,7 @@ export type Cursado = {
     comision: number;
     turno: string;
     tipoCursado: string; // ver
-    ano: number;
+    año: number;
     materia: Materia;
     profesor: Profesor;
 };

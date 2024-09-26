@@ -119,7 +119,7 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.horaFin}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.comision}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.turno}</td>
-            <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.ano}</td>
+            <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.año}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.tipoCursado}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.materia.nombre}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.profesor.nombre + ", " + cursado.profesor.apellido}</td>
@@ -134,7 +134,7 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
                             horaFin: cursado.horaFin,
                             comision: cursado.comision,
                             turno: cursado.turno,
-                            año: cursado.ano,
+                            año: cursado.año,
                             tipo: cursado.tipoCursado,
                             materia: cursado.materia.id,
                             profesor: cursado.profesor.id,
