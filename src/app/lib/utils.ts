@@ -18,12 +18,22 @@ function validarDiaSemana(dia: string): boolean {
 }
 
 function validarAnio(anio: string): boolean {
-    const regex = /^(1000|[1-9][0-9]{3})$/;
+    const regex = /^(2000|[1-9][0-9]{3})$/;
     return regex.test(anio);
 }
 
 function validarComision(cadena: string): boolean {
     const regex = /^\d{3}$/;
+    return regex.test(cadena);
+}
+
+function validarLegajo(cadena: string): boolean {
+    const regex = /^\d{5}$/;
+    return regex.test(cadena);
+}
+
+function validarNombreOApellido(cadena: string): boolean {
+    const regex = /^[a-zA-Z]+$/;
     return regex.test(cadena);
 }
 
@@ -40,4 +50,4 @@ function validarTurno(turno: string, horarioInicio: string, horarioFin: string):
 // const URI = "https://tp-dsw-back.onrender.com";
 const URI = "http://localhost:3000";
 
-export { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno, URI };
+export { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno, URI, validarLegajo, validarNombreOApellido };

@@ -7,13 +7,14 @@ import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Area } from "../../lib/definitions";
 import AreaCard from "@/app/components/AreaCard";
+import { URI } from "@/app/lib/utils";
 
 export default function Page() {
     const [data, setData] = useState<Area[]>([]);
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/area/conBorrado", {
+        fetch(`${URI}/api/area/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -30,13 +31,13 @@ export default function Page() {
     const areas = data ?? [];
 
     const deleteArea = async (_id: string) => {
-        await fetch(`https://tp-dsw-back.onrender.com/api/area/${_id}`, {
+        await fetch(`${URI}/api/area/${_id}`, {
             method: "Delete",
         });
 
         toast.success("Area borrada exitosamente");
 
-        fetch("https://tp-dsw-back.onrender.com/api/area/conBorrado", {
+        fetch("${URI}/api/area/conBorrado", {
             headers: {
                 "Content-Type": "application/json",
             },

@@ -8,6 +8,7 @@ import { Spinner } from "react-bootstrap";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { URI } from "../lib/utils";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -15,7 +16,7 @@ export default function Page() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/profesor/conBorrado", {
+        fetch(`${URI}/api/profesor`, {
             headers: {
                 "Content-Type": "application/json",
             },

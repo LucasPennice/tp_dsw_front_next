@@ -1,6 +1,6 @@
 "use client";
 import { Materia, Profesor } from "@/app/lib/definitions";
-import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
+import { URI, validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ export default function CursadoForm() {
     const router = useRouter();
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/materia", {
+        fetch(`${URI}/api/materia`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -47,7 +47,7 @@ export default function CursadoForm() {
                 setLoadingMaterias(false);
             });
 
-        fetch("https://tp-dsw-back.onrender.com/api/profesor", {
+        fetch(`${URI}/api/profesor`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -78,7 +78,7 @@ export default function CursadoForm() {
                 throw new Error("Profesor ID null");
             }
 
-            const response = await fetch(`https://tp-dsw-back.onrender.com/api/cursado`, {
+            const response = await fetch(`${URI}/api/cursado`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

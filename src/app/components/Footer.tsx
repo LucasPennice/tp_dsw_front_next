@@ -19,11 +19,11 @@ export default function Component() {
                                     Home
                                 </a>
                             </li>
-                            <li>
+                            {/* <li>
                                 <a href="#" className="hover:text-gray-900 transition-colors duration-300">
                                     Crear Una Review
                                 </a>
-                            </li>
+                            </li> */}
                         </ul>
                     </nav>
                 </div>

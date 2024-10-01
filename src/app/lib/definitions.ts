@@ -110,3 +110,5 @@ export type Usuario = {
     reviews: [Review];
     cursados: [Cursado];
 };
+
+export type UsuarioEnMemoria = Omit<Usuario, "reviews" | "cursados">;

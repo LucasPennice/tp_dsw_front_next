@@ -7,13 +7,7 @@ import { useEffect, useState } from "react";
 import { Materia } from "@/app/lib/definitions";
 import { AnimatePresence, motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
-
-// const subjects = [
-//     { name: "Diseño de Sistemas", area: "Área Sistemas", color: "bg-green-200", id: "a87k" },
-//     { name: "Diseño de Sistemas", area: "Área Sistemas", color: "bg-red-200", id: "a87k" },
-//     { name: "Diseño de Sistemas", area: "Área Sistemas", color: "bg-blue-200", id: "a87k" },
-//     { name: "Diseño de Sistemas", area: "Área Sistemas", color: "bg-yellow-200", id: "a87k" },
-// ];
+import { URI } from "@/app/lib/utils";
 
 const BookIcon = () => (
     <svg
@@ -38,12 +32,9 @@ export default function SubjectsLayout() {
 
     const params = useParams();
     const idAno = params.idAno as string;
-    const idMateria = params.idMateria as string;
 
     useEffect(() => {
-        //Esto tiene que pegar al endpoint de materias por año, NO DE TODAS LAS MATERIAS. Lo dejo así porque no carga nunca sino
-        // fetch(`https://tp-dsw-back.onrender.com/api/porAno/${idAno}`, {
-        fetch(`https://tp-dsw-back.onrender.com/api/materia`, {
+        fetch(`${URI}/api/materia/porAno/${idAno[0]}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -52,7 +43,6 @@ export default function SubjectsLayout() {
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
-                console.log(data.data);
             });
     }, []);
 

@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Cursado } from "../../lib/definitions";
+import { URI } from "@/app/lib/utils";
 
 export default function Page() {
     const [data, setData] = useState<Cursado[]>([]);
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/cursado/conBorrado", {
+        fetch(`${URI}/api/cursado/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -29,13 +30,13 @@ export default function Page() {
     const cursados = data ?? [];
 
     const deleteCursado = async (_id: string) => {
-        await fetch(`https://tp-dsw-back.onrender.com/api/cursado/${_id}`, {
+        await fetch(`${URI}/api/cursado/${_id}`, {
             method: "Delete",
         });
 
         toast.success("Cursado borrado exitosamente");
 
-        fetch("https://tp-dsw-back.onrender.com/api/cursado/conBorrado", {
+        fetch(`${URI}/api/cursado/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },

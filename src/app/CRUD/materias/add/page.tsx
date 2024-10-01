@@ -1,6 +1,7 @@
 "use client";
 
 import { Area } from "@/app/lib/definitions";
+import { URI } from "@/app/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
@@ -17,7 +18,7 @@ export default function Page() {
     const [areas, setAreas] = useState<Area[]>([]);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/area", {
+        fetch(`${URI}/api/area`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -41,7 +42,7 @@ export default function Page() {
                 throw "Area ID null";
             }
 
-            const response = await fetch(`https://tp-dsw-back.onrender.com/api/materia/`, {
+            const response = await fetch(`${URI}/api/materia/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

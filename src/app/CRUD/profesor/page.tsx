@@ -7,13 +7,14 @@ import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ProfesorCard from "../../components/ProfesorCard";
 import { Profesor } from "../../lib/definitions";
+import { URI } from "@/app/lib/utils";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/profesor/conBorrado", {
+        fetch(`${URI}/api/profesor/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -30,13 +31,13 @@ export default function Page() {
     const profesores = data ?? [];
 
     const deleteProfesor = async (_id: string) => {
-        await fetch(`https://tp-dsw-back.onrender.com/api/profesor/${_id}`, {
+        await fetch(`${URI}/api/profesor/${_id}`, {
             method: "Delete",
         });
 
         toast.success("Profesor borrado exitosamente");
 
-        fetch("https://tp-dsw-back.onrender.com/api/profesor/conBorrado", {
+        fetch(`${URI}/api/profesor/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },

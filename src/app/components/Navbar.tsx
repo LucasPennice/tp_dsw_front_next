@@ -2,19 +2,21 @@
 
 import Link from "next/link";
 
-import { useEffect, useState } from "react";
-import { Plus, ChevronDown, User, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Materia, Profesor, years } from "../lib/definitions";
+import { cn } from "@/lib/utils";
+import { ChevronDown, LogOut, Plus, Star } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { Star } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { getSession, logout } from "../../authlib";
+import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
+import { Materia, Profesor, years } from "../lib/definitions";
 import { URI } from "../lib/utils";
 
 export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { reviewModalOpen: boolean; setReviewModalOpen: (v: boolean) => void }) {
@@ -25,11 +27,27 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
     const [review, setReview] = useState<string>("");
     const [puntuacion, setPuntuacion] = useState(0);
 
+    const { userInfo, setUserInfo } = useContext(UserInfoContext);
+
     const [materiasPorAno, setMateriasPorAno] = useState<Materia[]>([]);
     const [profesores, setProfesores] = useState<Profesor[]>([]);
     const [loadingMaterias, setLoadingMaterias] = useState(false);
     const [loadingProfesores, setLoadingProfesores] = useState(false);
     const [sendingReview, setSendingReview] = useState(false);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        (async () => {
+            const session = await getSession();
+
+            if (session == null) {
+                return setUserInfo({ auth: false, user: usuarioEnMemoriaDefault });
+            }
+
+            setUserInfo({ auth: true, user: session.user });
+        })();
+    }, []);
 
     const resetReviewModalState = () => {
         setYear(undefined);
@@ -39,8 +57,6 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
         setMateriasPorAno([]);
         setProfesores([]);
     };
-
-    const MockUserId = "213123-123-123-123-123";
 
     const sendReview = async (e: any): Promise<void> => {
         try {
@@ -56,18 +72,20 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 body: JSON.stringify({
                     descripcion: review,
                     puntuacion,
-                    usuarioId: MockUserId,
+                    usuarioId: userInfo.user.id,
                     anio: year![0],
                     profesorId,
                     materiaId,
                 }),
             });
 
+            let res = await response.json();
+
             if (response.ok) {
-                toast.success("Review creada correctamente");
+                toast.success(res.message);
                 setReviewModalOpen(false);
             } else {
-                toast.error("Error al crear review");
+                toast.error(res.message);
                 setReviewModalOpen(false);
             }
         } catch (error) {
@@ -78,51 +96,66 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
         }
     };
 
-    const isLog = true;
-
     useEffect(() => {
-        if (!year) return;
+        (async () => {
+            if (!year) return;
 
-        setLoadingMaterias(true);
+            setLoadingMaterias(true);
 
-        fetch(`${URI}/api/materia/porAno/${year}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setMateriasPorAno(data.data);
-                setLoadingMaterias(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching materias:", error);
-                setLoadingMaterias(false);
+            let res = await fetch(`${URI}/api/materia/porAno/${year}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
+
+            let response = await res.json();
+
+            if (res.ok) {
+                toast.success(response.message);
+                setMateriasPorAno(response.data);
+                setLoadingMaterias(false);
+            } else {
+                toast.error(response.message);
+                console.error("Error fetching materias:", response.message);
+                setLoadingMaterias(false);
+            }
+        })();
     }, [year]);
 
     useEffect(() => {
-        console.log;
-        if (!year) return;
-        if (!materiaId) return;
+        (async () => {
+            if (!year) return;
+            if (!materiaId) return;
 
-        setLoadingProfesores(true);
+            setLoadingProfesores(true);
 
-        fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setProfesores(data.data);
-                setLoadingProfesores(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching materias:", error);
-                setLoadingProfesores(false);
+            let res = await fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
+            let response = await res.json();
+
+            if (res.ok) {
+                setProfesores(response.data);
+                setLoadingProfesores(false);
+                toast.success(response.message);
+            } else {
+                //@ts-ignore
+                console.error("Error fetching materias:", res.message);
+                setLoadingProfesores(false);
+                toast.error(response.message);
+            }
+        })();
     }, [materiaId]);
+
+    const logoutAndResetState = async () => {
+        setUserInfo({ auth: false, user: usuarioEnMemoriaDefault });
+
+        await logout();
+
+        router.push("/");
+    };
 
     return (
         <nav className="bg-white shadow-sm">
@@ -133,7 +166,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                             <img src="/assets/logo.png" className="w-36" />
                         </Link>
                     </div>
-                    {isLog ? (
+                    {userInfo.auth ? (
                         <div className="flex items-center space-x-4">
                             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
                                 <DropdownMenuTrigger asChild>
@@ -143,7 +176,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="w-56 mt-4">
-                                    <DropdownMenuItem>
+                                    {/* <DropdownMenuItem>
                                         <User className="mr-2 h-4 w-4" />
                                         <span>Perfil</span>
                                     </DropdownMenuItem>
@@ -151,10 +184,12 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                         <Settings className="mr-2 h-4 w-4" />
                                         <span>Configuración</span>
                                     </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
+                                    <DropdownMenuSeparator /> */}
                                     <DropdownMenuItem>
-                                        <LogOut className="mr-2 h-4 w-4" />
-                                        <span>Cerrar sesión</span>
+                                        <button className="flex items-center" onClick={logoutAndResetState}>
+                                            <LogOut className="mr-2 h-4 w-4" />
+                                            <span>Cerrar sesión</span>
+                                        </button>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
@@ -267,12 +302,16 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                         </div>
                     ) : (
                         <div className="flex items-center space-x-4">
-                            <Button variant="ghost" className="flex items-center gap-2 ">
-                                Iniciar sesion
-                            </Button>
-                            <Button variant="default" className="flex items-center gap-2 ">
-                                Sign Up
-                            </Button>
+                            <Link href="/auth/login">
+                                <Button variant="ghost" className="flex items-center gap-2 ">
+                                    Iniciar sesion
+                                </Button>
+                            </Link>
+                            <Link href="/auth/signup">
+                                <Button variant="default" className="flex items-center gap-2 ">
+                                    Sign Up
+                                </Button>
+                            </Link>
                         </div>
                     )}
                 </div>

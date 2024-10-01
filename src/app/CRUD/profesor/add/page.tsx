@@ -1,7 +1,7 @@
 "use client";
 
 import { Sexo } from "@/app/lib/definitions";
-import { dateFromString } from "@/app/lib/utils";
+import { URI, dateFromString } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
@@ -42,7 +42,7 @@ export default function Page() {
                 throw "Fecha Invalida";
             }
 
-            const response = await fetch(`https://tp-dsw-back.onrender.com/api/profesor/`, {
+            const response = await fetch(`${URI}/api/profesor/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

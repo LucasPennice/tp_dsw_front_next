@@ -1,6 +1,7 @@
 "use client";
 
 import { Sexo } from "@/app/lib/definitions";
+import { URI } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link.js";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -47,7 +48,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`https://tp-dsw-back.onrender.com/api/profesor/${id}`, {
+            const response = await fetch(`${URI}/api/profesor/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

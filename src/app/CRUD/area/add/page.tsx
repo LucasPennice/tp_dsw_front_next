@@ -1,5 +1,6 @@
 "use client";
 
+import { URI } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`https://tp-dsw-back.onrender.com/api/area/`, {
+            const response = await fetch(`${URI}/api/area/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

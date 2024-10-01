@@ -1,7 +1,7 @@
 "use client";
 
 import { Materia, Profesor, TiposDocente, Turnos } from "@/app/lib/definitions";
-import { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno } from "@/app/lib/utils";
+import { URI, validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -32,37 +32,44 @@ export default function CursadoForm() {
     const router = useRouter();
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/materia", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("Materias data:", data);
-                setMaterias(data.data);
-                setLoadingMaterias(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching materias:", error);
-                setLoadingMaterias(false);
+        (async () => {
+            setLoadingMaterias(true);
+
+            let res = await fetch(`${URI}/api/materia`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
 
-        fetch("https://tp-dsw-back.onrender.com/api/profesor", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("Profesor data:", data);
-                setProfesores(data.data);
-                setLoadingProfesores(false);
+            let response = await res.json();
+
+            if (res.ok) {
+                setMaterias(response.data);
+                setLoadingMaterias(false);
+            } else {
+                toast.error(response.message);
+                console.error("Error fetching materias:", response.message);
+                setLoadingMaterias(false);
+            }
+
+            fetch(`${URI}/api/profesor`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             })
-            .catch((error) => {
-                console.error("Error fetching profesores:", error);
-                setLoadingProfesores(false);
-            });
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("Profesor data:", data);
+                    setProfesores(data.data);
+                    setLoadingProfesores(false);
+                })
+                .catch((error) => {
+                    //@ts-ignore
+                    toast.error(data.message);
+                    console.error("Error fetching profesores:", error);
+                    setLoadingProfesores(false);
+                });
+        })();
     }, []);
 
     const addCursado = async (e: React.FormEvent) => {
@@ -79,7 +86,7 @@ export default function CursadoForm() {
                 throw new Error("Profesor ID null");
             }
 
-            const response = await fetch(`https://tp-dsw-back.onrender.com/api/cursado`, {
+            const response = await fetch(`${URI}/api/cursado`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -189,7 +196,7 @@ export default function CursadoForm() {
 
                 <div className="form-group">
                     <label htmlFor="ano">Año</label>
-                    <input type="text" className="form-control" id="ano" placeholder="Año" value={ano} onChange={(e) => setAno(e.target.value)} />
+                    <input type="text" className="form-control" id="ano" placeholder="2024" value={ano} onChange={(e) => setAno(e.target.value)} />
                 </div>
 
                 <Dropdown>

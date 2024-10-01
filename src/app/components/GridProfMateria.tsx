@@ -4,16 +4,16 @@ import Link from "next/link";
 
 interface GridProfMateria {
     profesores: Profesor[];
+    idAnio: string;
+    idMateria: string;
 }
 
-export default function GridProfMateria({ profesores }: GridProfMateria) {
+export default function GridProfMateria({ profesores, idAnio, idMateria }: GridProfMateria) {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 py-4">
             {profesores.map((profesor) => (
                 <Link
-                    href={{
-                        pathname: `/profesor/${profesor.id}`,
-                    }}
+                    href={`/ano/${idAnio}/${idMateria}/${profesor.id}`}
                     className="transition-all duration-300 hover:shadow-lg hover:scale-105"
                     key={profesor.id}>
                     <div className="relative bg-blue-100 rounded-lg p-4 text-slate-700 shadow-md">

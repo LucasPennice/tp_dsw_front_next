@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Materia } from "../../lib/definitions";
+import { URI } from "@/app/lib/utils";
 
 export default function Page() {
     const [data, setData] = useState<Materia[]>([]);
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("https://tp-dsw-back.onrender.com/api/materia/conBorrado", {
+        fetch(`${URI}/api/materia/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -29,13 +30,13 @@ export default function Page() {
     const materias = data ?? [];
 
     const deleteMateria = async (_id: string) => {
-        await fetch(`https://tp-dsw-back.onrender.com/api/materia/${_id}`, {
+        await fetch(`${URI}/api/materia/${_id}`, {
             method: "Delete",
         });
 
         toast.success("Materia borrada exitosamente");
 
-        fetch("https://tp-dsw-back.onrender.com/api/materia/conBorrado", {
+        fetch(`${URI}/api/materia/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },

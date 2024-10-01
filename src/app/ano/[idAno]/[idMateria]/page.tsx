@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import GridProfMateria from "@/app/components/GridProfMateria";
 import { useParams } from "next/navigation";
+import { URI } from "@/app/lib/utils";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -20,10 +21,7 @@ export default function Page() {
     const idMateria = params.idMateria as string;
 
     useEffect(() => {
-        // aca deberiamos poner el 1er link, pero no trae ningun profesor aún
-
-        // fetch(`https://tp-dsw-back.onrender.com/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, {
-        fetch("https://tp-dsw-back.onrender.com/api/profesor/conBorrado", {
+        fetch(`${URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -32,7 +30,6 @@ export default function Page() {
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
-                console.log(data.data);
             });
     }, []);
 
@@ -75,7 +72,7 @@ export default function Page() {
                         <header className="flex justify-between items-center py-4 bg-background">
                             <h1 className="text-4xl font-normal text-gray-800">Profesores</h1>
                         </header>
-                        <GridProfMateria profesores={filtrados} />
+                        <GridProfMateria profesores={filtrados} idAnio={idAno} idMateria={idMateria} />
                     </motion.section>
                 )}
             </AnimatePresence>
