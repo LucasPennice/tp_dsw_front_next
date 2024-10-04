@@ -1,5 +1,3 @@
-import { Turnos } from "./definitions";
-
 export const dateFromString = (input: string): Date => {
     const [day, month, year] = input.split("/").map(Number);
 
@@ -13,7 +11,7 @@ function validarHora(hora: string): boolean {
 }
 
 function validarDiaSemana(dia: string): boolean {
-    const diasSemana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+    const diasSemana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
     return diasSemana.includes(dia.toLowerCase());
 }
 
@@ -37,17 +35,7 @@ function validarNombreOApellido(cadena: string): boolean {
     return regex.test(cadena);
 }
 
-function validarTurno(turno: string, horarioInicio: string, horarioFin: string): boolean {
-    if (!validarHora(horarioInicio) || !validarHora(horarioFin)) return false;
+const URI = "https://tp-dsw-back.onrender.com";
+// const URI = "http://localhost:3000";
 
-    if (turno == Turnos.Manana && horarioFin < "12:00") return true;
-    if (turno == Turnos.Tarde && horarioInicio >= "12:00" && horarioFin < "18:00") return true;
-    if (turno == Turnos.Noche && horarioInicio >= "18:00" && horarioFin < "24:00") return true;
-
-    return false;
-}
-
-// const URI = "https://tp-dsw-back.onrender.com";
-const URI = "http://localhost:3000";
-
-export { validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno, URI, validarLegajo, validarNombreOApellido };
+export { validarAnio, validarComision, validarDiaSemana, validarHora, URI, validarLegajo, validarNombreOApellido };

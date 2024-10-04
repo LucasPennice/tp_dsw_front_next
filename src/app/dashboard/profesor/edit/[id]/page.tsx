@@ -1,26 +1,36 @@
 "use client";
 
 import { Sexo } from "@/app/lib/definitions";
-import { URI, dateFromString } from "@/app/lib/utils";
+import { URI } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link.js";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { toast } from "react-toastify";
 
 export default function Page() {
+    const params = useParams();
+    const searchParams = useSearchParams();
+    let nombreParam = searchParams.get("nombre") as string;
+    let apellidoParam = searchParams.get("apellido") as string;
+    let dniParam = searchParams.get("dni") as string;
+    let sexoParam = searchParams.get("sexo") as string;
+    let diaParam = searchParams.get("dia") as string;
+    let mesParam = searchParams.get("mes") as string;
+    let yearParam = searchParams.get("year") as string;
+    const id = params.id as string;
+
     const [loading, setLoading] = useState(false);
 
-    const [nombre, setNombre] = useState("");
-    const [apellido, setApellido] = useState("");
-    const [dni, setDni] = useState("");
-    const [sexo, setSexo] = useState("");
-
-    const [dia, setDia] = useState("");
-    const [mes, setMes] = useState("");
-    const [year, setYear] = useState("");
+    const [nombre, setNombre] = useState(nombreParam);
+    const [apellido, setApellido] = useState(apellidoParam);
+    const [dni, setDni] = useState(dniParam);
+    const [sexo, setSexo] = useState(sexoParam);
+    const [dia, setDia] = useState(diaParam);
+    const [mes, setMes] = useState(mesParam);
+    const [year, setYear] = useState(yearParam);
 
     const intInputLimiter = (n: number, old: string, newS: string) => {
         let input = newS.replace(/[^0-9]/g, "");
@@ -34,36 +44,27 @@ export default function Page() {
 
     const router = useRouter();
 
-    const addProfesor = async (): Promise<void> => {
+    const editProfesor = async (id: string): Promise<void> => {
         try {
             setLoading(true);
 
-            if (dateFromString(`${dia}/${mes}/${year}`) > new Date()) {
-                throw "Fecha Invalida";
-            }
-
-            const response = await fetch(`${URI}/api/profesor/`, {
-                method: "POST",
+            const response = await fetch(`${URI}/api/profesor/${id}`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                 },
-
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,
-                    fechaNacimiento: `${dia}/${mes}/${year}`,
-                    dni: dni,
-                    puntuacionGeneral: 0,
-                    sexo: sexo,
                 }),
             });
 
             if (response.ok) {
-                toast.success("Profesor agregado correctamente");
-                router.push("/CRUD/profesor");
+                toast.success("Profesor modificado correctamente");
+                router.push("/profesor");
             } else {
-                toast.error("Error al agregar el profesor");
-                router.push("/CRUD/profesor");
+                toast.error("Error al modificar el profesor");
+                router.push("/profesor");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -76,14 +77,14 @@ export default function Page() {
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
             <div className="container">
-                <Link href={`/CRUD/profesor`} className="btn btn-primary">
+                <Link href={`/dashboard/profesor`} className="btn btn-primary">
                     Volver
                 </Link>
 
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        addProfesor();
+                        editProfesor(id);
                     }}>
                     <div className="form-group mb-2 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { UserRole, UsuarioEnMemoria } from "./app/lib/definitions";
 
 const protectedRoutes: String[] = [];
-const adminOnlyRoutes = ["/CRUD"];
+const adminOnlyRoutes = ["/dashboard"];
 
 export async function middleware(request: NextRequest) {
     /// ACTUALIZA LA SESSION

@@ -13,12 +13,12 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
             <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.apellido}</td>
             <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.fechaNacimiento.toString().split("T")[0]}</td>
             <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.dni}</td>
-            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.puntuacionGeneral}/5</td>
+            <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{parseFloat(profesor.puntuacionGeneral.toFixed(1))}/5</td>
             <td style={{ color: profesor.borradoLogico ? "red" : "black" }}>{profesor.sexo}</td>
             <td>
                 <Link
                     href={{
-                        pathname: `/CRUD/profesor/edit/${profesor.id}`,
+                        pathname: `/dashboard/profesor/edit/${profesor.id}`,
                         query: {
                             nombre: profesor.nombre,
                             apellido: profesor.apellido,
@@ -29,12 +29,12 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
                             year: profesor.fechaNacimiento.toString().split("T")[0].split("-")[2],
                         },
                     }}
-                    className="btn btn-warning cus-mr-10">
+                    className="btn btn-outline-dark cus-mr-10">
                     Edit
                 </Link>
                 <motion.div
                     animate={{ width: isLoading ? 50 : 85 }}
-                    className={`btn cus-mr-10 transition-all ${profesor.borradoLogico == false ? "btn-danger" : "bg-gray-200 text-gray-300"} `}
+                    className={`btn cus-mr-10 transition-all ${profesor.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                     onClick={async () => {
                         if (profesor.borradoLogico == true) return;
 

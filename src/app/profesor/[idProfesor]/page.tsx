@@ -101,7 +101,7 @@ export default function Component() {
                             <div className="flex justify-between items-start">
                                 <div>
                                     <h2 className="text-xl font-semibold pb-1">{review.usuario.username}</h2>
-                                    <h3 className="text-md font-medium opacity-30 pb-2">Analisis Numerico</h3>
+                                    <h3 className="text-md font-medium opacity-30 pb-2">{review.cursado.materia.nombre}</h3>
                                     <div className="flex">
                                         <div className="flex items-center mt-1 gap-2">
                                             <div className="flex">
@@ -115,7 +115,7 @@ export default function Component() {
                                                 ))}
                                             </div>
 
-                                            <h3 className="text-md font-medium opacity-50">19/02/1992</h3>
+                                            <h3 className="text-md font-medium opacity-50">{new Date(review.fecha).toLocaleDateString("es-ES")}</h3>
                                         </div>
                                     </div>
                                 </div>

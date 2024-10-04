@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 // import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -33,6 +33,9 @@ export default function SignupPage() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const { userInfo, setUserInfo } = useContext(UserInfoContext);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const [formData, setFormData] = useState<FormData>({
         nombre: "",
@@ -158,7 +161,25 @@ export default function SignupPage() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" value={formData.password} onChange={handleInputChange} required />
+                            <div className="relative">
+                                <Input
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent w-auto"
+                                    onClick={togglePasswordVisibility}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}>
+                                    {showPassword ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
+                                </Button>
+                            </div>
                         </div>
                         <Button
                             type="submit"

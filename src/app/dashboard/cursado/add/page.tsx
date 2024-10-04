@@ -1,13 +1,14 @@
 "use client";
 
-import { Materia, Profesor, TiposDocente, Turnos } from "@/app/lib/definitions";
-import { URI, validarAnio, validarComision, validarDiaSemana, validarHora, validarTurno } from "@/app/lib/utils";
+import { Materia, Profesor, TiposDocente } from "@/app/lib/definitions";
+import { URI, validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-toastify";
 
 export default function CursadoForm() {
@@ -21,12 +22,11 @@ export default function CursadoForm() {
     const [tipoCursado, setTipoCursado] = useState("");
     const [ano, setAno] = useState("");
 
-    const [materiaId, setMateriaId] = useState<string | null>(null);
+    const [materiaId, setMateriaId] = useState<string>("");
     const [materias, setMaterias] = useState<Materia[]>([]);
-    const [profesorId, setProfesorId] = useState<string | null>(null);
+    const [profesorId, setProfesorId] = useState<string>("");
     const [profesores, setProfesores] = useState<Profesor[]>([]);
 
-    const turnos: Turnos[] = [Turnos.Manana, Turnos.Tarde, Turnos.Noche];
     const tipos: TiposDocente[] = [TiposDocente.Teoria, TiposDocente.Practica];
 
     const router = useRouter();
@@ -105,7 +105,7 @@ export default function CursadoForm() {
             });
             if (response.ok) {
                 toast.success("Cursado agregado correctamente");
-                router.push("/CRUD/cursado");
+                router.push("/dashboard/cursado");
             } else {
                 toast.error("Error al agregar el cursado");
             }
@@ -128,7 +128,7 @@ export default function CursadoForm() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
-            <Link href={`/CRUD/materias`} className="btn btn-primary">
+            <Link href={`/dashboard/cursado`} className="btn btn-primary">
                 Volver
             </Link>
 
@@ -153,7 +153,16 @@ export default function CursadoForm() {
                         id="horaInicio"
                         placeholder="13:00"
                         value={horaInicio}
-                        onChange={(e) => setHoraInicio(e.target.value)}
+                        onChange={(e) => {
+                            setHoraInicio(e.target.value);
+                            if (e.target.value < "12:00") {
+                                setTurno("Mañana");
+                            } else if (e.target.value < "18:25") {
+                                setTurno("Tarde");
+                            } else {
+                                setTurno("Noche");
+                            }
+                        }}
                     />
                 </div>
 
@@ -181,76 +190,87 @@ export default function CursadoForm() {
                     />
                 </div>
 
-                <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-turno">
-                        {turno || "Seleccionar Turno"}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        {turnos.map((t) => (
-                            <Dropdown.Item key={t} onClick={() => setTurno(t)}>
-                                {t}
-                            </Dropdown.Item>
-                        ))}
-                    </Dropdown.Menu>
-                </Dropdown>
-
                 <div className="form-group">
                     <label htmlFor="ano">Año</label>
                     <input type="text" className="form-control" id="ano" placeholder="2024" value={ano} onChange={(e) => setAno(e.target.value)} />
                 </div>
 
-                <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-tipo">
-                        {tipoCursado || "Seleccionar Tipo de Cursado"}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        {tipos.map((tipo) => (
-                            <Dropdown.Item key={tipo} onClick={() => setTipoCursado(tipo)}>
-                                {tipo}
-                            </Dropdown.Item>
-                        ))}
-                    </Dropdown.Menu>
-                </Dropdown>
+                <div className="grid grid-cols-4 gap-2 ">
+                    <label htmlFor="formGroupExampleInput" className="col-span-4">
+                        Tipo de Cursado
+                    </label>
+                    <div className="col-span-4">
+                        <Select onValueChange={(v) => setTipoCursado(v)} value={tipoCursado}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar un Tipo" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {tipos.map((tipo) => {
+                                    return (
+                                        <SelectItem key={tipo} value={tipo}>
+                                            {tipo}
+                                        </SelectItem>
+                                    );
+                                })}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
 
-                <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-materia">
-                        {materiaId ? materias.find((m) => m.id === materiaId)?.nombre || "Materia no encontrada" : "Seleccionar Materia"}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        {materias.map((materia) => (
-                            <Dropdown.Item key={materia.id} onClick={() => setMateriaId(materia.id)}>
-                                {materia.nombre}
-                            </Dropdown.Item>
-                        ))}
-                    </Dropdown.Menu>
-                </Dropdown>
+                <div className="grid grid-cols-4 gap-2 ">
+                    <label htmlFor="formGroupExampleInput" className="col-span-4">
+                        Materia
+                    </label>
+                    <div className="col-span-4">
+                        <Select onValueChange={(v) => setMateriaId(v)} value={materiaId}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar una Materia" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {materias.map((materia) => {
+                                    return (
+                                        <SelectItem key={materia.id} value={materia.id}>
+                                            {materia.nombre}
+                                        </SelectItem>
+                                    );
+                                })}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
 
-                <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-profesor">
-                        {profesorId != null
-                            ? `${profesores.find((p) => p.id === profesorId)!.nombre} ${profesores.find((p) => p.id === profesorId)!.apellido}`
-                            : "Seleccionar Profesor"}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        {profesores.map((profesor) => (
-                            <Dropdown.Item key={profesor.id} onClick={() => setProfesorId(profesor.id)}>
-                                {`${profesor.nombre} ${profesor.apellido}`}
-                            </Dropdown.Item>
-                        ))}
-                    </Dropdown.Menu>
-                </Dropdown>
+                <div className="grid grid-cols-4 gap-2 ">
+                    <label htmlFor="formGroupExampleInput" className="col-span-4">
+                        Profesor
+                    </label>
+                    <div className="col-span-4">
+                        <Select onValueChange={(v) => setProfesorId(v)} value={profesorId}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar un Profesor" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {profesores.map((profesor) => {
+                                    return (
+                                        <SelectItem key={profesor.id} value={profesor.id}>
+                                            {profesor.nombre + " " + profesor.apellido}
+                                        </SelectItem>
+                                    );
+                                })}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
 
                 <motion.button
                     type="submit"
-                    className="btn btn-primary"
+                    className="btn btn-primary mt-5"
                     disabled={
                         !validarDiaSemana(diaCursado) ||
                         !validarComision(comision) ||
-                        !validarTurno(turno, horaInicio, horaFin) ||
                         !tipoCursado ||
                         !validarAnio(ano) ||
-                        !materiaId ||
-                        !profesorId ||
+                        materiaId == "" ||
+                        profesorId == "" ||
                         !validarHora(horaInicio) ||
                         !validarHora(horaFin) ||
                         horaFin <= horaInicio

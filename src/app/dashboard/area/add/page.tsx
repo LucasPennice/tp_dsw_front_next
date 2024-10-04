@@ -3,42 +3,39 @@
 import { URI } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link.js";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 export default function Page() {
-    const searchParams = useSearchParams();
-    let materiaNombre = searchParams.get("nombre");
-    let materiaId = searchParams.get("id")!;
-
     const [loading, setLoading] = useState(false);
 
-    const [nombre, setNombre] = useState(materiaNombre!);
+    const [nombre, setNombre] = useState("");
 
     const router = useRouter();
 
-    const editMateria = async (id: string): Promise<void> => {
+    const addArea = async (): Promise<void> => {
         try {
             setLoading(true);
 
-            const response = await fetch(`${URI}/api/materia/${id}`, {
-                method: "PATCH",
+            const response = await fetch(`${URI}/api/area/`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+
                 body: JSON.stringify({
                     nombre: nombre,
                 }),
             });
 
             if (response.ok) {
-                toast.success("Materia Modificada correctamente");
-                router.push("/CRUD/materias");
+                toast.success("Area agregado correctamente");
+                router.push("/dashboard/area");
             } else {
-                toast.error("Error al modificar materia");
-                router.push("/CRUD/materias");
+                toast.error("Error al agregar el area");
+                router.push("/dashboard/area");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -49,24 +46,24 @@ export default function Page() {
     };
 
     return (
-        <div className="max-w-6xl mx-auto p-6 mb-14 space-y-6">
+        <>
             <div className="container">
-                <Link href={`/CRUD/materias`} className="btn btn-primary">
+                <Link href={`/area`} className="btn btn-primary">
                     Volver
                 </Link>
 
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        editMateria(materiaId);
+                        addArea();
                     }}>
-                    <div className="form-group mb-5 pt-5">
+                    <div className="form-group mb-2 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>
                         <input
                             type="text"
                             className="form-control mt-2"
                             id="formGroupExampleInput"
-                            placeholder="Example input"
+                            placeholder="Nombre"
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
                         />
@@ -90,6 +87,6 @@ export default function Page() {
                     </motion.button>
                 </form>
             </div>
-        </div>
+        </>
     );
 }

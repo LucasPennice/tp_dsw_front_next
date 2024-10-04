@@ -2,19 +2,21 @@
 
 import { Area } from "@/app/lib/definitions";
 import { URI } from "@/app/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link.js";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
+
 import { toast } from "react-toastify";
 
 export default function Page() {
     const [loading, setLoading] = useState(true);
 
     const [nombre, setNombre] = useState("");
-    const [areaId, setAreaId] = useState<string | null>(null);
+    const [areaId, setAreaId] = useState<string>("");
     const [areas, setAreas] = useState<Area[]>([]);
 
     useEffect(() => {
@@ -56,10 +58,10 @@ export default function Page() {
 
             if (response.ok) {
                 toast.success("Materia agregada correctamente");
-                router.push("/CRUD/materias");
+                router.push("/dashboard/materias");
             } else {
                 toast.error("Error al agregar la materia");
-                router.push("/CRUD/materias");
+                router.push("/dashboard/materias");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -92,7 +94,7 @@ export default function Page() {
                 )}
 
                 <div className="container">
-                    <Link href={`/CRUD/materias`} className="btn btn-primary">
+                    <Link href={`/dashboard/materias`} className="btn btn-primary">
                         Volver
                     </Link>
 
@@ -113,7 +115,7 @@ export default function Page() {
                             />
                         </div>
 
-                        <Dropdown>
+                        {/* <Dropdown>
                             <Dropdown.Toggle variant="success" id="dropdown-basic">
                                 {areaId == null ? "Seleccionar Area" : areas.filter((a) => a.id == areaId)[0].nombre}
                             </Dropdown.Toggle>
@@ -127,12 +129,33 @@ export default function Page() {
                                     );
                                 })}
                             </Dropdown.Menu>
-                        </Dropdown>
+                        </Dropdown> */}
+                        <div className="grid grid-cols-4 gap-2 pt-5">
+                            <label htmlFor="formGroupExampleInput" className="col-span-4">
+                                Area
+                            </label>
+                            <div className="col-span-4">
+                                <Select onValueChange={(v) => setAreaId(v)} value={areaId}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Seleccionar un Area" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {areas.map((area) => {
+                                            return (
+                                                <SelectItem key={area.id} value={area.id}>
+                                                    {area.nombre}
+                                                </SelectItem>
+                                            );
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
 
                         <motion.button
                             type="submit"
-                            className="btn btn-primary cus-mr-10"
-                            disabled={nombre == "" || areaId == null || loading}
+                            className="btn btn-primary cus-mr-10 mt-5"
+                            disabled={nombre == "" || areaId == "" || loading}
                             animate={{ width: loading ? 50 : 85 }}>
                             {loading && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>

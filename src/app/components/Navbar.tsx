@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
+import { Grid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -185,10 +185,23 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                         <span>Configuración</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator /> */}
+                                    {userInfo.user.rol === "Administrador" ? (
+                                        <DropdownMenuItem>
+                                            <Link href="/dashboard" onClick={() => setIsOpen(false)}>
+                                                <button className="flex items-center">
+                                                    <Grid className="mr-2 h-4 w-4" />
+
+                                                    <span>Dashboard </span>
+                                                </button>
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    ) : (
+                                        <></>
+                                    )}
                                     <DropdownMenuItem>
                                         <button className="flex items-center" onClick={logoutAndResetState}>
                                             <LogOut className="mr-2 h-4 w-4" />
-                                            <span>Cerrar sesión</span>
+                                            <span>Cerrar sesión </span>
                                         </button>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>

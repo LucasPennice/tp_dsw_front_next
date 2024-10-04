@@ -8,12 +8,6 @@ export enum UserRole {
     Administrador = "Administrador",
 }
 
-export enum Turnos {
-    Manana = "Mañana",
-    Tarde = "Tarde",
-    Noche = "Noche",
-}
-
 export const years: { id: string; type: string }[] = [
     {
         id: "1er",

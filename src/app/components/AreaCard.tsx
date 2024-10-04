@@ -14,17 +14,17 @@ function AreaCard({ area, deleteArea, idx }: { area: Area; deleteArea: (_id: str
             <td>
                 <Link
                     href={{
-                        pathname: `/CRUD/area/edit/${area.id}`,
+                        pathname: `/dashboard/area/edit/${area.id}`,
                         query: {
                             name: area.nombre,
                         },
                     }}
-                    className="btn btn-warning cus-mr-10">
+                    className="btn btn-outline-dark cus-mr-10">
                     Edit
                 </Link>
                 <motion.div
                     animate={{ width: isLoading ? 50 : 85 }}
-                    className={`btn cus-mr-10 transition-all ${area.borradoLogico == false ? "btn-danger" : "bg-gray-200 text-gray-300"}`}
+                    className={`btn cus-mr-10 transition-all ${area.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"}`}
                     onClick={async () => {
                         if (area.borradoLogico == true) return;
                         if (isLoading) return;

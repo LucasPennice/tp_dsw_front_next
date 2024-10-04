@@ -22,7 +22,7 @@ export default function GridProfMateria({ profesores, idAnio, idMateria }: GridP
                                 <h2 className="text-xl font-semibold">{profesor.nombre + " " + profesor.apellido}</h2>
                                 <p className="text-sm">Ingeniero en Sistemas</p>
                                 <div className="flex items-center mt-1">
-                                    <span className="mr-1">{profesor.puntuacionGeneral}</span>
+                                    <span className="mr-1">{parseFloat(profesor.puntuacionGeneral.toFixed(1))}</span>
                                     <Star className="w-4 h-4 fill-current" />
                                 </div>
                             </div>

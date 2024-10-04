@@ -5,16 +5,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import ProfesorCard from "../../components/ProfesorCard";
-import { Profesor } from "../../lib/definitions";
+import { Area } from "../../lib/definitions";
+import AreaCard from "@/app/components/AreaCard";
 import { URI } from "@/app/lib/utils";
 
 export default function Page() {
-    const [data, setData] = useState<Profesor[]>([]);
+    const [data, setData] = useState<Area[]>([]);
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${URI}/api/profesor/conBorrado`, {
+        fetch(`${URI}/api/area/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -28,29 +28,29 @@ export default function Page() {
 
     if (!data) return <p>No profile data</p>;
 
-    const profesores = data ?? [];
+    const areas = data ?? [];
 
-    const deleteProfesor = async (_id: string) => {
-        await fetch(`${URI}/api/profesor/${_id}`, {
+    const deleteArea = async (_id: string) => {
+        await fetch(`${URI}/api/area/${_id}`, {
             method: "Delete",
         });
 
-        toast.success("Profesor borrado exitosamente");
+        toast.success("Area borrada exitosamente");
 
-        fetch(`${URI}/api/profesor/conBorrado`, {
+        fetch("${URI}/api/area/conBorrado", {
             headers: {
                 "Content-Type": "application/json",
             },
         })
             .then((res) => res.json())
             .then((data) => {
-                setData(data.data);
                 setLoading(false);
+                setData(data.data);
             });
     };
 
     return (
-        <div className="max-w-12xl mx-auto p-6 mb-14 space-y-6">
+        <div className="max-w-6xl mx-auto p-6 mb-14 space-y-6">
             <AnimatePresence>
                 {isLoading && (
                     <motion.div
@@ -73,31 +73,25 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <Link href="/CRUD" className="btn btn-primary p-b">
+                        <Link href="/dashboard" className="btn btn-primary p-b">
                             Volver
                         </Link>
-
-                        <Table className="table" borderless hover>
+                        <Table className="table mt-4" borderless hover>
                             <thead>
                                 <tr>
                                     {/* <th scope="col">ID</th> */}
+                                    <th scope="col">Id</th>
                                     <th scope="col">Nombre</th>
-                                    <th scope="col">Apellido</th>
-                                    <th scope="col">Fecha Nac</th>
-                                    <th scope="col">DNI</th>
-                                    <th scope="col">Puntuacion General</th>
-                                    <th scope="col">Sexo</th>
-                                    <th scope="col">Acción</th>
                                 </tr>
                             </thead>
                             <tbody className="table-group-divider gap-4">
-                                {profesores.map((profesor, idx) => (
-                                    <ProfesorCard profesor={profesor} key={profesor.id} idx={idx} deleteProfesor={deleteProfesor} />
+                                {areas.map((area, idx) => (
+                                    <AreaCard area={area} key={area.id} idx={idx} deleteArea={deleteArea} />
                                 ))}
                             </tbody>
                         </Table>
                         <div className="button-container">
-                            <Link href={`/CRUD/profesor/add`} className="btn btn-primary">
+                            <Link href={`/dashboard/area/add`} className="btn btn-primary">
                                 Add
                             </Link>
                         </div>
