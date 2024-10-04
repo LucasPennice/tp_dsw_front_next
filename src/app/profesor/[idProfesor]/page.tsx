@@ -66,7 +66,7 @@ export default function Component() {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href={`/ano/${idProfesor}`}>
+                                <BreadcrumbLink href={`/profesor/${idProfesor}`}>
                                     {profesor == null ? "Cargando..." : `${profesor.nombre} ${profesor.apellido}`}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
