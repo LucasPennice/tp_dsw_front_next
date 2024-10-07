@@ -60,7 +60,7 @@ export default function Component() {
             <div className="max-w-6xl mx-auto p-6 mb-16 pt-20 space-y-6">
                 {/* <AnimatePresence> */}
                 <h2 className="text-4xl mb-6 font-semibold">Dashboard</h2>
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Link href="/dashboard/materias">
                         <div className="relative h-52 rounded-2xl border-2 border-gray-200 overflow-hidden group transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:border-blue-500">
                             <div className="absolute inset-0 bg-slate-10 rounded-lg p-6 flex items-center justify-center flex-col ">
@@ -101,6 +101,7 @@ export default function Component() {
             </div>
             <div className="w-full  bg-slate-50 ">
                 <div className="max-w-6xl mx-auto p-6 pb-16 space-y-6 bg-slate-20">
+                    <h2 className="text-4xl mb-6  mt-12 font-semibold">Reviews de Alumnos </h2>
                     {isLoading && (
                         <motion.div
                             initial={{ opacity: 0 }}
@@ -121,7 +122,6 @@ export default function Component() {
                     )}
                     {!isLoading && (
                         <div>
-                            <h2 className="text-4xl mb-6  mt-12 font-semibold">Reviews de Alumnos </h2>
                             <div className="space-y-6">
                                 {reviews.map((review, idx) => (
                                     <ReviewCard review={review} key={review.id} idx={idx} deleteReview={deleteReview} />
