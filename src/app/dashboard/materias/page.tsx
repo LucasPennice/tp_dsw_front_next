@@ -32,7 +32,7 @@ export default function Page() {
     const materias = data ?? [];
 
     const deleteMateria = async (_id: string) => {
-        setLoading(true);
+        setLoading(false);
 
         await fetch(`${URI}/api/materia/${_id}`, {
             method: "Delete",

@@ -78,7 +78,7 @@ export default function SubjectsLayout() {
                                 <Link
                                     href={`/ano/${idAno}/${subject.id}`}
                                     key={index}
-                                    className={`bg-green-200 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105`}>
+                                    className={`bg-green-100 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105`}>
                                     <BookIcon />
                                     <h2 className="text-xl font-semibold text-gray-800 mb-1">{subject.nombre}</h2>
                                     <p className="text-sm text-gray-600">{subject.area.nombre}</p>
