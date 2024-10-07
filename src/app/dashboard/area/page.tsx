@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { Area } from "../../lib/definitions";
 import AreaCard from "@/app/components/AreaCard";
 import { URI } from "@/app/lib/utils";
+import { ArrowLeft, Plus } from "lucide-react";
 
 export default function Page() {
     const [data, setData] = useState<Area[]>([]);
@@ -31,13 +32,17 @@ export default function Page() {
     const areas = data ?? [];
 
     const deleteArea = async (_id: string) => {
+        setLoading(true);
+
         await fetch(`${URI}/api/area/${_id}`, {
             method: "Delete",
         });
 
-        toast.success("Area borrada exitosamente");
+        toast.success("Area borrada exitosamente", {
+            autoClose: 6000,
+        });
 
-        fetch("${URI}/api/area/conBorrado", {
+        fetch(`${URI}/api/area/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -73,14 +78,25 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <Link href="/dashboard" className="btn btn-primary p-b">
-                            Volver
-                        </Link>
+                        <div className="flex flex-col items-start md:flex-row  justify-start md:justify-between">
+                            <Link
+                                href="/dashboard"
+                                className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                                <ArrowLeft className="mr-2 h-5 w-5" />
+                                Volver Atrás
+                            </Link>
+                            <div className="button-container">
+                                <Link
+                                    href={`area/add`}
+                                    className="btn bg-blue-400 text-slate-50 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-102 hover:shadow-sm hover:text-slate-700 hover:border-slate-200">
+                                    <Plus />
+                                    Nueva Area
+                                </Link>
+                            </div>
+                        </div>
                         <Table className="table mt-4" borderless hover>
                             <thead>
                                 <tr>
-                                    {/* <th scope="col">ID</th> */}
-                                    <th scope="col">Id</th>
                                     <th scope="col">Nombre</th>
                                 </tr>
                             </thead>
@@ -90,11 +106,6 @@ export default function Page() {
                                 ))}
                             </tbody>
                         </Table>
-                        <div className="button-container">
-                            <Link href={`/dashboard/area/add`} className="btn btn-primary">
-                                Add
-                            </Link>
-                        </div>
                     </motion.section>
                 )}
             </AnimatePresence>

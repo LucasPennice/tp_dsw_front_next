@@ -7,6 +7,8 @@ import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Cursado } from "../../lib/definitions";
 import { URI } from "@/app/lib/utils";
+import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
+import { ArrowLeft, Plus } from "lucide-react";
 
 export default function Page() {
     const [data, setData] = useState<Cursado[]>([]);
@@ -30,11 +32,15 @@ export default function Page() {
     const cursados = data ?? [];
 
     const deleteCursado = async (_id: string) => {
+        setLoading(true);
+
         await fetch(`${URI}/api/cursado/${_id}`, {
             method: "Delete",
         });
 
-        toast.success("Cursado borrado exitosamente");
+        toast.success("Cursado borrado exitosamente", {
+            autoClose: 5000,
+        });
 
         fetch(`${URI}/api/cursado/conBorrado`, {
             headers: {
@@ -72,19 +78,32 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <Link href="/dashboard" className="btn btn-primary p-b">
-                            Volver
-                        </Link>
+                        <div className="flex flex-row justify-between">
+                            <Link
+                                href="/dashboard"
+                                className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                                <ArrowLeft className="mr-2 h-5 w-5" />
+                                Volver Atrás
+                            </Link>
+                            <div className="button-container">
+                                <Link
+                                    href={`/dashboard/cursado/add`}
+                                    className="btn bg-blue-400 text-slate-50 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-102 hover:text-stale-800 hover:shadow-sm hover:border-slate-200">
+                                    <Plus />
+                                    Nuevo Cursado
+                                </Link>
+                            </div>
+                        </div>
 
                         <Table className="table mt-4" borderless hover>
                             <thead>
                                 <tr>
-                                    <th scope="col">Id</th>
+                                    {/* <th scope="col">Id</th> */}
                                     <th scope="col">Dia Cursado</th>
                                     <th scope="col">Hora Inicio</th>
                                     <th scope="col">Hora Fin</th>
                                     <th scope="col">Comision</th>
-                                    <th scope="col">Turno</th>
+                                    {/* <th scope="col">Turno</th> */}
                                     <th scope="col">Año</th>
                                     <th scope="col">Tipo</th>
                                     <th scope="col">Materia</th>
@@ -97,11 +116,6 @@ export default function Page() {
                                 ))}
                             </tbody>
                         </Table>
-                        <div className="button-container">
-                            <Link href={`/dashboard/cursado/add`} className="btn btn-primary">
-                                Add
-                            </Link>
-                        </div>
                     </motion.section>
                 )}
             </AnimatePresence>
@@ -111,15 +125,20 @@ export default function Page() {
 
 function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; deleteCursado: (_id: string) => Promise<void>; idx: number }) {
     const [isLoading, setLoading] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    function toggleModal() {
+        isModalOpen ? setModalOpen(false) : setModalOpen(true);
+    }
 
     return (
         <motion.tr initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx / 15, type: "spring", stiffness: 100 }}>
-            <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.id}</td>
+            {/* <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.id}</td> */}
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.diaCursado}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.horaInicio}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.horaFin}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.comision}</td>
-            <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.turno}</td>
+            {/* <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.turno}</td> */}
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.año}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.tipoCursado}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.materia.nombre}</td>
@@ -149,12 +168,27 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
                         animate={{ width: isLoading ? 50 : 85 }}
                         className={`btn cus-mr-10 transition-all ${cursado.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                         onClick={async () => {
-                            if (cursado.borradoLogico == true) return;
+                            if (cursado.borradoLogico == true) {
+                                toast.error(`La materia ya fue eliminada`, {
+                                    autoClose: 5000,
+                                });
+                                return;
+                            }
                             if (isLoading) return;
 
-                            setLoading(true);
-                            await deleteCursado(cursado.id);
+                            toggleModal();
+                            // setLoading(true);
+                            // await deleteCursado(cursado.id);
                         }}>
+                        {isModalOpen && (
+                            <ConfirmDeleteModal
+                                itemId={cursado.id}
+                                itemName={`un cursado de la materia ${cursado.materia.nombre}`}
+                                key={cursado.id}
+                                idx={idx}
+                                deleteItem={deleteCursado}
+                            />
+                        )}
                         {isLoading && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                                 <Spinner animation="border" size="sm" />

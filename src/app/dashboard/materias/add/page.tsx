@@ -4,6 +4,7 @@ import { Area } from "@/app/lib/definitions";
 import { URI } from "@/app/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
 
 import { useRouter } from "next/navigation";
@@ -57,7 +58,9 @@ export default function Page() {
             });
 
             if (response.ok) {
-                toast.success("Materia agregada correctamente");
+                toast.success("Materia agregada correctamente", {
+                    autoClose: 6000,
+                });
                 router.push("/dashboard/materias");
             } else {
                 toast.error("Error al agregar la materia");
@@ -94,8 +97,11 @@ export default function Page() {
                 )}
 
                 <div className="container">
-                    <Link href={`/dashboard/materias`} className="btn btn-primary">
-                        Volver
+                    <Link
+                        href={`/dashboard/materias`}
+                        className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                        <ArrowLeft className="mr-2 h-5 w-5" />
+                        Volver Atrás
                     </Link>
 
                     <form

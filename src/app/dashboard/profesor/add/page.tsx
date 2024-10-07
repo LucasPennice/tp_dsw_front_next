@@ -3,6 +3,7 @@
 import { Sexo } from "@/app/lib/definitions";
 import { URI, dateFromString } from "@/app/lib/utils";
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -59,15 +60,21 @@ export default function Page() {
             });
 
             if (response.ok) {
-                toast.success("Profesor agregado correctamente");
+                toast.success("Profesor agregado exitosamente", {
+                    autoClose: 6000,
+                });
                 router.push("/dashboard/profesor");
             } else {
-                toast.error("Error al agregar el profesor");
+                toast.error("Error al agregar el profesor", {
+                    autoClose: 6000,
+                });
                 router.push("/dashboard/profesor");
             }
         } catch (error) {
             console.error("Error:", error);
-            toast.error(`Ocurrió un error inesperado. ${error}`);
+            toast.error(`Ocurrió un error inesperado. ${error}`, {
+                autoClose: 6000,
+            });
         } finally {
             setLoading(false);
         }
@@ -76,8 +83,11 @@ export default function Page() {
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
             <div className="container">
-                <Link href={`/dashboard/profesor`} className="btn btn-primary">
-                    Volver
+                <Link
+                    href={`/dashboard/profesor`}
+                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors mt-3  duration-200 ">
+                    <ArrowLeft className="mr-2 h-5 w-5" />
+                    Volver Atrás
                 </Link>
 
                 <form
@@ -108,7 +118,7 @@ export default function Page() {
                         />
                     </div>
                     <InputGroup className="mb-3">
-                        <InputGroup.Text>Fecha Nacimiento</InputGroup.Text>
+                        <InputGroup.Text>Fecha Nac.</InputGroup.Text>
                         <Form.Control
                             placeholder="DD"
                             value={dia}

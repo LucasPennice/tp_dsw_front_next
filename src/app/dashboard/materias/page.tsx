@@ -7,6 +7,8 @@ import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Materia } from "../../lib/definitions";
 import { URI } from "@/app/lib/utils";
+import { ArrowLeft, Plus } from "lucide-react";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 export default function Page() {
     const [data, setData] = useState<Materia[]>([]);
@@ -30,11 +32,15 @@ export default function Page() {
     const materias = data ?? [];
 
     const deleteMateria = async (_id: string) => {
+        setLoading(true);
+
         await fetch(`${URI}/api/materia/${_id}`, {
             method: "Delete",
         });
 
-        toast.success("Materia borrada exitosamente");
+        toast.success("Materia borrada exitosamente", {
+            autoClose: 6000,
+        });
 
         fetch(`${URI}/api/materia/conBorrado`, {
             headers: {
@@ -72,14 +78,26 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <Link href="/dashboard" className="btn btn-primary p-b">
-                            Volver
-                        </Link>
+                        <div className="flex flex-row justify-between">
+                            <Link
+                                href="/dashboard"
+                                className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                                <ArrowLeft className="mr-2 h-5 w-5" />
+                                Volver Atrás
+                            </Link>
+                            <div className="button-container">
+                                <Link
+                                    href={`materias/add`}
+                                    className="btn bg-blue-400 text-slate-50 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-102 hover:text-stale-800 hover:shadow-sm hover:border-slate-200">
+                                    <Plus />
+                                    Nueva Materia
+                                </Link>
+                            </div>
+                        </div>
 
                         <Table className="table mt-4" borderless hover>
                             <thead>
                                 <tr>
-                                    <th scope="col">Id</th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Area</th>
                                 </tr>
@@ -90,11 +108,6 @@ export default function Page() {
                                 ))}
                             </tbody>
                         </Table>
-                        <div className="button-container">
-                            <Link href={`materias/add`} className="btn btn-primary">
-                                Add
-                            </Link>
-                        </div>
                     </motion.section>
                 )}
             </AnimatePresence>
@@ -104,10 +117,14 @@ export default function Page() {
 
 function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; deleteMateria: (_id: string) => Promise<void>; idx: number }) {
     const [isLoading, setLoading] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    function toggleModal() {
+        isModalOpen ? setModalOpen(false) : setModalOpen(true);
+    }
 
     return (
         <motion.tr initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx / 15, type: "spring", stiffness: 100 }}>
-            <td style={{ color: materia.borradoLogico ? "red" : "black" }}>{materia.id}</td>
             <td style={{ color: materia.borradoLogico ? "red" : "black" }}>{materia.nombre}</td>
             <td style={{ color: materia.borradoLogico ? "red" : "black" }}>{materia.area.nombre}</td>
             <td>
@@ -127,12 +144,22 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
                         animate={{ width: isLoading ? 50 : 85 }}
                         className={`btn cus-mr-10 transition-all ${materia.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                         onClick={async () => {
-                            if (materia.borradoLogico == true) return;
+                            if (materia.borradoLogico == true) {
+                                toast.error(`La materia ya fue eliminada`, {
+                                    autoClose: 5000,
+                                });
+                                return;
+                            }
                             if (isLoading) return;
 
-                            setLoading(true);
-                            await deleteMateria(materia.id);
+                            toggleModal();
+
+                            // setLoading(true);
+                            // await deleteMateria(materia.id);
                         }}>
+                        {isModalOpen && (
+                            <ConfirmDeleteModal itemId={materia.id} itemName={materia.nombre} key={materia.id} idx={idx} deleteItem={deleteMateria} />
+                        )}
                         {isLoading && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                                 <Spinner animation="border" size="sm" />

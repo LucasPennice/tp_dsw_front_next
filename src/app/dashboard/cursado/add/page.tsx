@@ -10,6 +10,7 @@ import { Spinner } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-toastify";
+import { ArrowLeft } from "lucide-react";
 
 export default function CursadoForm() {
     const [loadingProfesores, setLoadingProfesores] = useState(true);
@@ -47,7 +48,9 @@ export default function CursadoForm() {
                 setMaterias(response.data);
                 setLoadingMaterias(false);
             } else {
-                toast.error(response.message);
+                toast.error(response.message, {
+                    autoClose: 5000,
+                });
                 console.error("Error fetching materias:", response.message);
                 setLoadingMaterias(false);
             }
@@ -65,7 +68,9 @@ export default function CursadoForm() {
                 })
                 .catch((error) => {
                     //@ts-ignore
-                    toast.error(data.message);
+                    toast.error(data.message, {
+                        autoClose: 5000,
+                    });
                     console.error("Error fetching profesores:", error);
                     setLoadingProfesores(false);
                 });
@@ -104,14 +109,20 @@ export default function CursadoForm() {
                 }),
             });
             if (response.ok) {
-                toast.success("Cursado agregado correctamente");
+                toast.success("Cursado agregado exitosamente", {
+                    autoClose: 5000,
+                });
                 router.push("/dashboard/cursado");
             } else {
-                toast.error("Error al agregar el cursado");
+                toast.error("Error al agregar el cursado", {
+                    autoClose: 5000,
+                });
             }
         } catch (error) {
             console.error("Error:", error);
-            toast.error(`Ocurrió un error inesperado. ${error}`);
+            toast.error(`Ocurrió un error inesperado. ${error}`, {
+                autoClose: 5000,
+            });
         } finally {
             setLoadingProfesores(false);
             setLoadingMaterias(false);
@@ -128,8 +139,11 @@ export default function CursadoForm() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
-            <Link href={`/dashboard/cursado`} className="btn btn-primary">
-                Volver
+            <Link
+                href={`/dashboard/cursado`}
+                className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                <ArrowLeft className="mr-2 h-5 w-5" />
+                Volver Atrás
             </Link>
 
             <form onSubmit={addCursado} className="space-y-4">

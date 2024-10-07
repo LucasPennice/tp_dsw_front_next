@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-toastify";
+import { ArrowLeft } from "lucide-react";
 
 export default function Page() {
     const searchParams = useSearchParams();
@@ -56,15 +57,21 @@ export default function Page() {
             });
 
             if (response.ok) {
-                toast.success("Materia Modificada correctamente");
+                toast.success("Materia Modificada correctamente", {
+                    autoClose: 5000,
+                });
                 router.push("/dashboard/cursado");
             } else {
-                toast.error("Error al modificar materia");
+                toast.error("Error al modificar materia", {
+                    autoClose: 5000,
+                });
                 router.push("/dashboard/cursado");
             }
         } catch (error) {
             console.error("Error:", error);
-            toast.error(`Ocurrió un error inesperado. ${error}`);
+            toast.error(`Ocurrió un error inesperado. ${error}`, {
+                autoClose: 5000,
+            });
         } finally {
             setLoading(false);
         }
@@ -73,8 +80,11 @@ export default function Page() {
     return (
         <div className="max-w-6xl mx-auto p-6 mb-14 space-y-6">
             <div className="container">
-                <Link href={`/dashboard/cursado`} className="btn btn-primary">
-                    Volver
+                <Link
+                    href={`/dashboard/cursado`}
+                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                    <ArrowLeft className="mr-2 h-5 w-5" />
+                    Volver Atrás
                 </Link>
 
                 <form

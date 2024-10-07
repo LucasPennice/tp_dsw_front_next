@@ -2,6 +2,7 @@
 
 import { URI } from "@/app/lib/utils";
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -31,15 +32,21 @@ export default function Page() {
             });
 
             if (response.ok) {
-                toast.success("Area agregado correctamente");
+                toast.success("Area agregado correctamente", {
+                    autoClose: 6000,
+                });
                 router.push("/dashboard/area");
             } else {
-                toast.error("Error al agregar el area");
+                toast.error("Error al agregar el area", {
+                    autoClose: 6000,
+                });
                 router.push("/dashboard/area");
             }
         } catch (error) {
             console.error("Error:", error);
-            toast.error(`Ocurrió un error inesperado. ${error}`);
+            toast.error(`Ocurrió un error inesperado. ${error}`, {
+                autoClose: 6000,
+            });
         } finally {
             setLoading(false);
         }
@@ -48,8 +55,11 @@ export default function Page() {
     return (
         <>
             <div className="container">
-                <Link href={`/area`} className="btn btn-primary">
-                    Volver
+                <Link
+                    href={`/dashboard/area`}
+                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors mt-3  duration-200 mb-6">
+                    <ArrowLeft className="mr-2 h-5 w-5" />
+                    Volver Atrás
                 </Link>
 
                 <form

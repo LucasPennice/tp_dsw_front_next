@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import ProfesorCard from "../../components/ProfesorCard";
 import { Profesor } from "../../lib/definitions";
 import { URI } from "@/app/lib/utils";
+import { ArrowLeft, Plus } from "lucide-react";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -31,11 +32,15 @@ export default function Page() {
     const profesores = data ?? [];
 
     const deleteProfesor = async (_id: string) => {
+        setLoading(true);
+
         await fetch(`${URI}/api/profesor/${_id}`, {
             method: "Delete",
         });
 
-        toast.success("Profesor borrado exitosamente");
+        toast.success("Profesor borrado exitosamente", {
+            autoClose: 6000,
+        });
 
         fetch(`${URI}/api/profesor/conBorrado`, {
             headers: {
@@ -50,7 +55,7 @@ export default function Page() {
     };
 
     return (
-        <div className="max-w-12xl mx-auto p-6 mb-14 space-y-6">
+        <div className="max-w-6xl mx-auto p-6 mb-14 space-y-6">
             <AnimatePresence>
                 {isLoading && (
                     <motion.div
@@ -73,9 +78,22 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <Link href="/dashboard" className="btn btn-primary p-b">
-                            Volver
-                        </Link>
+                        <div className="flex flex-row justify-between">
+                            <Link
+                                href="/dashboard"
+                                className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                                <ArrowLeft className="mr-2 h-5 w-5" />
+                                Volver Atrás
+                            </Link>
+                            <div className="button-container">
+                                <Link
+                                    href={`/dashboard/profesor/add`}
+                                    className="btn bg-blue-500 text-slate-50 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-102 hover:text-stale-800 hover:shadow-sm hover:border-slate-200">
+                                    <Plus />
+                                    Nuevo Profesor
+                                </Link>
+                            </div>
+                        </div>
 
                         <Table className="table mt-4" borderless hover>
                             <thead>
@@ -84,9 +102,9 @@ export default function Page() {
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Apellido</th>
                                     <th scope="col">Fecha Nac</th>
-                                    <th scope="col">DNI</th>
-                                    <th scope="col">Puntuacion General</th>
-                                    <th scope="col">Sexo</th>
+                                    {/* <th scope="col">DNI</th> */}
+                                    {/* <th scope="col">Puntuacion General</th> */}
+                                    {/* <th scope="col">Sexo</th> */}
                                     <th scope="col">Acción</th>
                                 </tr>
                             </thead>
@@ -96,11 +114,6 @@ export default function Page() {
                                 ))}
                             </tbody>
                         </Table>
-                        <div className="button-container">
-                            <Link href={`/dashboard/profesor/add`} className="btn btn-primary">
-                                Add
-                            </Link>
-                        </div>
                     </motion.section>
                 )}
             </AnimatePresence>
