@@ -9,13 +9,25 @@ import { Materia } from "../../lib/definitions";
 import { URI } from "@/app/lib/utils";
 import { ArrowLeft, Plus } from "lucide-react";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function Page() {
     const [data, setData] = useState<Materia[]>([]);
     const [isLoading, setLoading] = useState(true);
 
+    const [pageNumber, setPageNumber] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
-        fetch(`${URI}/api/materia/conBorrado`, {
+        fetch(`${URI}/api/materia/conBorrado?page=${pageNumber}&limit=7`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -24,8 +36,9 @@ export default function Page() {
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
+                setTotalPages(data.totalPages);
             });
-    }, []);
+    }, [pageNumber]);
 
     if (!data) return <p>No hay materias</p>;
 
@@ -52,6 +65,33 @@ export default function Page() {
                 setData(data.data);
                 setLoading(false);
             });
+    };
+
+    const handlePageChange = (page: number) => {
+        setPageNumber(page);
+    };
+
+    const renderPageNumbers = () => {
+        const pageNumbers = [];
+
+        // consideramos que nunca vamos a tener más de 5 páginas
+
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(
+                <PaginationItem key={i}>
+                    <PaginationLink
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(i);
+                        }}
+                        className="hover:cursor-pointer"
+                        isActive={pageNumber === i}>
+                        {i}
+                    </PaginationLink>
+                </PaginationItem>
+            );
+        }
+        return pageNumbers;
     };
 
     return (
@@ -108,6 +148,32 @@ export default function Page() {
                                 ))}
                             </tbody>
                         </Table>
+
+                        <div className="w-full max-w-4xl mx-auto p-4">
+                            <Pagination className="mt-4">
+                                <PaginationContent>
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setPageNumber((prevPageNumber) => prevPageNumber - 1);
+                                            }}
+                                            className={pageNumber === 1 ? "pointer-events-none opacity-50" : "hover:cursor-pointer"}
+                                        />
+                                    </PaginationItem>
+                                    {renderPageNumbers()}
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            onClick={() => {
+                                                // e.preventDefault();
+                                                setPageNumber((prevPageNumber) => prevPageNumber + 1);
+                                            }}
+                                            className={pageNumber === totalPages ? "pointer-events-none opacity-50" : "hover:cursor-pointer"}
+                                        />
+                                    </PaginationItem>
+                                </PaginationContent>
+                            </Pagination>
+                        </div>
                     </motion.section>
                 )}
             </AnimatePresence>
@@ -127,7 +193,7 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
         <motion.tr initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx / 15, type: "spring", stiffness: 100 }}>
             <td style={{ color: materia.borradoLogico ? "red" : "black" }}>{materia.nombre}</td>
             <td style={{ color: materia.borradoLogico ? "red" : "black" }}>{materia.area.nombre}</td>
-            <td>
+            <td className="text-right">
                 <Link
                     href={{
                         pathname: `/dashboard/materias/edit/${materia.id}`,

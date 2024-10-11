@@ -8,14 +8,26 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
 import ReviewCard from "../components/ReviewCard";
 import { Review } from "../lib/definitions";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function Component() {
     const [data, setData] = useState<Review[] | []>([]);
     const [isLoading, setLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
 
+    const [pageNumber, setPageNumber] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
-        fetch(`${URI}/api/review`, {
+        fetch(`${URI}/api/review?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -24,9 +36,9 @@ export default function Component() {
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
-                console.log(data.data);
+                setTotalPages(data.totalPages);
             });
-    }, []);
+    }, [pageNumber]);
 
     if (!data) return <p>No hay reviews disponibles.</p>;
 
@@ -43,7 +55,7 @@ export default function Component() {
             autoClose: 6000,
         });
 
-        fetch(`${URI}/api/review`, {
+        fetch(`${URI}/api/review?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -52,7 +64,36 @@ export default function Component() {
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
+                setTotalPages(data.totalPages);
             });
+    };
+
+    const handlePageChange = (page: number) => {
+        setPageNumber(page);
+    };
+
+    const renderPageNumbers = () => {
+        const pageNumbers = [];
+        console.log(totalPages);
+
+        // consideramos que nunca vamos a tener más de 5 páginas
+
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(
+                <PaginationItem key={i}>
+                    <PaginationLink
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(i);
+                        }}
+                        className="hover:cursor-pointer"
+                        isActive={pageNumber === i}>
+                        {i}
+                    </PaginationLink>
+                </PaginationItem>
+            );
+        }
+        return pageNumbers;
     };
 
     return (
@@ -130,6 +171,31 @@ export default function Component() {
                         </div>
                     )}
                     {/* </AnimatePresence> */}
+                </div>
+                <div className="w-full max-w-4xl mx-auto p-4">
+                    <Pagination className="mt-1">
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setPageNumber((prevPageNumber) => prevPageNumber - 1);
+                                    }}
+                                    className={pageNumber === 1 ? "pointer-events-none opacity-50" : "hover:cursor-pointer"}
+                                />
+                            </PaginationItem>
+                            {renderPageNumbers()}
+                            <PaginationItem>
+                                <PaginationNext
+                                    onClick={() => {
+                                        // e.preventDefault();
+                                        setPageNumber((prevPageNumber) => prevPageNumber + 1);
+                                    }}
+                                    className={pageNumber === totalPages ? "pointer-events-none opacity-50" : "hover:cursor-pointer"}
+                                />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
                 </div>
             </div>
         </>

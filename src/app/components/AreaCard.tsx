@@ -17,7 +17,7 @@ function AreaCard({ area, deleteArea, idx }: { area: Area; deleteArea: (_id: str
     return (
         <motion.tr initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx / 15, type: "spring", stiffness: 100 }}>
             <td style={{ color: area.borradoLogico ? "red" : "black" }}>{area.nombre}</td>
-            <td>
+            <td className="text-right">
                 <Link
                     href={{
                         pathname: `/dashboard/area/edit/${area.id}`,

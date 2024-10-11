@@ -9,13 +9,25 @@ import { Cursado } from "../../lib/definitions";
 import { URI } from "@/app/lib/utils";
 import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
 import { ArrowLeft, Plus } from "lucide-react";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function Page() {
     const [data, setData] = useState<Cursado[]>([]);
     const [isLoading, setLoading] = useState(true);
 
+    const [pageNumber, setPageNumber] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     useEffect(() => {
-        fetch(`${URI}/api/cursado/conBorrado`, {
+        fetch(`${URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -24,8 +36,9 @@ export default function Page() {
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
+                setTotalPages(data.totalPages);
             });
-    }, []);
+    }, [pageNumber]);
 
     if (!data) return <p>No hay cursados</p>;
 
@@ -42,7 +55,7 @@ export default function Page() {
             autoClose: 5000,
         });
 
-        fetch(`${URI}/api/cursado/conBorrado`, {
+        fetch(`${URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -51,7 +64,35 @@ export default function Page() {
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
+                setTotalPages(data.totalPages);
             });
+    };
+
+    const handlePageChange = (page: number) => {
+        setPageNumber(page);
+    };
+
+    const renderPageNumbers = () => {
+        const pageNumbers = [];
+
+        // consideramos que nunca vamos a tener más de 5 páginas
+
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(
+                <PaginationItem key={i}>
+                    <PaginationLink
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(i);
+                        }}
+                        className="hover:cursor-pointer"
+                        isActive={pageNumber === i}>
+                        {i}
+                    </PaginationLink>
+                </PaginationItem>
+            );
+        }
+        return pageNumbers;
     };
 
     return (
@@ -116,6 +157,32 @@ export default function Page() {
                                 ))}
                             </tbody>
                         </Table>
+
+                        <div className="w-full max-w-4xl mx-auto p-4">
+                            <Pagination className="mt-4">
+                                <PaginationContent>
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setPageNumber((prevPageNumber) => prevPageNumber - 1);
+                                            }}
+                                            className={pageNumber === 1 ? "pointer-events-none opacity-50" : "hover:cursor-pointer"}
+                                        />
+                                    </PaginationItem>
+                                    {renderPageNumbers()}
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            onClick={() => {
+                                                // e.preventDefault();
+                                                setPageNumber((prevPageNumber) => prevPageNumber + 1);
+                                            }}
+                                            className={pageNumber === totalPages ? "pointer-events-none opacity-50" : "hover:cursor-pointer"}
+                                        />
+                                    </PaginationItem>
+                                </PaginationContent>
+                            </Pagination>
+                        </div>
                     </motion.section>
                 )}
             </AnimatePresence>
@@ -143,7 +210,7 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.tipoCursado}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.materia.nombre}</td>
             <td style={{ color: cursado.borradoLogico ? "red" : "black" }}>{cursado.profesor.nombre + ", " + cursado.profesor.apellido}</td>
-            <td>
+            <td className="text-right">
                 <Link
                     href={{
                         pathname: `/dashboard/cursado/edit/${cursado.id}`,
