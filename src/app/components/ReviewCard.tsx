@@ -21,7 +21,12 @@ function ReviewCard({ review, deleteReview, idx }: { review: Review; deleteRevie
             <CardContent className="p-6">
                 <div>
                     <div className="flex flex-row justify-between mb-4">
-                        <h2 className="text-xl font-semibold pb-1">{review.usuario.username}</h2>
+                        <h2 className="text-xl font-semibold pb-1">
+                            {review.usuario.username}{" "}
+                            <span className="text-gray-400 font-light text-sm">
+                                - Review destinada a {review.cursado.profesor.nombre} {review.cursado.profesor.apellido}
+                            </span>
+                        </h2>
                         <div
                             className="btn cus-mr-10 transition-all bg-red-600 text-slate-50 hover:bg-red-300"
                             onClick={async () => {
