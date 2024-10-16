@@ -1,7 +1,7 @@
 "use client";
 
 import { Sexo } from "@/app/lib/definitions";
-import { URI } from "@/app/lib/utils";
+import { URI, validarDni } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
@@ -94,7 +94,16 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        if (sexo != "" && nombre != "" && apellido != "" && dni != "" && dia.length === 2 && mes.length === 2 && year.length === 4) {
+                        if (
+                            sexo != "" &&
+                            nombre != "" &&
+                            apellido != "" &&
+                            dni != "" &&
+                            dia.length === 2 &&
+                            mes.length === 2 &&
+                            year.length === 4 &&
+                            validarDni(dni)
+                        ) {
                             e.preventDefault();
                             editProfesor(id);
                         }
@@ -195,6 +204,7 @@ export default function Page() {
                             dia.length !== 2 ||
                             mes.length !== 2 ||
                             year.length !== 4 ||
+                            !validarDni(dni) ||
                             loading
                         }
                         animate={{ width: loading ? 50 : 85 }}>

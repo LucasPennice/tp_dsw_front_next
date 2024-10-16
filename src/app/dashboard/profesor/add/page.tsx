@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { toast } from "react-toastify";
+import { validarDni } from "../../../lib/utils";
 
 export default function Page() {
     const [loading, setLoading] = useState(false);
@@ -92,7 +93,16 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        if (sexo != "" && nombre != "" && apellido != "" && dni != "" && dia.length === 2 && mes.length === 2 && year.length === 4) {
+                        if (
+                            sexo != "" &&
+                            nombre != "" &&
+                            apellido != "" &&
+                            dni != "" &&
+                            dia.length === 2 &&
+                            mes.length === 2 &&
+                            year.length === 4 &&
+                            validarDni(dni)
+                        ) {
                             e.preventDefault();
                             addProfesor();
                         }
@@ -192,6 +202,7 @@ export default function Page() {
                             dia.length !== 2 ||
                             mes.length !== 2 ||
                             year.length !== 4 ||
+                            !validarDni(dni) ||
                             loading
                         }
                         animate={{ width: loading ? 50 : 85 }}>
