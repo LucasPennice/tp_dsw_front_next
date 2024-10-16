@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import GridProfesor from "./components/gridProfesor";
+import GridProfesor from "../components/gridProfesor";
 import { Profesor } from "../lib/definitions";
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";

@@ -106,8 +106,10 @@ export default function Page() {
 
                     <form
                         onSubmit={(e) => {
-                            e.preventDefault();
-                            addMateria();
+                            if (nombre != "" && areaId != "") {
+                                e.preventDefault();
+                                addMateria();
+                            }
                         }}>
                         <div className="form-group mb-2 pt-5">
                             <label htmlFor="formGroupExampleInput">Nombre</label>
@@ -121,21 +123,6 @@ export default function Page() {
                             />
                         </div>
 
-                        {/* <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                {areaId == null ? "Seleccionar Area" : areas.filter((a) => a.id == areaId)[0].nombre}
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                {areas.map((area, idx) => {
-                                    return (
-                                        <Dropdown.Item key={area.id} href={`#/action-${idx + 1}`} onClick={() => setAreaId(area.id)}>
-                                            {area.nombre}
-                                        </Dropdown.Item>
-                                    );
-                                })}
-                            </Dropdown.Menu>
-                        </Dropdown> */}
                         <div className="grid grid-cols-4 gap-2 pt-5">
                             <label htmlFor="formGroupExampleInput" className="col-span-4">
                                 Area

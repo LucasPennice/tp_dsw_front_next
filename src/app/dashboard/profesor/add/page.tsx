@@ -92,8 +92,10 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        e.preventDefault();
-                        addProfesor();
+                        if (sexo != "" && nombre != "" && apellido != "" && dni != "" && dia.length === 2 && mes.length === 2 && year.length === 4) {
+                            e.preventDefault();
+                            addProfesor();
+                        }
                     }}>
                     <div className="form-group mb-2 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>

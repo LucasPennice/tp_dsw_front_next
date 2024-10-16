@@ -77,8 +77,7 @@ export default function CursadoForm() {
         })();
     }, []);
 
-    const addCursado = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const addCursado = async () => {
         try {
             setLoadingProfesores(true);
             setLoadingMaterias(true);
@@ -146,7 +145,24 @@ export default function CursadoForm() {
                 Volver Atrás
             </Link>
 
-            <form onSubmit={addCursado} className="space-y-4">
+            <form
+                onSubmit={(e) => {
+                    if (
+                        validarDiaSemana(diaCursado) &&
+                        validarComision(comision) &&
+                        tipoCursado &&
+                        validarAnio(ano) &&
+                        materiaId != "" &&
+                        profesorId != "" &&
+                        validarHora(horaInicio) &&
+                        validarHora(horaFin) &&
+                        horaFin > horaInicio
+                    ) {
+                        e.preventDefault();
+                        addCursado();
+                    }
+                }}
+                className="space-y-4">
                 <div className="form-group">
                     <label htmlFor="diaCursado">Dia Cursado</label>
                     <input

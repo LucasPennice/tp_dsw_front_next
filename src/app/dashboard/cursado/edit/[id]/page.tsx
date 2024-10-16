@@ -90,8 +90,18 @@ export default function Page() {
                 <form
                     className="space-y-4"
                     onSubmit={(e) => {
-                        e.preventDefault();
-                        editCursado(cursadoId);
+                        if (
+                            validarDiaSemana(diaCursado) &&
+                            validarComision(comision) &&
+                            tipoCursado &&
+                            validarAnio(ano) &&
+                            validarHora(horaInicio) &&
+                            validarHora(horaFin) &&
+                            horaFin > horaInicio
+                        ) {
+                            e.preventDefault();
+                            editCursado(cursadoId);
+                        }
                     }}>
                     <div className="form-group mt-3">
                         <label htmlFor="diaCursado">Dia Cursado</label>

@@ -68,16 +68,12 @@ export default function Page() {
             });
     };
 
-    // Datos de ejemplo
-
     const handlePageChange = (page: number) => {
         setPageNumber(page);
     };
 
     const renderPageNumbers = () => {
         const pageNumbers = [];
-
-        // consideramos que nunca vamos a tener más de 5 páginas
 
         for (let i = 1; i <= totalPages; i++) {
             pageNumbers.push(
