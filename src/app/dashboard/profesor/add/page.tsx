@@ -6,11 +6,12 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { AwaitedReactNode, JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useState } from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
-import { toast } from "react-toastify";
+import { toast, ToastContentProps } from "react-toastify";
 import { validarDni } from "../../../lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Page() {
     const [loading, setLoading] = useState(false);
@@ -54,7 +55,7 @@ export default function Page() {
                     nombre: nombre,
                     apellido: apellido,
                     fechaNacimiento: `${dia}/${mes}/${year}`,
-                    dni: dni,
+                    dni: Number(dni),
                     puntuacionGeneral: 0,
                     sexo: sexo,
                 }),
@@ -66,10 +67,12 @@ export default function Page() {
                 });
                 router.push("/dashboard/profesor");
             } else {
-                toast.error("Error al agregar el profesor", {
-                    autoClose: 6000,
+                const error = await response.json();
+                error.errors.map((err: { message: string }) => {
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
                 });
-                router.push("/dashboard/profesor");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -93,19 +96,8 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        if (
-                            sexo != "" &&
-                            nombre != "" &&
-                            apellido != "" &&
-                            dni != "" &&
-                            dia.length === 2 &&
-                            mes.length === 2 &&
-                            year.length === 4 &&
-                            validarDni(dni)
-                        ) {
-                            e.preventDefault();
-                            addProfesor();
-                        }
+                        e.preventDefault();
+                        addProfesor();
                     }}>
                     <div className="form-group mb-2 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>
@@ -118,7 +110,7 @@ export default function Page() {
                             onChange={(e) => setNombre(e.target.value)}
                         />
                     </div>
-                    <div className="form-group mb-2">
+                    <div className="form-group mb-2 mt-3">
                         <label htmlFor="formGroupExampleInput2">Apellido</label>
                         <input
                             type="text"
@@ -129,36 +121,40 @@ export default function Page() {
                             onChange={(e) => setApellido(e.target.value)}
                         />
                     </div>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text>Fecha Nac.</InputGroup.Text>
-                        <Form.Control
-                            placeholder="DD"
-                            value={dia}
-                            onChange={(t) => {
-                                setDia((p) => {
-                                    return intInputLimiter(2, p, t.target.value);
-                                });
-                            }}
-                        />
-                        <Form.Control
-                            placeholder="MM"
-                            value={mes}
-                            onChange={(t) => {
-                                setMes((p) => {
-                                    return intInputLimiter(2, p, t.target.value);
-                                });
-                            }}
-                        />
-                        <Form.Control
-                            placeholder="AAAA"
-                            value={year}
-                            onChange={(t) => {
-                                setYear((p) => {
-                                    return intInputLimiter(4, p, t.target.value);
-                                });
-                            }}
-                        />
-                    </InputGroup>
+                    <div className="mb-3 mt-3">
+                        <label htmlFor="formGroupExampleInput2">Fecha Nacimiento</label>
+
+                        <InputGroup className="mt-2">
+                            {/* <InputGroup.Text>Fecha Nac.</InputGroup.Text> */}
+                            <Form.Control
+                                placeholder="DD"
+                                value={dia}
+                                onChange={(t) => {
+                                    setDia((p) => {
+                                        return intInputLimiter(2, p, t.target.value);
+                                    });
+                                }}
+                            />
+                            <Form.Control
+                                placeholder="MM"
+                                value={mes}
+                                onChange={(t) => {
+                                    setMes((p) => {
+                                        return intInputLimiter(2, p, t.target.value);
+                                    });
+                                }}
+                            />
+                            <Form.Control
+                                placeholder="AAAA"
+                                value={year}
+                                onChange={(t) => {
+                                    setYear((p) => {
+                                        return intInputLimiter(4, p, t.target.value);
+                                    });
+                                }}
+                            />
+                        </InputGroup>
+                    </div>
 
                     <div className="form-group mb-2">
                         <label htmlFor="formGroupExampleInput2">DNI</label>
@@ -176,36 +172,24 @@ export default function Page() {
                         />
                     </div>
 
-                    <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            {sexo == "" ? "Sexo" : sexo}
-                        </Dropdown.Toggle>
+                    <div className="grid grid-cols-4 gap-2 pb-4 pt-3">
+                        <label htmlFor="formGroupExampleInput" className="col-span-4">
+                            Sexo
+                        </label>
+                        <div className="col-span-4">
+                            <Select onValueChange={(v) => setSexo(v)}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Seleccionar Sexo" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value={Sexo.Hombre}>Hombre</SelectItem>
+                                    <SelectItem value={Sexo.Mujer}>Mujer</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
 
-                        <Dropdown.Menu>
-                            <Dropdown.Item href="#/action-1" onClick={() => setSexo(Sexo.Hombre)}>
-                                Hombre
-                            </Dropdown.Item>
-                            <Dropdown.Item href="#/action-2" onClick={() => setSexo(Sexo.Mujer)}>
-                                Mujer
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-
-                    <motion.button
-                        type="submit"
-                        className="btn btn-primary cus-mr-10"
-                        disabled={
-                            sexo == "" ||
-                            nombre == "" ||
-                            apellido == "" ||
-                            dni == "" ||
-                            dia.length !== 2 ||
-                            mes.length !== 2 ||
-                            year.length !== 4 ||
-                            !validarDni(dni) ||
-                            loading
-                        }
-                        animate={{ width: loading ? 50 : 85 }}>
+                    <motion.button type="submit" className="btn btn-primary cus-mr-10" animate={{ width: loading ? 50 : 85 }}>
                         {loading && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                                 <Spinner animation="border" size="sm" />

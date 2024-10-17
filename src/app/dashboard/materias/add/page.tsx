@@ -8,10 +8,10 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { AwaitedReactNode, JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 
-import { toast } from "react-toastify";
+import { toast, ToastContentProps } from "react-toastify";
 
 export default function Page() {
     const [loading, setLoading] = useState(true);
@@ -63,8 +63,12 @@ export default function Page() {
                 });
                 router.push("/dashboard/materias");
             } else {
-                toast.error("Error al agregar la materia");
-                router.push("/dashboard/materias");
+                const error = await response.json();
+                error.errors.map((err: { message: string }) => {
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
+                });
             }
         } catch (error) {
             console.error("Error:", error);
@@ -106,10 +110,8 @@ export default function Page() {
 
                     <form
                         onSubmit={(e) => {
-                            if (nombre != "" && areaId != "") {
-                                e.preventDefault();
-                                addMateria();
-                            }
+                            e.preventDefault();
+                            addMateria();
                         }}>
                         <div className="form-group mb-2 pt-5">
                             <label htmlFor="formGroupExampleInput">Nombre</label>
@@ -148,7 +150,7 @@ export default function Page() {
                         <motion.button
                             type="submit"
                             className="btn btn-primary cus-mr-10 mt-5"
-                            disabled={nombre == "" || areaId == "" || loading}
+                            // disabled={nombre == "" || areaId == "" || loading}
                             animate={{ width: loading ? 50 : 85 }}>
                             {loading && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>

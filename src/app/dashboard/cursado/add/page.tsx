@@ -77,6 +77,23 @@ export default function CursadoForm() {
         })();
     }, []);
 
+    // const validaCampos = async () => {
+    //     if (
+    //         validarDiaSemana(diaCursado) &&
+    //         validarComision(comision) &&
+    //         tipoCursado &&
+    //         validarAnio(ano) &&
+    //         materiaId != "" &&
+    //         profesorId != "" &&
+    //         validarHora(horaInicio) &&
+    //         validarHora(horaFin) &&
+    //         horaFin > horaInicio
+    //     ) {
+    //         addCursado();
+    //         console.log()
+    //     }
+    // }
+
     const addCursado = async () => {
         try {
             setLoadingProfesores(true);
@@ -99,22 +116,27 @@ export default function CursadoForm() {
                     diaCursado: diaCursado,
                     horaInicio: horaInicio,
                     horaFin: horaFin,
-                    comision: comision,
+                    comision: Number(comision),
                     turno: turno,
-                    año: ano,
+                    año: Number(ano),
                     tipoCursado: tipoCursado,
                     materiaId: materiaId,
                     profesorId: profesorId,
                 }),
             });
+            //@ts-ignore
+            console.log(response);
             if (response.ok) {
                 toast.success("Cursado agregado exitosamente", {
                     autoClose: 5000,
                 });
                 router.push("/dashboard/cursado");
             } else {
-                toast.error("Error al agregar el cursado", {
-                    autoClose: 5000,
+                const error = await response.json();
+                error.errors.map((err: { message: string }) => {
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
                 });
             }
         } catch (error) {
@@ -147,20 +169,8 @@ export default function CursadoForm() {
 
             <form
                 onSubmit={(e) => {
-                    if (
-                        validarDiaSemana(diaCursado) &&
-                        validarComision(comision) &&
-                        tipoCursado &&
-                        validarAnio(ano) &&
-                        materiaId != "" &&
-                        profesorId != "" &&
-                        validarHora(horaInicio) &&
-                        validarHora(horaFin) &&
-                        horaFin > horaInicio
-                    ) {
-                        e.preventDefault();
-                        addCursado();
-                    }
+                    e.preventDefault();
+                    addCursado();
                 }}
                 className="space-y-4">
                 <div className="form-group">
@@ -294,17 +304,17 @@ export default function CursadoForm() {
                 <motion.button
                     type="submit"
                     className="btn btn-primary mt-5"
-                    disabled={
-                        !validarDiaSemana(diaCursado) ||
-                        !validarComision(comision) ||
-                        !tipoCursado ||
-                        !validarAnio(ano) ||
-                        materiaId == "" ||
-                        profesorId == "" ||
-                        !validarHora(horaInicio) ||
-                        !validarHora(horaFin) ||
-                        horaFin <= horaInicio
-                    }
+                    // disabled={
+                    //     !validarDiaSemana(diaCursado) ||
+                    //     !validarComision(comision) ||
+                    //     !tipoCursado ||
+                    //     !validarAnio(ano) ||
+                    //     materiaId == "" ||
+                    //     profesorId == "" ||
+                    //     !validarHora(horaInicio) ||
+                    //     !validarHora(horaFin) ||
+                    //     horaFin <= horaInicio
+                    // }
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}>
                     Aceptar

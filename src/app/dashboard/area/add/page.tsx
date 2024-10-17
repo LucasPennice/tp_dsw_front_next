@@ -30,17 +30,16 @@ export default function Page() {
                     nombre: nombre,
                 }),
             });
-
             if (response.ok) {
-                toast.success("Area agregado correctamente", {
+                toast.success("Area agregada correctamente", {
                     autoClose: 6000,
                 });
                 router.push("/dashboard/area");
             } else {
-                toast.error("Error al agregar el area", {
+                const error = await response.json();
+                toast.error(error.errors[0].message, {
                     autoClose: 6000,
                 });
-                router.push("/dashboard/area");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -64,10 +63,12 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        if (nombre != "") {
-                            e.preventDefault();
-                            addArea();
-                        }
+                        // if (nombre != "") {
+                        // //     e.preventDefault();
+                        //     addArea();
+                        // }
+                        e.preventDefault();
+                        addArea();
                     }}>
                     <div className="form-group mb-2 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>
@@ -84,7 +85,7 @@ export default function Page() {
                     <motion.button
                         type="submit"
                         className="btn btn-primary cus-mr-10"
-                        disabled={nombre == "" || loading}
+                        // disabled={nombre == "" || loading}
                         animate={{ width: loading ? 50 : 85 }}>
                         {loading && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>

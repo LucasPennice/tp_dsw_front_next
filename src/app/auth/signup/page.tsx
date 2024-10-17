@@ -96,7 +96,11 @@ export default function SignupPage() {
 
                 router.push("/");
             } else {
-                toast.error(res.message);
+                res.errors.map((err: { message: string }) => {
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
+                });
             }
         } catch (error) {
             console.error("Error:", error);
@@ -181,15 +185,7 @@ export default function SignupPage() {
                                 </Button>
                             </div>
                         </div>
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={
-                                loading ||
-                                !validarLegajo(formData.legajo) ||
-                                !validarNombreOApellido(formData.nombre) ||
-                                !validarNombreOApellido(formData.apellido)
-                            }>
+                        <Button type="submit" className="w-full">
                             {loading && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                                     <Spinner animation="border" size="sm" />
