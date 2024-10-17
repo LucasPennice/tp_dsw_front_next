@@ -31,7 +31,7 @@ function validarLegajo(cadena: string): boolean {
 }
 
 function validarDni(cadena: string): boolean {
-    const regex = /^\d{7}$/;
+    const regex = /^\d{8}$/;
     return regex.test(cadena);
 }
 
@@ -40,7 +40,7 @@ function validarNombreOApellido(cadena: string): boolean {
     return regex.test(cadena);
 }
 
-// const URI = "https://tp-dsw-back.onrender.com";
+//const URI = "https://tp-dsw-back.onrender.com";
 const URI = "http://localhost:3000";
 
 export { validarAnio, validarComision, validarDiaSemana, validarHora, URI, validarLegajo, validarNombreOApellido, validarDni };
