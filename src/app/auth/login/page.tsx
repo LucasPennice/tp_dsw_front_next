@@ -12,8 +12,8 @@ import { motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import { login } from "../../../authlib";
-import { UserInfoContext } from "@/app/layout";
 import { Usuario, UsuarioEnMemoria } from "@/app/lib/definitions";
+import { UserInfoContext } from "@/app/layout";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +36,7 @@ export default function LoginPage() {
                     username: user,
                     password: pass,
                 }),
+                credentials: "include",
             });
 
             let res = await response.json();

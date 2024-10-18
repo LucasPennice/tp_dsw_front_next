@@ -1,17 +1,21 @@
 "use client";
-
 // @ts-ignore
-import type { Metadata } from "next";
-// @ts-ignore
-import { Inter } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
-import ToastProvider from "./components/ToastProvider";
-import Navbar from "./components/Navbar";
+import { cookies } from "next/headers";
+// @ts-ignore
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Inter } from "next/font/google";
+import { Dispatch, SetStateAction, createContext, useEffect } from "react";
+import "./globals.css";
+import { Sexo, UserRole, UsuarioEnMemoria } from "./lib/definitions";
+
+import { useState } from "react";
 import Footer from "./components/Footer";
 import MobileFloatingButton from "./components/MobileFloatingButton";
-import { Dispatch, SetStateAction, createContext, useState } from "react";
-import { Sexo, UserRole, UsuarioEnMemoria } from "./lib/definitions";
+import Navbar from "./components/Navbar";
+import ToastProvider from "./components/ToastProvider";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +42,8 @@ export const UserInfoContext = createContext<{ userInfo: UserInfo; setUserInfo: 
     setUserInfo: () => {},
 });
 
+export const SessionCookiesContext = createContext<string | undefined>(undefined);
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -59,6 +65,7 @@ export default function RootLayout({
                         <MobileFloatingButton />
                     </UserInfoContext.Provider>
                 </ReviewSheetContext.Provider>
+                );
             </body>
         </html>
     );

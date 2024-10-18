@@ -30,6 +30,7 @@ export default function Component() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {
@@ -40,6 +41,7 @@ export default function Component() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {

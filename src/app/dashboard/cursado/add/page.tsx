@@ -40,6 +40,7 @@ export default function CursadoForm() {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
             });
 
             let response = await res.json();
@@ -59,6 +60,7 @@ export default function CursadoForm() {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
             })
                 .then((res) => res.json())
                 .then((data) => {
@@ -112,6 +114,7 @@ export default function CursadoForm() {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     diaCursado: diaCursado,
                     horaInicio: horaInicio,
@@ -125,7 +128,6 @@ export default function CursadoForm() {
                 }),
             });
             //@ts-ignore
-            console.log(response);
             if (response.ok) {
                 toast.success("Cursado agregado exitosamente", {
                     autoClose: 5000,

@@ -25,6 +25,7 @@ export default function Page() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {
@@ -50,7 +51,7 @@ export default function Page() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-
+                credentials: "include",
                 body: JSON.stringify({
                     nombre: nombre,
                     areaId: areaId,

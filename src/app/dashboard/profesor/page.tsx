@@ -31,6 +31,7 @@ export default function Page() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {
@@ -49,6 +50,7 @@ export default function Page() {
 
         await fetch(`${URI}/api/profesor/${_id}`, {
             method: "Delete",
+            credentials: "include",
         });
 
         toast.success("Profesor borrado exitosamente", {
@@ -59,6 +61,7 @@ export default function Page() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {

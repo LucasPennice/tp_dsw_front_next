@@ -83,6 +83,7 @@ export default function SignupPage() {
                     ...formData,
                     fechaNacimiento: `${formData.fechaNacimiento!.getDay()}/${formData.fechaNacimiento!.getMonth()}/${formData.fechaNacimiento!.getFullYear()}`,
                 }),
+                credentials: "include",
             });
 
             let res = await response.json();

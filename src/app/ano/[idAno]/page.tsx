@@ -38,6 +38,7 @@ export default function SubjectsLayout() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {

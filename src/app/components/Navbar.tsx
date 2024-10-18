@@ -15,13 +15,14 @@ import { useContext, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { getSession, logout } from "../../authlib";
-import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
 import { Materia, Profesor, years } from "../lib/definitions";
 import { URI } from "../lib/utils";
+import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
 
 export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { reviewModalOpen: boolean; setReviewModalOpen: (v: boolean) => void }) {
     const [isOpen, setIsOpen] = useState(false);
     const [year, setYear] = useState<string>();
+    const [anoEnElQueSeCurso, setAnoEnElQueSeCurso] = useState<number>(new Date().getFullYear());
     const [materiaId, setMateriaId] = useState<string>("");
     const [profesorId, setProfesorId] = useState<string>("");
     const [review, setReview] = useState<string>("");
@@ -49,13 +50,32 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
         })();
     }, []);
 
-    const resetReviewModalState = () => {
-        setYear(undefined);
-        setMateriaId("");
-        setProfesorId("");
+    const resetReviewModalState = (evento?: "añoDeCursado" | "añoDeMateria" | "materia") => {
+        /// Se resetean siempre
         setReview("");
-        setMateriasPorAno([]);
-        setProfesores([]);
+        setPuntuacion(0);
+
+        if (evento == "añoDeCursado") {
+            setAnoEnElQueSeCurso(new Date().getFullYear());
+            setYear("");
+            setMateriaId("");
+            setProfesorId("");
+            setMateriasPorAno([]);
+            setProfesores([]);
+        }
+
+        if (evento == "añoDeMateria") {
+            setYear("");
+            setMateriaId("");
+            setMateriasPorAno([]);
+            setProfesorId("");
+            setProfesores([]);
+        }
+
+        if (evento == "materia") {
+            setProfesorId("");
+            setProfesores([]);
+        }
     };
 
     const sendReview = async (e: any): Promise<void> => {
@@ -68,7 +88,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 headers: {
                     "Content-Type": "application/json",
                 },
-
+                credentials: "include",
                 body: JSON.stringify({
                     descripcion: review,
                     puntuacion,
@@ -106,6 +126,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
             });
 
             let response = await res.json();
@@ -129,10 +150,11 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingProfesores(true);
 
-            let res = await fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}`, {
+            let res = await fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${anoEnElQueSeCurso}`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
             });
             let response = await res.json();
 
@@ -224,9 +246,36 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                     <form onSubmit={sendReview}>
                                         <div className="grid gap-4 py-4">
                                             <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label className="text-right">Año</Label>
+                                                <Label className="text-right">Año De Cursado</Label>
                                                 <div className="w-[280px]">
-                                                    <Select onValueChange={(v) => setYear(v)} value={year}>
+                                                    <Select
+                                                        onValueChange={(v) => {
+                                                            resetReviewModalState("añoDeCursado");
+                                                            setAnoEnElQueSeCurso(parseInt(v));
+                                                        }}
+                                                        value={`${anoEnElQueSeCurso}`}>
+                                                        <SelectTrigger className="w-full">
+                                                            <SelectValue placeholder="Selecciona un año" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {[2020, 2021, 2022, 2023, 2024].map((year) => (
+                                                                <SelectItem key={year} value={`${year}`}>
+                                                                    {year}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label className="text-right">Año Materia</Label>
+                                                <div className="w-[280px]">
+                                                    <Select
+                                                        onValueChange={(v) => {
+                                                            resetReviewModalState("añoDeMateria");
+                                                            setYear(v);
+                                                        }}
+                                                        value={year}>
                                                         <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Selecciona un año" />
                                                         </SelectTrigger>
@@ -244,7 +293,10 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                                 <Label className="text-right">Materia</Label>
                                                 <div className="w-[280px]">
                                                     <Select
-                                                        onValueChange={(v) => setMateriaId(v)}
+                                                        onValueChange={(v) => {
+                                                            resetReviewModalState("materia");
+                                                            setMateriaId(v);
+                                                        }}
                                                         value={materiaId}
                                                         disabled={loadingMaterias || materiasPorAno.length == 0}>
                                                         <SelectTrigger className="w-full">
@@ -271,7 +323,10 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                                 <div className="w-[280px]">
                                                     <Select
                                                         disabled={loadingProfesores || profesores.length == 0}
-                                                        onValueChange={(v) => setProfesorId(v)}
+                                                        onValueChange={(v) => {
+                                                            resetReviewModalState();
+                                                            setProfesorId(v);
+                                                        }}
                                                         value={profesorId}>
                                                         <SelectTrigger className="w-full">
                                                             {loadingProfesores ? (

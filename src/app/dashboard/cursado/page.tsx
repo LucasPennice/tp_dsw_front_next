@@ -1,23 +1,15 @@
 "use client";
 
+import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
+import { URI } from "@/app/lib/utils";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Cursado } from "../../lib/definitions";
-import { URI } from "@/app/lib/utils";
-import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
-import { ArrowLeft, Plus } from "lucide-react";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
 
 export default function Page() {
     const [data, setData] = useState<Cursado[]>([]);
@@ -31,6 +23,7 @@ export default function Page() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {
@@ -49,6 +42,7 @@ export default function Page() {
 
         await fetch(`${URI}/api/cursado/${_id}`, {
             method: "Delete",
+            credentials: "include",
         });
 
         toast.success("Cursado borrado exitosamente", {
@@ -59,6 +53,7 @@ export default function Page() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {

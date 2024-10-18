@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { decrypt, updateSession } from "./authlib";
 import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 import { UserRole, UsuarioEnMemoria } from "./app/lib/definitions";
+import { decrypt, updateSession } from "./authlib";
 
 const protectedRoutes: String[] = [];
 const adminOnlyRoutes = ["/dashboard"];

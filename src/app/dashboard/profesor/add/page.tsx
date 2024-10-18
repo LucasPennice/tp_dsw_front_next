@@ -50,7 +50,7 @@ export default function Page() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-
+                credentials: "include",
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,

@@ -1,22 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import { URI } from "@/app/lib/utils";
-import { toast } from "react-toastify";
-import { AnimatePresence, motion } from "framer-motion";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { toast } from "react-toastify";
 import ReviewCard from "../components/ReviewCard";
 import { Review } from "../lib/definitions";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
 
 export default function Component() {
     const [data, setData] = useState<Review[] | []>([]);
@@ -31,6 +23,7 @@ export default function Component() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {
@@ -49,6 +42,7 @@ export default function Component() {
 
         await fetch(`${URI}/api/review/${_id}`, {
             method: "Delete",
+            credentials: "include",
         });
 
         toast.success("Review borrada exitosamente", {
@@ -59,6 +53,7 @@ export default function Component() {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         })
             .then((res) => res.json())
             .then((data) => {
@@ -74,8 +69,6 @@ export default function Component() {
 
     const renderPageNumbers = () => {
         const pageNumbers = [];
-        console.log(totalPages);
-
         // consideramos que nunca vamos a tener más de 5 páginas
 
         for (let i = 1; i <= totalPages; i++) {
