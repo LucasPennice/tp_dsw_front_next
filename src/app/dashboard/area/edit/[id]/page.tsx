@@ -42,12 +42,16 @@ export default function Page() {
                 toast.success("Area modificado correctamente");
                 router.push("/dashboard/area");
             } else {
-                toast.error("Error al modificar el area");
-                router.push("dashboard/area");
+                const error = await response.json();
+                toast.error(error.errors[0].message, {
+                    autoClose: 6000,
+                });
             }
         } catch (error) {
             console.error("Error:", error);
-            toast.error(`Ocurrió un error inesperado. ${error}`);
+            toast.error(`Ocurrió un error inesperado. ${error}`, {
+                autoClose: 6000,
+            });
         } finally {
             setLoading(false);
         }
@@ -82,7 +86,7 @@ export default function Page() {
                         />
                     </div>
 
-                    <motion.button type="submit" className="btn btn-primary cus-mr-10" disabled={nombre == ""} animate={{ width: loading ? 50 : 85 }}>
+                    <motion.button type="submit" className="btn btn-primary cus-mr-10" animate={{ width: loading ? 50 : 85 }}>
                         {loading && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                                 <Spinner animation="border" size="sm" />

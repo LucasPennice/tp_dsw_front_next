@@ -81,13 +81,16 @@ export default function SignupPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...formData,
-                    fechaNacimiento: `${formData.fechaNacimiento!.getDay()}/${formData.fechaNacimiento!.getMonth()}/${formData.fechaNacimiento!.getFullYear()}`,
+                    fechaNacimiento: `${formData.fechaNacimiento!.getFullYear()}/${formData.fechaNacimiento!.getMonth() < 10 ? "0" : ""}${formData.fechaNacimiento!.getMonth()}/${formData.fechaNacimiento!.getDay() < 10 ? "0" : ""}${formData.fechaNacimiento!.getDay()}`,
                 }),
                 credentials: "include",
             });
 
             let res = await response.json();
 
+            // console.log(
+            //     `${formData.fechaNacimiento!.getFullYear()}/${formData.fechaNacimiento!.getMonth() < 10 ? "0" : ""}${formData.fechaNacimiento!.getMonth()}/${formData.fechaNacimiento!.getDay() < 10 ? "0" : ""}${formData.fechaNacimiento!.getDay()}`
+            // );
             if (response.ok) {
                 setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
 

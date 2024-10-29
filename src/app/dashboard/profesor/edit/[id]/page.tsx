@@ -58,6 +58,9 @@ export default function Page() {
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,
+                    fechaNacimiento: `${year}/${mes}/${dia}`,
+                    dni: Number(dni),
+                    sexo: sexo,
                 }),
             });
 
@@ -65,12 +68,15 @@ export default function Page() {
                 toast.success("Profesor modificado correctamente", {
                     autoClose: 6000,
                 });
-                router.push("/profesor");
+                router.push("/dashboard/profesor");
             } else {
-                toast.error("Error al modificar el profesor", {
-                    autoClose: 6000,
+                const error = await response.json();
+                // @ts-ignore
+                error.errors.map((err: { message: string }) => {
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
                 });
-                router.push("/profesor");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -95,19 +101,8 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        if (
-                            sexo != "" &&
-                            nombre != "" &&
-                            apellido != "" &&
-                            dni != "" &&
-                            dia.length === 2 &&
-                            mes.length === 2 &&
-                            year.length === 4 &&
-                            validarDni(dni)
-                        ) {
-                            e.preventDefault();
-                            editProfesor(id);
-                        }
+                        e.preventDefault();
+                        editProfesor(id);
                     }}>
                     <div className="form-group mb-2 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>
@@ -194,21 +189,7 @@ export default function Page() {
                         </Dropdown.Menu>
                     </Dropdown>
 
-                    <motion.button
-                        type="submit"
-                        className="btn btn-primary cus-mr-10"
-                        disabled={
-                            sexo == "" ||
-                            nombre == "" ||
-                            apellido == "" ||
-                            dni == "" ||
-                            dia.length !== 2 ||
-                            mes.length !== 2 ||
-                            year.length !== 4 ||
-                            !validarDni(dni) ||
-                            loading
-                        }
-                        animate={{ width: loading ? 50 : 85 }}>
+                    <motion.button type="submit" className="btn btn-primary cus-mr-10" animate={{ width: loading ? 50 : 85 }}>
                         {loading && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                                 <Spinner animation="border" size="sm" />

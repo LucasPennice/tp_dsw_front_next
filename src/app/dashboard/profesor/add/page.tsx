@@ -41,7 +41,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            if (dateFromString(`${dia}/${mes}/${year}`) > new Date()) {
+            if (dateFromString(`${year}/${mes}/${dia}`) > new Date()) {
                 throw "Fecha Invalida";
             }
 
@@ -54,7 +54,7 @@ export default function Page() {
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,
-                    fechaNacimiento: `${dia}/${mes}/${year}`,
+                    fechaNacimiento: `${year}/${mes}/${dia}`,
                     dni: Number(dni),
                     puntuacionGeneral: 0,
                     sexo: sexo,
@@ -68,6 +68,7 @@ export default function Page() {
                 router.push("/dashboard/profesor");
             } else {
                 const error = await response.json();
+                // @ts-ignore
                 error.errors.map((err: { message: string }) => {
                     toast.error(err.message, {
                         autoClose: 6000,
