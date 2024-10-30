@@ -294,7 +294,7 @@ export default function CursadoForm() {
                                 {profesores.map((profesor) => {
                                     return (
                                         <SelectItem key={profesor.id} value={profesor.id}>
-                                            {profesor.nombre + " " + profesor.apellido}
+                                            {profesor.nombre + " " + profesor.apellido + " - DNI: " + profesor.dni}
                                         </SelectItem>
                                     );
                                 })}

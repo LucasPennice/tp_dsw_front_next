@@ -246,7 +246,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                     <form onSubmit={sendReview}>
                                         <div className="grid gap-4 py-4">
                                             <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label className="text-right">Año De Cursado</Label>
+                                                <Label className="text-right">Año Cursado</Label>
                                                 <div className="w-[280px]">
                                                     <Select
                                                         onValueChange={(v) => {
