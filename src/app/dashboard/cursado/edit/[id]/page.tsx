@@ -40,7 +40,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${URI}/api/materia/${id}`, {
+            const response = await fetch(`${URI}/api/cursado/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -50,23 +50,25 @@ export default function Page() {
                     diaCursado: diaCursado,
                     horaInicio: horaInicio,
                     horaFin: horaFin,
-                    comision: comision,
+                    comision: Number(comision),
                     turno: turno,
-                    año: ano,
+                    año: Number(ano),
                     tipoCursado: tipoCursado,
                 }),
             });
 
             if (response.ok) {
-                toast.success("Materia Modificada correctamente", {
+                toast.success("Cursado Modificado correctamente", {
                     autoClose: 5000,
                 });
                 router.push("/dashboard/cursado");
             } else {
-                toast.error("Error al modificar materia", {
-                    autoClose: 5000,
+                const error = await response.json();
+                error.errors.map((err: { message: string }) => {
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
                 });
-                router.push("/dashboard/cursado");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -91,18 +93,8 @@ export default function Page() {
                 <form
                     className="space-y-4"
                     onSubmit={(e) => {
-                        if (
-                            validarDiaSemana(diaCursado) &&
-                            validarComision(comision) &&
-                            tipoCursado &&
-                            validarAnio(ano) &&
-                            validarHora(horaInicio) &&
-                            validarHora(horaFin) &&
-                            horaFin > horaInicio
-                        ) {
-                            e.preventDefault();
-                            editCursado(cursadoId);
-                        }
+                        e.preventDefault();
+                        editCursado(cursadoId);
                     }}>
                     <div className="form-group mt-3">
                         <label htmlFor="diaCursado">Dia Cursado</label>
@@ -195,20 +187,7 @@ export default function Page() {
                         </div>
                     </div>
 
-                    <motion.button
-                        type="submit"
-                        className="btn btn-primary"
-                        disabled={
-                            !validarDiaSemana(diaCursado) ||
-                            !validarComision(comision) ||
-                            !tipoCursado ||
-                            !validarAnio(ano) ||
-                            !validarHora(horaInicio) ||
-                            !validarHora(horaFin) ||
-                            horaFin <= horaInicio
-                        }
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}>
+                    <motion.button type="submit" className="btn btn-primary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         Aceptar
                     </motion.button>
                 </form>

@@ -6,11 +6,9 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
-import { AwaitedReactNode, JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useState } from "react";
+import { useState } from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
 import { toast, ToastContentProps } from "react-toastify";
-import { validarDni } from "../../../lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Page() {
@@ -41,7 +39,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            if (dateFromString(`${year}/${mes}/${dia}`) > new Date()) {
+            if (dateFromString(`${dia}/${mes}/${year}`) > new Date()) {
                 throw "Fecha Invalida";
             }
 
@@ -54,7 +52,7 @@ export default function Page() {
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,
-                    fechaNacimiento: `${year}/${mes}/${dia}`,
+                    fechaNacimiento: `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")}/${year}`,
                     dni: Number(dni),
                     puntuacionGeneral: 0,
                     sexo: sexo,

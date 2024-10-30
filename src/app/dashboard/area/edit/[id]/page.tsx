@@ -69,10 +69,8 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        if (nombre != "") {
-                            e.preventDefault();
-                            editArea(id);
-                        }
+                        e.preventDefault();
+                        editArea(id);
                     }}>
                     <div className="form-group mb-5 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>

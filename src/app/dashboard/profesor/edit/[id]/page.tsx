@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { toast } from "react-toastify";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function Page() {
     const params = useParams();
@@ -58,7 +59,7 @@ export default function Page() {
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,
-                    fechaNacimiento: `${year}/${mes}/${dia}`,
+                    fechaNacimiento: `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")}/${year}`,
                     dni: Number(dni),
                     sexo: sexo,
                 }),
@@ -115,7 +116,7 @@ export default function Page() {
                             onChange={(e) => setNombre(e.target.value)}
                         />
                     </div>
-                    <div className="form-group mb-2">
+                    <div className="form-group mb-2 mt-3">
                         <label htmlFor="formGroupExampleInput2">Apellido</label>
                         <input
                             type="text"
@@ -126,37 +127,40 @@ export default function Page() {
                             onChange={(e) => setApellido(e.target.value)}
                         />
                     </div>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text className="d-block sm:d-none">Fecha Nac.</InputGroup.Text>
-                        <br />
-                        <Form.Control
-                            placeholder="DD"
-                            value={dia}
-                            onChange={(t) => {
-                                setDia((p) => {
-                                    return intInputLimiter(2, p, t.target.value);
-                                });
-                            }}
-                        />
-                        <Form.Control
-                            placeholder="MM"
-                            value={mes}
-                            onChange={(t) => {
-                                setMes((p) => {
-                                    return intInputLimiter(2, p, t.target.value);
-                                });
-                            }}
-                        />
-                        <Form.Control
-                            placeholder="AAAA"
-                            value={year}
-                            onChange={(t) => {
-                                setYear((p) => {
-                                    return intInputLimiter(4, p, t.target.value);
-                                });
-                            }}
-                        />
-                    </InputGroup>
+                    <div className="mb-3 mt-3">
+                        <label htmlFor="formGroupExampleInput2">Fecha Nacimiento</label>
+
+                        <InputGroup className="mt-2">
+                            {/* <InputGroup.Text>Fecha Nac.</InputGroup.Text> */}
+                            <Form.Control
+                                placeholder="DD"
+                                value={dia}
+                                onChange={(t) => {
+                                    setDia((p) => {
+                                        return intInputLimiter(2, p, t.target.value);
+                                    });
+                                }}
+                            />
+                            <Form.Control
+                                placeholder="MM"
+                                value={mes}
+                                onChange={(t) => {
+                                    setMes((p) => {
+                                        return intInputLimiter(2, p, t.target.value);
+                                    });
+                                }}
+                            />
+                            <Form.Control
+                                placeholder="AAAA"
+                                value={year}
+                                onChange={(t) => {
+                                    setYear((p) => {
+                                        return intInputLimiter(4, p, t.target.value);
+                                    });
+                                }}
+                            />
+                        </InputGroup>
+                    </div>
 
                     <div className="form-group mb-2">
                         <label htmlFor="formGroupExampleInput2">DNI</label>
@@ -173,7 +177,7 @@ export default function Page() {
                             }
                         />
                     </div>
-
+                    {/* 
                     <Dropdown>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                             {sexo == "" ? "Sexo" : sexo}
@@ -187,7 +191,23 @@ export default function Page() {
                                 Mujer
                             </Dropdown.Item>
                         </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown> */}
+                    <div className="grid grid-cols-4 gap-2 pb-4 pt-3">
+                        <label htmlFor="formGroupExampleInput" className="col-span-4">
+                            Sexo
+                        </label>
+                        <div className="col-span-4">
+                            <Select value={sexo} onValueChange={(v) => setSexo(v)}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Seleccionar Sexo" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value={Sexo.Hombre}>Hombre</SelectItem>
+                                    <SelectItem value={Sexo.Mujer}>Mujer</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
 
                     <motion.button type="submit" className="btn btn-primary cus-mr-10" animate={{ width: loading ? 50 : 85 }}>
                         {loading && (

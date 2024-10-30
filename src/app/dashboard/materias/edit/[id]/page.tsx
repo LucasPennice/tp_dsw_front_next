@@ -39,8 +39,12 @@ export default function Page() {
                 toast.success("Materia Modificada correctamente");
                 router.push("/dashboard/materias");
             } else {
-                toast.error("Error al modificar materia");
-                router.push("/dashboard/materias");
+                const error = await response.json();
+                error.errors.map((err: { message: string }) => {
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
+                });
             }
         } catch (error) {
             console.error("Error:", error);
@@ -62,10 +66,8 @@ export default function Page() {
 
                 <form
                     onSubmit={(e) => {
-                        if (nombre != "") {
-                            e.preventDefault();
-                            editMateria(materiaId);
-                        }
+                        e.preventDefault();
+                        editMateria(materiaId);
                     }}>
                     <div className="form-group mb-5 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>
@@ -79,11 +81,7 @@ export default function Page() {
                         />
                     </div>
 
-                    <motion.button
-                        type="submit"
-                        className="btn btn-primary cus-mr-10"
-                        disabled={nombre == "" || loading}
-                        animate={{ width: loading ? 50 : 85 }}>
+                    <motion.button type="submit" className="btn btn-primary cus-mr-10" animate={{ width: loading ? 50 : 85 }}>
                         {loading && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                                 <Spinner animation="border" size="sm" />
