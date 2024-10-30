@@ -96,6 +96,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                     anio: year![0],
                     profesorId,
                     materiaId,
+                    anoCursado: anoEnElQueSeCurso,
                 }),
             });
 
