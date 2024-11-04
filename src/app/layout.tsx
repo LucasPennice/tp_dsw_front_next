@@ -54,7 +54,7 @@ export default function RootLayout({
 
     return (
         <html lang="en">
-            <body className={`${inter.className} flex flex-col min-h-screen`}>
+            <body className={`${inter.className} flex flex-col min-h-screen w-screen overflow-x-hidden`}>
                 <ReviewSheetContext.Provider value={{ reviewModalOpen, setReviewModalOpen }}>
                     <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
                         <Navbar reviewModalOpen={reviewModalOpen} setReviewModalOpen={setReviewModalOpen} />

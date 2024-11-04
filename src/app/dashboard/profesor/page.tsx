@@ -140,6 +140,10 @@ export default function Page() {
                             </div>
                         </div>
 
+                        <div className="mt-4">
+                            <h2 className="text-4xl font-semibold text-gray-800 mb-8">Profesores</h2>
+                        </div>
+
                         <Table className="table mt-4" borderless hover>
                             <thead>
                                 <tr>

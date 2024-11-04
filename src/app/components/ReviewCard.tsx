@@ -18,7 +18,7 @@ function ReviewCard({ review, deleteReview, idx }: { review: Review; deleteRevie
 
     return (
         <Card key={review.id}>
-            <CardContent className="p-6">
+            <CardContent className="p-4 md:p-6 ">
                 <div>
                     <div className="flex flex-row justify-between mb-4">
                         <h2 className="text-xl font-semibold pb-1">
@@ -27,12 +27,14 @@ function ReviewCard({ review, deleteReview, idx }: { review: Review; deleteRevie
                                 - Review destinada a {review.cursado.profesor.nombre} {review.cursado.profesor.apellido}
                             </span>
                         </h2>
-                        <div
-                            className="btn cus-mr-10 transition-all bg-red-600 text-slate-50 hover:bg-red-300"
-                            onClick={async () => {
-                                toggleModal();
-                            }}>
-                            Eliminar
+                        <div>
+                            <button
+                                className="btn  transition-all bg-red-600 text-slate-50 hover:bg-red-300"
+                                onClick={async () => {
+                                    toggleModal();
+                                }}>
+                                Eliminar
+                            </button>
                         </div>
                         {isModalOpen && (
                             <ConfirmDeleteModal

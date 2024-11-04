@@ -36,12 +36,12 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
                             year: profesor.fechaNacimiento.toString().split("T")[0].split("-")[0],
                         },
                     }}
-                    className="btn btn-outline-dark cus-mr-10">
+                    className="btn btn-outline-dark mb-2 cus-mr-10">
                     Edit
                 </Link>
                 <motion.div
                     animate={{ width: isLoading ? 50 : 85 }}
-                    className={`btn cus-mr-10 transition-all ${profesor.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
+                    className={`btn cus-mr-10 mb-2 transition-all ${profesor.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                     onClick={async () => {
                         if (profesor.borradoLogico == true) {
                             toast.error(`La profesor ya se encuentra eliminado.`, {

@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { StarIcon } from "lucide-react";
+import { ArrowLeft, StarIcon } from "lucide-react";
 //@ts-ignore
 import { Profesor, Review } from "@/app/lib/definitions";
 import { useParams } from "next/navigation";
 import { URI } from "@/app/lib/utils";
+import Link from "next/link";
 
 enum Orden {
     todos = "Todos",
@@ -59,17 +60,22 @@ export default function Component() {
 
     return (
         <div className="container mx-auto p-6 max-w-4xl px-4 py-8">
-            <nav className="flex-col items-center justify-between mb-6">
+            <nav className="flex-col items-center justify-between mb-2">
                 <span className="text-gray-600">
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/profesor">Profesores</BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                            <BreadcrumbItem>
                                 <BreadcrumbLink href={`/profesor/${idProfesor}`}>
-                                    {profesor == null ? "Cargando..." : `${profesor.nombre} ${profesor.apellido}`}
+                                    {profesor == null ? (
+                                        "Cargando..."
+                                    ) : (
+                                        <Link
+                                            href="/"
+                                            className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
+                                            <ArrowLeft className="mr-2 h-5 w-5" />
+                                            Volver Atrás
+                                        </Link>
+                                    )}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                         </BreadcrumbList>

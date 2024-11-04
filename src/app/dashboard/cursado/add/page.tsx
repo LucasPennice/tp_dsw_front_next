@@ -135,11 +135,17 @@ export default function CursadoForm() {
                 router.push("/dashboard/cursado");
             } else {
                 const error = await response.json();
-                error.errors.map((err: { message: string }) => {
-                    toast.error(err.message, {
+                if (error.errors) {
+                    error.errors.map((err: { message: string }) => {
+                        toast.error(err.message, {
+                            autoClose: 6000,
+                        });
+                    });
+                } else {
+                    toast.error(error.message, {
                         autoClose: 6000,
                     });
-                });
+                }
             }
         } catch (error) {
             console.error("Error:", error);

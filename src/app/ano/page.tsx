@@ -11,6 +11,9 @@ export default function YearSelection() {
                 <ArrowLeft className="mr-2 h-5 w-5" />
                 Volver Atrás
             </Link>
+            <div>
+                <h2 className="text-4xl font-semibold text-gray-800 mb-8">Seleccione Un Año</h2>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3  gap-6">
                 {years.map((year) => (
                     <Link key={year.id} href={`/ano/${year.id}`} className="group">

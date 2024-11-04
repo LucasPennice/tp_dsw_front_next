@@ -57,7 +57,7 @@ export default function Page() {
                             Volver Atrás
                         </Link>
                         <header className="flex justify-between items-center py-4 bg-background">
-                            <h1 className="text-4xl font-normal text-gray-800">Profesores</h1>
+                            <h1 className="text-4xl font-semibold text-gray-800 ">Profesores</h1>
                             <div className="relative w-64">
                                 <Input
                                     type="text"

@@ -21,6 +21,7 @@ body {
     padding: 0;
     color: rgb(var(--foreground-rgb));
     background: white;
+    overflow-x: hidden !important;
 }
 
 @layer utilities {
@@ -42,6 +43,18 @@ body {
     display: flex;
     justify-content: flex-end;
     padding-right: 30px;
+}
+
+.cus-table {
+    max-width: 100vw;
+    overflow-x: scroll !important;
+}
+
+@media (max-width: 768px) {
+    .button-container {
+        padding-right: 5px;
+        padding-bottom: 20px;
+    }
 }
 
 #dropdown-basic {

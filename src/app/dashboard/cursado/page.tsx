@@ -91,7 +91,7 @@ export default function Page() {
     };
 
     return (
-        <div className="mx-auto p-6 mb-14 space-y-6">
+        <div className="mx-auto max-w-7xl mb-14 space-y-6">
             <AnimatePresence>
                 {isLoading && (
                     <motion.div
@@ -114,7 +114,7 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row  p-6 justify-between">
                             <Link
                                 href="/dashboard"
                                 className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
@@ -131,27 +131,33 @@ export default function Page() {
                             </div>
                         </div>
 
-                        <Table className="table mt-4" borderless hover>
-                            <thead>
-                                <tr>
-                                    {/* <th scope="col">Id</th> */}
-                                    <th scope="col">Dia Cursado</th>
-                                    <th scope="col">Hora Inicio</th>
-                                    <th scope="col">Hora Fin</th>
-                                    <th scope="col">Comision</th>
-                                    {/* <th scope="col">Turno</th> */}
-                                    <th scope="col">Año</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Materia</th>
-                                    <th scope="col">Profesor</th>
-                                </tr>
-                            </thead>
-                            <tbody className="table-group-divider gap-4">
-                                {cursados.map((cursado, idx) => (
-                                    <CursadoCard cursado={cursado} key={cursado.id} idx={idx} deleteCursado={deleteCursado} />
-                                ))}
-                            </tbody>
-                        </Table>
+                        <div className="mt-4">
+                            <h2 className="text-4xl px-4 font-semibold text-gray-800 mb-8">Cursados</h2>
+                        </div>
+
+                        <div className="w-[100%] overflow-x-scroll p-4">
+                            <Table className="table mt-4 cus-table" borderless hover>
+                                <thead>
+                                    <tr>
+                                        {/* <th scope="col">Id</th> */}
+                                        <th scope="col">Dia Cursado</th>
+                                        <th scope="col">Hora Inicio</th>
+                                        <th scope="col">Hora Fin</th>
+                                        <th scope="col">Comision</th>
+                                        {/* <th scope="col">Turno</th> */}
+                                        <th scope="col">Año</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Materia</th>
+                                        <th scope="col">Profesor</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="table-group-divider gap-4">
+                                    {cursados.map((cursado, idx) => (
+                                        <CursadoCard cursado={cursado} key={cursado.id} idx={idx} deleteCursado={deleteCursado} />
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </div>
 
                         <div className="w-full max-w-4xl mx-auto p-4">
                             <Pagination className="mt-4">
@@ -222,13 +228,13 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
                             profesor: cursado.profesor.id,
                         },
                     }}
-                    className="btn btn-outline-dark cus-mr-10">
+                    className="btn btn-outline-dark mb-2 md:mb-0 cus-mr-10">
                     Edit
                 </Link>
                 {
                     <motion.div
                         animate={{ width: isLoading ? 50 : 85 }}
-                        className={`btn cus-mr-10 transition-all ${cursado.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
+                        className={`btn cus-mr-10 mb-2 transition-all ${cursado.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                         onClick={async () => {
                             if (cursado.borradoLogico == true) {
                                 toast.error(`La materia ya fue eliminada`, {

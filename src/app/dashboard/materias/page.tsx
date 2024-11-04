@@ -138,6 +138,10 @@ export default function Page() {
                             </div>
                         </div>
 
+                        <div className="mt-4">
+                            <h2 className="text-4xl font-semibold text-gray-800 mb-8">Materias</h2>
+                        </div>
+
                         <Table className="table mt-4" borderless hover>
                             <thead>
                                 <tr>
@@ -205,13 +209,13 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
                             nombre: materia.nombre,
                         },
                     }}
-                    className="btn btn-outline-dark cus-mr-10">
+                    className="btn btn-outline-dark mb-2 cus-mr-10">
                     Edit
                 </Link>
                 {
                     <motion.div
                         animate={{ width: isLoading ? 50 : 85 }}
-                        className={`btn cus-mr-10 transition-all ${materia.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
+                        className={`btn cus-mr-10 mb-2 transition-all ${materia.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                         onClick={async () => {
                             if (materia.borradoLogico == true) {
                                 toast.error(`La materia ya fue eliminada`, {
