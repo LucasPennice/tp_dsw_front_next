@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import Link from "next/link";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { StarIcon } from "lucide-react";
+import { ArrowLeft, StarIcon } from "lucide-react";
 //@ts-ignore
 import { Materia, Profesor, Review } from "@/app/lib/definitions";
 import { URI } from "@/app/lib/utils";
@@ -73,8 +73,8 @@ export default function Component() {
     });
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <Breadcrumb>
+        <div className="container max-w-6xl mx-auto px-4 py-8">
+            {/* <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <BreadcrumbLink href="/ano">Años</BreadcrumbLink>
@@ -94,7 +94,17 @@ export default function Component() {
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                 </BreadcrumbList>
-            </Breadcrumb>
+            </Breadcrumb> */}
+
+            <nav className="flex items-center justify-between mb-6">
+                <Link
+                    href={`/ano/${idAno}/${idMateria}`}
+                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                    <ArrowLeft className="mr-2 h-5 w-5" />
+                    Volver Atrás
+                </Link>
+                <span className="text-gray-600">{idAno} Año</span>
+            </nav>
 
             <h1 className="text-3xl font-bold mt-8 mb-4">
                 {profesor == null ? "Cargando..." : `Reviews de ${profesor.nombre} ${profesor.apellido}`}
