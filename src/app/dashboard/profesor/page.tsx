@@ -77,7 +77,6 @@ export default function Page() {
 
     const renderPageNumbers = () => {
         const pageNumbers = [];
-        console.log(totalPages);
 
         // consideramos que nunca vamos a tener más de 5 páginas
 

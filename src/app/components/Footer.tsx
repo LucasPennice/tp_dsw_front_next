@@ -3,7 +3,8 @@
 import Link from "next/link";
 
 export default function Component() {
-    return (
+    const current_year = new Date().getFullYear();
+        return (
         <footer className="bg-gray-100 text-gray-600 py-8 mt-auto">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col sm:flex-row justify-between items-center">
@@ -28,7 +29,7 @@ export default function Component() {
                     </nav>
                 </div>
                 <div className="mt-8 pt-4 border-t border-gray-200 text-center">
-                    <p className="text-sm">&copy; 2024 Pacienzia - Pennice - Genovese Todos los derechos reservados.</p>
+                    <p className="text-sm">&copy; {current_year} Pacienzia - Pennice - Genovese Todos los derechos reservados.</p>
                 </div>
             </div>
         </footer>

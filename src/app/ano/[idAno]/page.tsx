@@ -8,6 +8,7 @@ import { Materia } from "@/app/lib/definitions";
 import { AnimatePresence, motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
 import { URI } from "@/app/lib/utils";
+import LinkBack from "@/app/components/LinkBack";
 
 const BookIcon = () => (
     <svg
@@ -76,14 +77,7 @@ export default function SubjectsLayout() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {materia.map((subject, index) => (
-                                <Link
-                                    href={`/ano/${idAno}/${subject.id}`}
-                                    key={index}
-                                    className={`bg-slate-300 rounded-2xl p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105`}>
-                                    <BookIcon />
-                                    <h2 className="text-xl font-semibold text-gray-800 mb-1">{subject.nombre}</h2>
-                                    <p className="text-sm text-gray-600">{subject.area.nombre}</p>
-                                </Link>
+                                <LinkBack route={`/ano/${idAno}/${subject.id}`} />
                             ))}
                         </div>
                     </motion.div>

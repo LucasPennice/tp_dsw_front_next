@@ -10,6 +10,7 @@ import { ArrowLeft, StarIcon } from "lucide-react";
 import { Materia, Profesor, Review } from "@/app/lib/definitions";
 import { URI } from "@/app/lib/utils";
 import { useParams } from "next/navigation";
+import LinkBack from "@/app/components/LinkBack";
 
 enum Orden {
     todos = "Todos",
@@ -97,12 +98,7 @@ export default function Component() {
             </Breadcrumb> */}
 
             <nav className="flex items-center justify-between mb-6">
-                <Link
-                    href={`/ano/${idAno}/${idMateria}`}
-                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200">
-                    <ArrowLeft className="mr-2 h-5 w-5" />
-                    Volver Atrás
-                </Link>
+                <LinkBack route={`/ano/${idAno}/${idMateria}`} />
                 <span className="text-gray-600">{idAno} Año</span>
             </nav>
 

@@ -88,9 +88,7 @@ export default function SignupPage() {
 
             let res = await response.json();
 
-            // console.log(
-            //     `${formData.fechaNacimiento!.getFullYear()}/${formData.fechaNacimiento!.getMonth() < 10 ? "0" : ""}${formData.fechaNacimiento!.getMonth()}/${formData.fechaNacimiento!.getDay() < 10 ? "0" : ""}${formData.fechaNacimiento!.getDay()}`
-            // );
+           
             if (response.ok) {
                 setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
 
@@ -107,7 +105,6 @@ export default function SignupPage() {
                 });
             }
         } catch (error) {
-            console.error("Error:", error);
             toast.error(`Ocurrió un error inesperado. ${error}`);
         } finally {
             setLoading(false);

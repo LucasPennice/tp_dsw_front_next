@@ -52,7 +52,6 @@ export default function CursadoForm() {
                 toast.error(response.message, {
                     autoClose: 5000,
                 });
-                console.error("Error fetching materias:", response.message);
                 setLoadingMaterias(false);
             }
 
@@ -64,7 +63,6 @@ export default function CursadoForm() {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log("Profesor data:", data);
                     setProfesores(data.data);
                     setLoadingProfesores(false);
                 })
@@ -73,7 +71,6 @@ export default function CursadoForm() {
                     toast.error(data.message, {
                         autoClose: 5000,
                     });
-                    console.error("Error fetching profesores:", error);
                     setLoadingProfesores(false);
                 });
         })();
@@ -92,7 +89,6 @@ export default function CursadoForm() {
     //         horaFin > horaInicio
     //     ) {
     //         addCursado();
-    //         console.log()
     //     }
     // }
 
@@ -148,7 +144,6 @@ export default function CursadoForm() {
                 }
             }
         } catch (error) {
-            console.error("Error:", error);
             toast.error(`Ocurrió un error inesperado. ${error}`, {
                 autoClose: 5000,
             });

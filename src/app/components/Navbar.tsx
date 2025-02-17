@@ -22,7 +22,7 @@ import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
 export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { reviewModalOpen: boolean; setReviewModalOpen: (v: boolean) => void }) {
     const [isOpen, setIsOpen] = useState(false);
     const [year, setYear] = useState<string>();
-    const [anoEnElQueSeCurso, setAnoEnElQueSeCurso] = useState<number>(new Date().getFullYear());
+    const [courseYear, setCourseYear] = useState<number>(new Date().getFullYear());
     const [materiaId, setMateriaId] = useState<string>("");
     const [profesorId, setProfesorId] = useState<string>("");
     const [review, setReview] = useState<string>("");
@@ -56,7 +56,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
         setPuntuacion(0);
 
         if (evento == "añoDeCursado") {
-            setAnoEnElQueSeCurso(new Date().getFullYear());
+            setCourseYear(new Date().getFullYear());
             setYear("");
             setMateriaId("");
             setProfesorId("");
@@ -96,7 +96,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                     anio: year![0],
                     profesorId,
                     materiaId,
-                    anoCursado: anoEnElQueSeCurso,
+                    anoCursado: courseYear,
                 }),
             });
 
@@ -110,7 +110,6 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 setReviewModalOpen(false);
             }
         } catch (error) {
-            console.error("Error:", error);
             toast.error(`Ocurrió un error inesperado. ${error}`);
         } finally {
             setSendingReview(false);
@@ -138,7 +137,6 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 setLoadingMaterias(false);
             } else {
                 toast.error(response.message);
-                console.error("Error fetching materias:", response.message);
                 setLoadingMaterias(false);
             }
         })();
@@ -151,7 +149,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingProfesores(true);
 
-            let res = await fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${anoEnElQueSeCurso}`, {
+            let res = await fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -165,7 +163,6 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 toast.success(response.message);
             } else {
                 //@ts-ignore
-                console.error("Error fetching materias:", res.message);
                 setLoadingProfesores(false);
                 toast.error(response.message);
             }
@@ -252,9 +249,9 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                                     <Select
                                                         onValueChange={(v) => {
                                                             resetReviewModalState("añoDeCursado");
-                                                            setAnoEnElQueSeCurso(parseInt(v));
+                                                            setCourseYear(parseInt(v));
                                                         }}
-                                                        value={`${anoEnElQueSeCurso}`}>
+                                                        value={`${courseYear}`}>
                                                         <SelectTrigger className="w-full">
                                                             <SelectValue placeholder="Selecciona un año" />
                                                         </SelectTrigger>

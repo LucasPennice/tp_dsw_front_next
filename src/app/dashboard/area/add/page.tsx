@@ -42,7 +42,6 @@ export default function Page() {
                 });
             }
         } catch (error) {
-            console.error("Error:", error);
             toast.error(`Ocurrió un error inesperado. ${error}`, {
                 autoClose: 6000,
             });

@@ -3,14 +3,13 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { years } from "../lib/definitions";
+import LinkBack from "../components/LinkBack";
 
 export default function YearSelection() {
     return (
         <div className="max-w-4xl mx-auto p-6">
-            <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
-                <ArrowLeft className="mr-2 h-5 w-5" />
-                Volver Atrás
-            </Link>
+            <LinkBack route={`/`} />
+            
             <div>
                 <h2 className="text-4xl font-semibold text-gray-800 mb-8">Seleccione Un Año</h2>
             </div>
