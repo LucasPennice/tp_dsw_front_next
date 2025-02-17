@@ -66,10 +66,7 @@ export default function SubjectsLayout() {
                 {!isLoading && (
                     <motion.div className="max-w-4xl mx-auto p-6">
                         <nav className="flex items-center justify-between mb-6">
-                            <Link href="/ano" className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200">
-                                <ArrowLeft className="mr-2 h-5 w-5" />
-                                Volver Atrás
-                            </Link>
+                            <LinkBack route="/ano"></LinkBack>
                             <span className="text-gray-600">{idAno} Año</span>
                         </nav>
 

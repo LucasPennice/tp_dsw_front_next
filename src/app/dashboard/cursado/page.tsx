@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Cursado } from "../../lib/definitions";
+import LinkBack from "@/app/components/LinkBack";
 
 export default function Page() {
     const [data, setData] = useState<Cursado[]>([]);
@@ -115,12 +116,7 @@ export default function Page() {
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                         <div className="flex flex-row  p-6 justify-between">
-                            <Link
-                                href="/dashboard"
-                                className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
-                                <ArrowLeft className="mr-2 h-5 w-5" />
-                                Volver Atrás
-                            </Link>
+                            <LinkBack route="/dashboard"></LinkBack>
                             <div className="button-container">
                                 <Link
                                     href={`/dashboard/cursado/add`}

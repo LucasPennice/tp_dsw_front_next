@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
 import { toast, ToastContentProps } from "react-toastify";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import LinkBack from "@/app/components/LinkBack";
 
 export default function Page() {
     const [loading, setLoading] = useState(false);
@@ -85,12 +86,7 @@ export default function Page() {
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
             <div className="container">
-                <Link
-                    href={`/dashboard/profesor`}
-                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors mt-3  duration-200 ">
-                    <ArrowLeft className="mr-2 h-5 w-5" />
-                    Volver Atrás
-                </Link>
+                <LinkBack route="/dashboard/profesor"></LinkBack>
 
                 <form
                     onSubmit={(e) => {

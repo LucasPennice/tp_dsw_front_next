@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { URI } from "../lib/utils";
+import LinkBack from "../components/LinkBack";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -52,10 +53,7 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto p-6 max-w-4xl">
-                        <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
-                            <ArrowLeft className="mr-2 h-5 w-5" />
-                            Volver Atrás
-                        </Link>
+                        <LinkBack route="/"></LinkBack>
                         <header className="flex justify-between items-center py-4 bg-background">
                             <h1 className="text-4xl font-semibold text-gray-800 ">Profesores</h1>
                             <div className="relative w-64">

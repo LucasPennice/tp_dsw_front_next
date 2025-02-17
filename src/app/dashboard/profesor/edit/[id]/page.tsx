@@ -11,6 +11,7 @@ import { Form, InputGroup, Spinner } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { toast } from "react-toastify";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import LinkBack from "@/app/components/LinkBack";
 
 export default function Page() {
     const params = useParams();
@@ -91,12 +92,8 @@ export default function Page() {
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
             <div className="container">
-                <Link
-                    href={`/dashboard/profesor`}
-                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200">
-                    <ArrowLeft className="mr-2 h-5 w-5" />
-                    Volver Atrás
-                </Link>
+                <LinkBack route="/dashboard/profesor"></LinkBack>
+
                 {/* <h2 className="text-2xl">Añadir Nuevo Profesor</h2> */}
 
                 <form

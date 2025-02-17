@@ -11,6 +11,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-toastify";
 import { ArrowLeft } from "lucide-react";
+import LinkBack from "@/app/components/LinkBack";
 
 export default function CursadoForm() {
     const [loadingProfesores, setLoadingProfesores] = useState(true);
@@ -163,12 +164,7 @@ export default function CursadoForm() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
-            <Link
-                href={`/dashboard/cursado`}
-                className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
-                <ArrowLeft className="mr-2 h-5 w-5" />
-                Volver Atrás
-            </Link>
+            <LinkBack route="/dashboard/cursado"></LinkBack>
 
             <form
                 onSubmit={(e) => {

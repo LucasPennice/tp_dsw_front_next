@@ -1,5 +1,6 @@
 "use client";
 
+import LinkBack from "@/app/components/LinkBack";
 import { URI } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
@@ -53,12 +54,7 @@ export default function Page() {
     return (
         <>
             <div className="container">
-                <Link
-                    href={`/dashboard/area`}
-                    className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors mt-3  duration-200 mb-6">
-                    <ArrowLeft className="mr-2 h-5 w-5" />
-                    Volver Atrás
-                </Link>
+                <LinkBack route={`/dashboard/area`}></LinkBack>
 
                 <form
                     onSubmit={(e) => {
@@ -69,11 +65,11 @@ export default function Page() {
                         e.preventDefault();
                         addArea();
                     }}>
-                    <div className="form-group mb-2 pt-5">
+                    <div className="form-group mb-3 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>
                         <input
                             type="text"
-                            className="form-control mt-2"
+                            className="form-control mt-3"
                             id="formGroupExampleInput"
                             placeholder="Nombre"
                             value={nombre}
@@ -83,7 +79,7 @@ export default function Page() {
 
                     <motion.button
                         type="submit"
-                        className="btn btn-primary cus-mr-10"
+                        className="btn btn-primary cus-mr-10 mt-3"
                         // disabled={nombre == "" || loading}
                         animate={{ width: loading ? 50 : 85 }}>
                         {loading && (

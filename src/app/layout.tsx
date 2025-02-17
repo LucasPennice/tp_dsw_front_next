@@ -65,7 +65,6 @@ export default function RootLayout({
                         <MobileFloatingButton />
                     </UserInfoContext.Provider>
                 </ReviewSheetContext.Provider>
-                );
             </body>
         </html>
     );

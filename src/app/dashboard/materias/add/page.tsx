@@ -1,5 +1,6 @@
 "use client";
 
+import LinkBack from "@/app/components/LinkBack";
 import { Area } from "@/app/lib/definitions";
 import { URI } from "@/app/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -101,12 +102,7 @@ export default function Page() {
                 )}
 
                 <div className="container">
-                    <Link
-                        href={`/dashboard/materias`}
-                        className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
-                        <ArrowLeft className="mr-2 h-5 w-5" />
-                        Volver Atrás
-                    </Link>
+                    <LinkBack route="/dashboard/materias"></LinkBack>
 
                     <form
                         onSubmit={(e) => {

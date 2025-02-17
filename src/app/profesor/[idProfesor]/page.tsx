@@ -11,6 +11,7 @@ import { Profesor, Review } from "@/app/lib/definitions";
 import { useParams } from "next/navigation";
 import { URI } from "@/app/lib/utils";
 import Link from "next/link";
+import LinkBack from "@/app/components/LinkBack";
 
 enum Orden {
     todos = "Todos",
@@ -66,16 +67,7 @@ export default function Component() {
                         <BreadcrumbList>
                             <BreadcrumbItem>
                                 <BreadcrumbLink href={`/profesor/${idProfesor}`}>
-                                    {profesor == null ? (
-                                        "Cargando..."
-                                    ) : (
-                                        <Link
-                                            href="/"
-                                            className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mb-6">
-                                            <ArrowLeft className="mr-2 h-5 w-5" />
-                                            Volver Atrás
-                                        </Link>
-                                    )}
+                                    {profesor == null ? "Cargando..." : <LinkBack route="/"></LinkBack>}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
                         </BreadcrumbList>

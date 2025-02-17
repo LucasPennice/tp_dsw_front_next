@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Component() {
     const current_year = new Date().getFullYear();
-        return (
+    return (
         <footer className="bg-gray-100 text-gray-600 py-8 mt-auto">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col sm:flex-row justify-between items-center">
