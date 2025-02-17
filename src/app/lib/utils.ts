@@ -40,7 +40,7 @@ function validarNombreOApellido(cadena: string): boolean {
     return regex.test(cadena);
 }
 
-const URI = "https://tp-dsw-back.onrender.com";
-// const URI = "http://localhost:3000";
+// const URI = "https://tp-dsw-back.onrender.com";
+const URI = "http://localhost:3000";
 
 export { validarAnio, validarComision, validarDiaSemana, validarHora, URI, validarLegajo, validarNombreOApellido, validarDni };
