@@ -11,6 +11,7 @@ import { Materia, Profesor, Review } from "@/app/lib/definitions";
 import { URI } from "@/app/lib/utils";
 import { useParams } from "next/navigation";
 import LinkBack from "@/app/components/LinkBack";
+import { useFetch } from "@/app/hooks/useFetch";
 
 enum Orden {
     todos = "Todos",
@@ -31,40 +32,44 @@ export default function Component() {
     const [profesor, setProfesor] = useState<Profesor | null>(null);
     const [materia, setMateria] = useState<Materia | null>(null);
 
-    useEffect(() => {
-        fetch(`${URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data.data);
-            });
+    useFetch(`${URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, setData);
+    useFetch(`${URI}/api/profesor/${idProfesor}`, setProfesor);
+    useFetch(`${URI}/api/materia/${idMateria}`, setMateria);
 
-        fetch(`${URI}/api/profesor/${idProfesor}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setProfesor(data.data);
-            });
+    // useEffect(() => {
+    //     // fetch(`${URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
+    //     //     headers: {
+    //     //         "Content-Type": "application/json",
+    //     //     },
+    //     //     credentials: "include",
+    //     // })
+    //     //     .then((res) => res.json())
+    //     //     .then((data) => {
+    //     //         setData(data.data);
+    //     //     });
 
-        fetch(`${URI}/api/materia/${idMateria}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setMateria(data.data);
-            });
-    }, []);
+    //     fetch(`${URI}/api/profesor/${idProfesor}`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         credentials: "include",
+    //     })
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setProfesor(data.data);
+    //         });
+
+    //     fetch(`${URI}/api/materia/${idMateria}`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         credentials: "include",
+    //     })
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setMateria(data.data);
+    //         });
+    // }, []);
 
     const sortedReviews = data.toSorted((reviewA, reviewB) => {
         if (order === Orden.mejorPuntuacion) return reviewB.puntuacion - reviewA.puntuacion;
