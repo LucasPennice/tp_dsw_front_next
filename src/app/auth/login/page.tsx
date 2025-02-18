@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/navigation";
-import { login } from "../../../authlib";
+import { setLocalCookies } from "../../../authlib";
 import { Usuario, UsuarioEnMemoria } from "@/app/lib/definitions";
 import { UserInfoContext } from "@/app/layout";
 
@@ -43,7 +43,7 @@ export default function LoginPage() {
 
             if (response.ok) {
                 setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
-                await login(res.data as UsuarioEnMemoria);
+                await setLocalCookies(res.data as UsuarioEnMemoria);
                 toast.success(res.message);
                 router.push("/");
             } else {

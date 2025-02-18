@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { getSession, logout } from "../../authlib";
+import { getLocalSession, clearCookies, setLocalCookies } from "../../authlib";
 import { Materia, Profesor, years } from "../lib/definitions";
 import { URI } from "../lib/utils";
 import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
@@ -40,13 +40,30 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
     useEffect(() => {
         (async () => {
-            const session = await getSession();
+            const session = await getLocalSession();
 
-            if (session == null) {
-                return setUserInfo({ auth: false, user: usuarioEnMemoriaDefault });
-            }
+            if (session == null) return setUserInfo({ auth: false, user: usuarioEnMemoriaDefault });
 
+            // There's session data in the cookies
+            // so we temporarily set it to the saved value
             setUserInfo({ auth: true, user: session.user });
+
+            // After that we check if the session is still valid
+
+            const unparsedResponse = await fetch(`${URI}/api/session-status`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            });
+
+            const response = await unparsedResponse.json();
+            const updateSession = response.success === false;
+
+            // If not we clear the cookies and reset the user info
+            if (updateSession) {
+                await logoutAndResetState();
+            }
         })();
     }, []);
 
@@ -170,11 +187,17 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
     }, [materiaId]);
 
     const logoutAndResetState = async () => {
+        // Reset the local user info
         setUserInfo({ auth: false, user: usuarioEnMemoriaDefault });
 
-        await logout();
+        await clearCookies();
 
-        router.push("/");
+        // Notify the backend of the logout
+        await fetch(`${URI}/logout`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
     };
 
     return (
@@ -219,7 +242,13 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                         <></>
                                     )}
                                     <DropdownMenuItem>
-                                        <button className="flex items-center" onClick={logoutAndResetState}>
+                                        <button
+                                            className="flex items-center"
+                                            onClick={async () => {
+                                                await logoutAndResetState();
+                                                // Redirect to homescreen
+                                                router.push("/");
+                                            }}>
                                             <LogOut className="mr-2 h-4 w-4" />
                                             <span>Cerrar sesión </span>
                                         </button>

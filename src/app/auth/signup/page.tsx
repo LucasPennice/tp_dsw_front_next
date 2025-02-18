@@ -14,7 +14,7 @@ import { Sexo, UsuarioEnMemoria } from "@/app/lib/definitions";
 import { motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
 import { URI, validarLegajo, validarNombreOApellido } from "@/app/lib/utils";
-import { login } from "@/authlib";
+import { setLocalCookies } from "@/authlib";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { UserInfoContext } from "@/app/layout";
@@ -88,11 +88,10 @@ export default function SignupPage() {
 
             let res = await response.json();
 
-           
             if (response.ok) {
                 setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
 
-                await login(res.data);
+                await setLocalCookies(res.data);
 
                 toast.success(res.message);
 
