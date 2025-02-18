@@ -24,6 +24,7 @@ export function useFetch<T>(endpoint: string, setter: Dispatch<SetStateAction<T>
                         "Content-Type": "application/json",
                     },
                     credentials: "include",
+                    cache: "no-store",
                 });
 
                 const response = await res.json();

@@ -9,7 +9,6 @@ import { Link, StarIcon } from "lucide-react";
 //@ts-ignore
 import { Profesor, Review } from "@/app/lib/definitions";
 import { useParams } from "next/navigation";
-import { URI } from "@/app/lib/utils";
 
 enum Orden {
     todos = "Todos",
@@ -26,7 +25,7 @@ export default function Component() {
     const [profesor, setProfesor] = useState<Profesor | null>(null);
 
     useEffect(() => {
-        fetch(`${URI}/api/profesor/${idProfesor}/reviews`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviews`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -36,7 +35,7 @@ export default function Component() {
                 setData(data.data);
             });
 
-        fetch(`${URI}/api/profesor/${idProfesor}`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, {
             headers: {
                 "Content-Type": "application/json",
             },

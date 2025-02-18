@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Materia } from "@/app/lib/definitions";
 import { AnimatePresence, motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
-import { URI } from "@/app/lib/utils";
 import LinkBack from "@/app/components/LinkBack";
 
 const BookIcon = () => (
@@ -35,7 +34,7 @@ export default function SubjectsLayout() {
     const idAno = params.idAno as string;
 
     useEffect(() => {
-        fetch(`${URI}/api/materia/porAno/${idAno[0]}`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${idAno[0]}`, {
             headers: {
                 "Content-Type": "application/json",
             },

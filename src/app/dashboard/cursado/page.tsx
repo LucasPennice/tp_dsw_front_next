@@ -1,7 +1,6 @@
 "use client";
 
 import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
-import { URI } from "@/app/lib/utils";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -20,7 +19,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -41,7 +40,7 @@ export default function Page() {
     const deleteCursado = async (_id: string) => {
         setLoading(true);
 
-        await fetch(`${URI}/api/cursado/${_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/${_id}`, {
             method: "Delete",
             credentials: "include",
         });
@@ -50,7 +49,7 @@ export default function Page() {
             autoClose: 5000,
         });
 
-        fetch(`${URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },

@@ -2,7 +2,6 @@
 
 import LinkBack from "@/app/components/LinkBack";
 import { Area } from "@/app/lib/definitions";
-import { URI } from "@/app/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
@@ -22,7 +21,7 @@ export default function Page() {
     const [areas, setAreas] = useState<Area[]>([]);
 
     useEffect(() => {
-        fetch(`${URI}/api/area`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -47,7 +46,7 @@ export default function Page() {
                 throw "Area ID null";
             }
 
-            const response = await fetch(`${URI}/api/materia/`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

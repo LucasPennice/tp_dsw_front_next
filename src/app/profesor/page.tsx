@@ -8,7 +8,6 @@ import { Spinner } from "react-bootstrap";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { URI } from "../lib/utils";
 import LinkBack from "../components/LinkBack";
 
 export default function Page() {
@@ -17,7 +16,7 @@ export default function Page() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${URI}/api/profesor`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor`, {
             headers: {
                 "Content-Type": "application/json",
             },

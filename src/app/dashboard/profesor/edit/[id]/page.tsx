@@ -1,7 +1,7 @@
 "use client";
 
 import { Sexo } from "@/app/lib/definitions";
-import { URI, validarDni } from "@/app/lib/utils";
+import { validarDni } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
@@ -51,7 +51,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${URI}/api/profesor/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
