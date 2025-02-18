@@ -15,9 +15,10 @@ import { useContext, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { getSession, logout } from "../../authlib";
-import { Materia, Profesor, years } from "../lib/definitions";
+import { Materia, NotificacionReview, Profesor, years } from "../lib/definitions";
 import { URI } from "../lib/utils";
 import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
+import { useFetch } from "../hooks/useFetch";
 
 export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { reviewModalOpen: boolean; setReviewModalOpen: (v: boolean) => void }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +37,16 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
     const [loadingProfesores, setLoadingProfesores] = useState(false);
     const [sendingReview, setSendingReview] = useState(false);
 
+    const [reviewsEliminadas, setReviewsEliminadas] = useState<NotificacionReview[]>();
+
     const router = useRouter();
+
+    useFetch(`${URI}/api/usuario/reviewsEliminadas/${userInfo.user.id}`, setReviewsEliminadas, [userInfo.auth]);
+
+    useEffect(() => {
+        console.log(reviewsEliminadas);
+        console.log(userInfo.auth);
+    }, [reviewsEliminadas, userInfo.auth]);
 
     useEffect(() => {
         (async () => {

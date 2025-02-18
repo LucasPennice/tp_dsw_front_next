@@ -8,11 +8,12 @@ interface FetchResult<T> {
     error: string | null;
 }
 
-export function useFetch<T>(endpoint: string, setter: Dispatch<SetStateAction<T>>): FetchResult<T> {
+export function useFetch<T>(endpoint: string, setter: Dispatch<SetStateAction<T>>, runAfterTrue: boolean[] = []): FetchResult<T> {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (runAfterTrue.includes(false)) return;
         (async () => {
             setLoading(true);
             setError(null);
@@ -37,7 +38,7 @@ export function useFetch<T>(endpoint: string, setter: Dispatch<SetStateAction<T>
                 setLoading(false);
             }
         })();
-    }, []);
+    }, [...runAfterTrue]);
 
     return { loading, error };
 }

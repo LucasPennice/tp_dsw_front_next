@@ -105,4 +105,6 @@ export type Usuario = {
     cursados: [Cursado];
 };
 
+export type NotificacionReview = { id: string; mensaje: string; visto: boolean };
+
 export type UsuarioEnMemoria = Omit<Usuario, "reviews" | "cursados">;
