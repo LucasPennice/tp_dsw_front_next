@@ -8,7 +8,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, StarIcon } from "lucide-react";
 //@ts-ignore
 import { Materia, Profesor, Review } from "@/app/lib/definitions";
-import { URI } from "@/app/lib/utils";
 import { useParams } from "next/navigation";
 import LinkBack from "@/app/components/LinkBack";
 import { useFetch } from "@/app/hooks/useFetch";
@@ -32,12 +31,12 @@ export default function Component() {
     const [profesor, setProfesor] = useState<Profesor | null>(null);
     const [materia, setMateria] = useState<Materia | null>(null);
 
-    useFetch(`${URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, setData);
-    useFetch(`${URI}/api/profesor/${idProfesor}`, setProfesor);
-    useFetch(`${URI}/api/materia/${idMateria}`, setMateria);
+    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, setData);
+    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, setProfesor);
+    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}`, setMateria);
 
     // useEffect(() => {
-    //     // fetch(`${URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
+    //     // fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
     //     //     headers: {
     //     //         "Content-Type": "application/json",
     //     //     },
@@ -48,7 +47,7 @@ export default function Component() {
     //     //         setData(data.data);
     //     //     });
 
-    //     fetch(`${URI}/api/profesor/${idProfesor}`, {
+    //     fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, {
     //         headers: {
     //             "Content-Type": "application/json",
     //         },
@@ -59,7 +58,7 @@ export default function Component() {
     //             setProfesor(data.data);
     //         });
 
-    //     fetch(`${URI}/api/materia/${idMateria}`, {
+    //     fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}`, {
     //         headers: {
     //             "Content-Type": "application/json",
     //         },

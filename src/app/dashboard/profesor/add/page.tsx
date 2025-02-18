@@ -1,7 +1,7 @@
 "use client";
 
 import { Sexo } from "@/app/lib/definitions";
-import { URI, dateFromString } from "@/app/lib/utils";
+import { dateFromString } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
@@ -44,7 +44,7 @@ export default function Page() {
                 throw "Fecha Invalida";
             }
 
-            const response = await fetch(`${URI}/api/profesor/`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

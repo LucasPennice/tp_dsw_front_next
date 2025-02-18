@@ -11,16 +11,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { ChevronDown, LogOut, Plus, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { getLocalSession, clearCookies, setLocalCookies } from "../../authlib";
-import { Materia, Profesor, years } from "../lib/definitions";
-import { URI } from "../lib/utils";
+import { Materia, NotificacionReview, Profesor, years } from "../lib/definitions";
 import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
+import { useFetch } from "../hooks/useFetch";
+import { FaRegBell } from "react-icons/fa6";
 
 export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { reviewModalOpen: boolean; setReviewModalOpen: (v: boolean) => void }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenReviewsBorradas, setIsOpenReviewsBorradas] = useState(false);
     const [year, setYear] = useState<string>();
     const [courseYear, setCourseYear] = useState<number>(new Date().getFullYear());
     const [materiaId, setMateriaId] = useState<string>("");
@@ -36,7 +38,40 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
     const [loadingProfesores, setLoadingProfesores] = useState(false);
     const [sendingReview, setSendingReview] = useState(false);
 
+    const [reviewsEliminadas, setReviewsEliminadas] = useState<NotificacionReview[]>();
+
     const router = useRouter();
+
+    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user.id}`, setReviewsEliminadas, [userInfo.auth]);
+
+    const updateReviews = useRef(false);
+
+    useEffect(() => {
+        (async () => {
+            if (!isOpenReviewsBorradas) return;
+            if (reviewsEliminadas?.length == 0) return;
+            if (updateReviews.current) return;
+            updateReviews.current = true;
+            const id = userInfo.user.id;
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario/${id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    reviewsEliminadas: reviewsEliminadas!.map((r) => {
+                        return { ...r, visto: true };
+                    }),
+                }),
+            });
+        })();
+    }, [isOpenReviewsBorradas]);
+
+    useEffect(() => {
+        console.log(reviewsEliminadas);
+        console.log(userInfo.auth);
+    }, [reviewsEliminadas, userInfo.auth]);
 
     useEffect(() => {
         (async () => {
@@ -100,7 +135,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
             e.preventDefault();
             setSendingReview(true);
 
-            const response = await fetch(`${URI}/api/review`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/review`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -139,7 +174,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingMaterias(true);
 
-            let res = await fetch(`${URI}/api/materia/porAno/${year}`, {
+            let res = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${year}`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -166,7 +201,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingProfesores(true);
 
-            let res = await fetch(`${URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`, {
+            let res = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -211,6 +246,32 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                     </div>
                     {userInfo.auth ? (
                         <div className="flex items-center space-x-4">
+                            {reviewsEliminadas && reviewsEliminadas.filter((r) => !r.visto).length != 0 && (
+                                <DropdownMenu open={isOpenReviewsBorradas} onOpenChange={setIsOpenReviewsBorradas}>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="flex items-center gap-2">
+                                            <FaRegBell
+                                                color="red"
+                                                size={16}
+                                                className={`transition-transform duration-200 ${isOpenReviewsBorradas ? "rotate-180" : ""}`}
+                                            />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-56 mt-4">
+                                        {reviewsEliminadas
+                                            ?.filter((r) => !r.visto)
+                                            .map((r, idx) => {
+                                                return (
+                                                    <DropdownMenuItem className="flex flex-column text-left" key={idx}>
+                                                        <h5>Un administrador ha eliminada tu siguiente review:</h5>
+                                                        <p>"{r.mensaje}"</p>
+                                                    </DropdownMenuItem>
+                                                );
+                                            })}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            )}
+
                             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="flex items-center gap-2 ">

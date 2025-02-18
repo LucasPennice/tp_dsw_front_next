@@ -13,8 +13,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Sexo, UsuarioEnMemoria } from "@/app/lib/definitions";
 import { motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
-import { URI, validarLegajo, validarNombreOApellido } from "@/app/lib/utils";
-import { setLocalCookies } from "@/authlib";
+import { validarLegajo, validarNombreOApellido } from "@/app/lib/utils";
+import { login } from "@/authlib";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { UserInfoContext } from "@/app/layout";
@@ -75,8 +75,8 @@ export default function SignupPage() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${URI}/api/usuario`, {
-                // const response = await fetch(`${URI}/signup`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario`, {
+                // const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

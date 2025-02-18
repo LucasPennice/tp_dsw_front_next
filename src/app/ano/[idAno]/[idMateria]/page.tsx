@@ -9,7 +9,6 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import GridProfMateria from "@/app/components/GridProfMateria";
 import { useParams } from "next/navigation";
-import { URI } from "@/app/lib/utils";
 import LinkBack from "@/app/components/LinkBack";
 
 export default function Page() {
@@ -22,7 +21,7 @@ export default function Page() {
     const idMateria = params.idMateria as string;
 
     useEffect(() => {
-        fetch(`${URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, {
             headers: {
                 "Content-Type": "application/json",
             },

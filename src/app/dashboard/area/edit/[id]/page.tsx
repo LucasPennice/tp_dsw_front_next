@@ -1,7 +1,6 @@
 "use client";
 
 import LinkBack from "@/app/components/LinkBack";
-import { URI } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
@@ -28,7 +27,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${URI}/api/area/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

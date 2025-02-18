@@ -7,7 +7,6 @@ import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Area } from "../../lib/definitions";
 import AreaCard from "@/app/components/AreaCard";
-import { URI } from "@/app/lib/utils";
 import { ArrowLeft, Plus } from "lucide-react";
 import {
     Pagination,
@@ -28,7 +27,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${URI}/api/area/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -49,7 +48,7 @@ export default function Page() {
     const deleteArea = async (_id: string) => {
         setLoading(true);
 
-        await fetch(`${URI}/api/area/${_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/${_id}`, {
             method: "Delete",
             credentials: "include",
         });
@@ -58,7 +57,7 @@ export default function Page() {
             autoClose: 6000,
         });
 
-        fetch(`${URI}/api/area/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },

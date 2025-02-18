@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { URI } from "@/app/lib/utils";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
@@ -29,7 +28,7 @@ export default function LoginPage() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${URI}/login`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

@@ -1,7 +1,7 @@
 "use client";
 
 import { Materia, Profesor, TiposDocente } from "@/app/lib/definitions";
-import { URI, validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
+import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -37,7 +37,7 @@ export default function CursadoForm() {
         (async () => {
             setLoadingMaterias(true);
 
-            let res = await fetch(`${URI}/api/materia`, {
+            let res = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -56,7 +56,7 @@ export default function CursadoForm() {
                 setLoadingMaterias(false);
             }
 
-            fetch(`${URI}/api/profesor`, {
+            fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -106,7 +106,7 @@ export default function CursadoForm() {
                 throw new Error("Profesor ID null");
             }
 
-            const response = await fetch(`${URI}/api/cursado`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

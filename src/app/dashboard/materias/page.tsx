@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Materia } from "../../lib/definitions";
-import { URI } from "@/app/lib/utils";
 import { ArrowLeft, Plus } from "lucide-react";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 import {
@@ -28,7 +27,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${URI}/api/materia/conBorrado?page=${pageNumber}&limit=7`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=7`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -49,7 +48,7 @@ export default function Page() {
     const deleteMateria = async (_id: string) => {
         setLoading(false);
 
-        await fetch(`${URI}/api/materia/${_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${_id}`, {
             method: "Delete",
             credentials: "include",
         });
@@ -58,7 +57,7 @@ export default function Page() {
             autoClose: 6000,
         });
 
-        fetch(`${URI}/api/materia/conBorrado`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado`, {
             headers: {
                 "Content-Type": "application/json",
             },

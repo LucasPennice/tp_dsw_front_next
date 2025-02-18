@@ -1,7 +1,7 @@
 "use client";
 
 import { TiposDocente } from "@/app/lib/definitions";
-import { URI, validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
+import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link.js";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -41,7 +41,7 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${URI}/api/cursado/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",

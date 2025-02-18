@@ -1,6 +1,5 @@
 "use client";
 
-import { URI } from "@/app/lib/utils";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -19,7 +18,7 @@ export default function Component() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${URI}/api/review?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -40,7 +39,7 @@ export default function Component() {
     const deleteReview = async (_id: string) => {
         setLoading(true);
 
-        await fetch(`${URI}/api/review/${_id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/review/${_id}`, {
             method: "Delete",
             credentials: "include",
         });
@@ -49,7 +48,7 @@ export default function Component() {
             autoClose: 6000,
         });
 
-        fetch(`${URI}/api/review?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=6`, {
             headers: {
                 "Content-Type": "application/json",
             },
