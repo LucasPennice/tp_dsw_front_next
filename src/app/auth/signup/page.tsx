@@ -7,17 +7,15 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarIcon, EyeIcon, EyeOffIcon } from "lucide-react";
-// import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Sexo, UsuarioEnMemoria } from "@/app/lib/definitions";
 import { motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
-import { validarLegajo, validarNombreOApellido } from "@/app/lib/utils";
-import { login } from "@/authlib";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { UserInfoContext } from "@/app/layout";
+import { setLocalCookies } from "@/authlib";
 
 interface FormData {
     nombre: string;

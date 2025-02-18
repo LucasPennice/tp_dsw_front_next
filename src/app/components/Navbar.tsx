@@ -85,7 +85,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             // After that we check if the session is still valid
 
-            const unparsedResponse = await fetch(`${URI}/api/session-status`, {
+            const unparsedResponse = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/session-status`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -228,7 +228,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
         await clearCookies();
 
         // Notify the backend of the logout
-        await fetch(`${URI}/logout`, {
+        await fetch(`${process.env.NEXT_PUBLIC_URI}/logout`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
