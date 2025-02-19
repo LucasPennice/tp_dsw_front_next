@@ -67,6 +67,7 @@ export default function Page() {
                     <div className="form-group mb-3 pt-5">
                         <label htmlFor="formGroupExampleInput">Nombre</label>
                         <input
+                            data-cy="area-name-input"
                             type="text"
                             className="form-control mt-3"
                             id="formGroupExampleInput"

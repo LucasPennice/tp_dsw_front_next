@@ -27,7 +27,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=10`, {
             headers: {
                 "Content-Type": "application/json",
             },

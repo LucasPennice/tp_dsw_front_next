@@ -21,6 +21,6 @@
             "@/*": ["./src/*"]
         }
     },
-    "include": ["next-env.d.ts", "new-types.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/axios.mts"],
+    "include": ["next-env.d.ts", "new-types.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/axios.mts", "jest.setup.js"],
     "exclude": ["node_modules"]
 }

@@ -1,8 +1,6 @@
 import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { toast } from "react-toastify";
 
-const BASE_URL = "https://tp-dsw-back.onrender.com/";
-
 interface FetchResult<T> {
     loading: boolean;
     error: string | null;

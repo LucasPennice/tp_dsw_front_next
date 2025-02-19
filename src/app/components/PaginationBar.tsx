@@ -126,6 +126,7 @@ export default function NavegadorConPaginacion() {
                     {renderPageNumbers()}
                     <PaginationItem>
                         <PaginationNext
+                            data-cy="next-page"
                             onClick={(e) => {
                                 e.preventDefault();
                                 handlePageChange(Math.min(totalPages, currentPage + 1));

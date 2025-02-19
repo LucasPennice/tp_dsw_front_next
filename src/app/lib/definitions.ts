@@ -107,4 +107,10 @@ export type Usuario = {
 
 export type NotificacionReview = { id: string; mensaje: string; visto: boolean };
 
+export type AreaTesting = {
+    id: string;
+    nombre: string;
+    borradoLogico: boolean;
+};
+
 export type UsuarioEnMemoria = Omit<Usuario, "reviews" | "cursados">;

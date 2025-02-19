@@ -10,6 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import GridProfMateria from "@/app/components/GridProfMateria";
 import { useParams } from "next/navigation";
 import LinkBack from "@/app/components/LinkBack";
+import { useFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -20,19 +21,21 @@ export default function Page() {
     const idAno = params.idAno as string;
     const idMateria = params.idMateria as string;
 
-    useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         credentials: "include",
+    //     })
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setData(data.data);
+    //             setLoading(false);
+    //         });
+    // }, []);
+
+    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, setData);
 
     const profesores = data ?? [];
 
@@ -64,7 +67,7 @@ export default function Page() {
 
                 {!isLoading && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto p-6 max-w-4xl">
-                        <LinkBack route={`/ano/${idAno}/${idMateria}`} />
+                        <LinkBack route={`/ano/${idAno}/`} />
                         <header className="flex justify-between items-center py-4 bg-background">
                             <h1 className="text-4xl font-normal text-gray-800">Profesores</h1>
                         </header>

@@ -13,7 +13,6 @@ export default function Home() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 mb-14 space-y-6">
-            {/* <a href={"/profesor"}>Ir a lista profesores</a> */}
             {userInfo.auth ? (
                 <p className="text-3xl font-semibold text-gray-800 pt-8 pb-8">Hola {userInfo.user.username}</p>
             ) : (
