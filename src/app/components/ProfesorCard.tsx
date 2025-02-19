@@ -31,8 +31,8 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
                             apellido: profesor.apellido,
                             dni: profesor.dni,
                             sexo: profesor.sexo,
-                            dia: profesor.fechaNacimiento.toString().split("T")[0].split("-")[2],
-                            mes: profesor.fechaNacimiento.toString().split("T")[0].split("-")[1],
+                            dia: profesor.fechaNacimiento.toString().split("T")[0].split("-")[1],
+                            mes: profesor.fechaNacimiento.toString().split("T")[0].split("-")[2],
                             year: profesor.fechaNacimiento.toString().split("T")[0].split("-")[0],
                         },
                     }}

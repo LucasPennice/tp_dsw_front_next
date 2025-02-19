@@ -69,11 +69,6 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
     }, [isOpenReviewsBorradas]);
 
     useEffect(() => {
-        console.log(reviewsEliminadas);
-        console.log(userInfo.auth);
-    }, [reviewsEliminadas, userInfo.auth]);
-
-    useEffect(() => {
         (async () => {
             const session = await getLocalSession();
 
