@@ -50,7 +50,7 @@ export default function Page() {
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,
-                    fechaNacimiento: `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")}/${year}`,
+                    fechaNacimiento: dateFromString(`${dia}/${mes}/${year}`),
                     dni: Number(dni),
                     puntuacionGeneral: 0,
                     sexo: sexo,
