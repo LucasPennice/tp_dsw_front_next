@@ -1,6 +1,7 @@
 "use client";
 
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 import { Area } from "@/app/lib/definitions";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AnimatePresence, motion } from "framer-motion";
@@ -46,12 +47,8 @@ export default function Page() {
                 throw "Area ID null";
             }
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
                 body: JSON.stringify({
                     nombre: nombre,
                     areaId: areaId,
@@ -65,11 +62,11 @@ export default function Page() {
                 router.push("/dashboard/materias");
             } else {
                 const error = await response.json();
-                error.errors.map((err: { message: string }) => {
-                    toast.error(err.message, {
-                        autoClose: 6000,
-                    });
-                });
+                error.errors.map((err: { message: string }, index: number) => (
+                    <div key={index}>
+                        {toast.error(err.message, { autoClose: 6000 })}
+                    </div>
+                ))
             }
         } catch (error) {
             toast.error(`Ocurrió un error inesperado. ${error}`);

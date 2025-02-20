@@ -27,7 +27,7 @@ const BookIcon = () => (
 );
 
 export default function SubjectsLayout() {
-    const [data, setData] = useState<Materia[]>([]);
+    const [data, setData] = useState<Materia[] | null>(null);
     const [isLoading, setLoading] = useState(true);
 
     const params = useParams();
@@ -47,8 +47,15 @@ export default function SubjectsLayout() {
     //         });
     // }, []);
 
+    
     useFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${idAno[0]}`, setData);
 
+    useEffect(() => {
+        if (data) setLoading(false);
+    }
+    , [data]);
+
+    console.log(data);
     const materia = data ?? [];
 
     return (
@@ -64,7 +71,8 @@ export default function SubjectsLayout() {
                     </motion.div>
                 )}
 
-                {!isLoading && (
+                
+                {!isLoading && data!.length != 0 && (
                     <motion.div className="max-w-4xl mx-auto p-6">
                         <nav className="flex items-center justify-between mb-6">
                             <LinkBack route="/ano"></LinkBack>
@@ -85,6 +93,11 @@ export default function SubjectsLayout() {
                                 </Link>
                             ))}
                         </div>
+                    </motion.div>
+                )}
+                {!isLoading && data!.length == 0 && (
+                    <motion.div className="max-w-4xl text-center mx-auto p-6">
+                        <p className="text-xl font-semibold text-gray-800 mb-1 mt-5">No Existen Materias Cargadas</p>
                     </motion.div>
                 )}
             </AnimatePresence>

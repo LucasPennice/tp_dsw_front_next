@@ -13,7 +13,7 @@ import LinkBack from "@/app/components/LinkBack";
 import { useFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
-    const [data, setData] = useState<Profesor[]>([]);
+    const [data, setData] = useState<Profesor[] | null>(null);
     const [filter, setFilter] = useState("");
     const [isLoading, setLoading] = useState(true);
 
@@ -37,20 +37,19 @@ export default function Page() {
 
     useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, setData);
 
+    useEffect(() => {
+        if (data) setLoading(false);
+    }
+    , [data]);
+    
+
     const profesores = data ?? [];
 
-    if (!data)
-        return (
-            <div className="mx-auto p-6 max-w-4xl">
-                <p className=" text-xl text-center">No profile data</p>
-            </div>
-        );
 
     const filtrados = profesores.filter((p) => {
         return (p.nombre + p.apellido).toLowerCase().startsWith(filter.replace(/\s+/g, "").toLowerCase());
     });
 
-    if (!data) return <p>No profile data</p>;
 
     return (
         <>
@@ -65,7 +64,7 @@ export default function Page() {
                     </motion.div>
                 )}
 
-                {!isLoading && (
+                {!isLoading && data!.length != 0 && (
                     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto p-6 max-w-4xl">
                         <LinkBack route={`/ano/${idAno}/`} />
                         <header className="flex justify-between items-center py-4 bg-background">
@@ -73,6 +72,11 @@ export default function Page() {
                         </header>
                         <GridProfMateria profesores={filtrados} idAnio={idAno} idMateria={idMateria} />
                     </motion.section>
+                )}
+                {!isLoading && data!.length == 0 && (
+                    <motion.div className="max-w-4xl text-center mx-auto p-6">
+                        <p className="text-xl font-semibold text-gray-800 mb-1 mt-5">No Existen Materias Cargadas</p>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </>

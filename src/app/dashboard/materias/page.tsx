@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { Materia } from "../../lib/definitions";
+import { Materia, PAGINATION_LIMIT } from "../../lib/definitions";
 import { ArrowLeft, Plus } from "lucide-react";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 import {
@@ -27,7 +27,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=7`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -126,7 +126,7 @@ export default function Page() {
                             <div className="button-container">
                                 <Link
                                     href={`materias/add`}
-                                    className="btn bg-blue-400 text-slate-50 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-102 hover:text-stale-800 hover:shadow-sm hover:border-slate-200">
+                                    className="btn bg-blue-500 text-slate-50 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-102 hover:text-stale-800 hover:shadow-sm hover:border-slate-200">
                                     <Plus />
                                     Nueva Materia
                                 </Link>

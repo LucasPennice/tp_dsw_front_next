@@ -2,29 +2,34 @@ import { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { toast } from "react-toastify";
 
 interface FetchResult<T> {
-    loading: boolean;
+//     loading: boolean;
     error: string | null;
 }
 
+export const appFetch = (endpoint: string | URL | Request, init?: RequestInit | undefined): Promise<Response>  => {
+    return fetch(endpoint, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        cache: "no-store",
+        method: "GET",
+        ...init,
+    });
+};
+
 export function useFetch<T>(endpoint: string, setter: Dispatch<SetStateAction<T>>, runAfterTrue: boolean[] = []): FetchResult<T> {
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (runAfterTrue.includes(false)) return;
         (async () => {
-            setLoading(true);
+            // setLoading(true);
             setError(null);
-
+            
             try {
-                const res = await fetch(endpoint, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                    cache: "no-store",
-                });
-
+                const res = await appFetch(endpoint);
                 const response = await res.json();
 
                 if (!res.ok) throw new Error(response.message || "Error fetching data");
@@ -34,10 +39,12 @@ export function useFetch<T>(endpoint: string, setter: Dispatch<SetStateAction<T>
                 setError(err.message);
                 toast.error(err.message);
             } finally {
-                setLoading(false);
+                // setLoading(false);
             }
         })();
+
     }, [...runAfterTrue]);
 
-    return { loading, error };
+    return { error };
 }
+

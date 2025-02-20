@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { Area } from "../../lib/definitions";
+import { Area, PAGINATION_LIMIT } from "../../lib/definitions";
 import AreaCard from "@/app/components/AreaCard";
 import { ArrowLeft, Plus } from "lucide-react";
 import {
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/pagination";
 import LinkBack from "@/app/components/LinkBack";
 
+
 export default function Page() {
     const [data, setData] = useState<Area[]>([]);
     const [isLoading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=10`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -57,7 +58,7 @@ export default function Page() {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },

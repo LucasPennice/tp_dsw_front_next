@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "react-toastify";
 import { ArrowLeft } from "lucide-react";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function CursadoForm() {
     const [loadingProfesores, setLoadingProfesores] = useState(true);
@@ -37,12 +38,7 @@ export default function CursadoForm() {
         (async () => {
             setLoadingMaterias(true);
 
-            let res = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            });
+            let res = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia`, {});
 
             let response = await res.json();
 

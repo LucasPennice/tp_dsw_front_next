@@ -113,4 +113,6 @@ export type AreaTesting = {
     borradoLogico: boolean;
 };
 
+export const PAGINATION_LIMIT = 10;
+
 export type UsuarioEnMemoria = Omit<Usuario, "reviews" | "cursados">;

@@ -11,6 +11,7 @@ import { Form, InputGroup, Spinner } from "react-bootstrap";
 import { toast, ToastContentProps } from "react-toastify";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const [loading, setLoading] = useState(false);
@@ -44,12 +45,8 @@ export default function Page() {
                 throw "Fecha Invalida";
             }
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,

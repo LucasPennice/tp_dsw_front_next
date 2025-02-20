@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Proyecto Full Stack con Node.js, Express, Next.js y React
 
-## Getting Started
+Este proyecto consta de un backend desarrollado con Node.js y Express y un frontend con Next.js y React.
 
-First, run the development server:
+## Requisitos previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+- [Node.js](https://nodejs.org/) (versión recomendada: LTS)
+- [npm](https://www.npmjs.com/) o [yarn](https://yarnpkg.com/) (viene con Node.js)
+- [Git](https://git-scm.com/)
+
+## Instalación y ejecución
+
+### 1. Clonar los repositorios
+
+Clona ambos repositorios en diferentes carpetas, el backend y el frontend:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/LucasPennice/TP-DSW-BACK.git backend
+git clone https://github.com/LucasPennice/tp_dsw_front_next.git frontend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instalación de dependencias
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Ejecuta estos comandos en ambas carpetas (`backend` y `frontend`):
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+cd backend
+npm install  # o yarn install
+cd ../frontend
+npm install  # o yarn install
+```
 
-## Learn More
+### 3. Configuración de variables de entorno
 
-To learn more about Next.js, take a look at the following resources:
+En cada carpeta (`backend` y `frontend`), crea un archivo `.env` basado en los archivos de ejemplo `.env.example` y configura las variables necesarias.
 
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Backend (`backend/.env`):
+```
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/tu_base_de_datos
+JWT_SECRET=tu_secreto
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Frontend (`frontend/.env.local`):
+```
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
 
-## Deploy on Vercel
+### 4. Ejecutar el proyecto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Ejecuta los siguientes comandos en terminales separadas para iniciar backend y frontend:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Iniciar el backend
+```bash
+cd backend
+npm start  # o yarn start
+```
+
+#### Iniciar el frontend
+```bash
+cd frontend
+npm run dev  # o yarn dev
+```
+
+### 5. Acceso a la aplicación
+
+- **Backend**: `http://localhost:3000`
+- **Frontend**: `http://localhost:3001`
+
+## Scripts disponibles
+
+Cada parte del proyecto tiene scripts definidos en `package.json`:
+
+### Backend (`backend/package.json`):
+- `npm start`: Inicia el servidor en modo producción
+- `npm run dev`: Inicia el servidor en modo desarrollo con nodemon
+
+### Frontend (`frontend/package.json`):
+- `npm run dev`: Inicia el frontend en modo desarrollo
+- `npm run build`: Construye la aplicación para producción
+- `npm start`: Ejecuta la aplicación en modo producción
+
+
+

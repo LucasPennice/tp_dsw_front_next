@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReviewCard from "../components/ReviewCard";
-import { Review } from "../lib/definitions";
+import { PAGINATION_LIMIT, Review } from "../lib/definitions";
 
 export default function Component() {
     const [data, setData] = useState<Review[] | []>([]);
@@ -18,7 +18,7 @@ export default function Component() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -48,7 +48,7 @@ export default function Component() {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },

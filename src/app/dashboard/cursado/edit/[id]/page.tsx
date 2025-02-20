@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "react-toastify";
 import { ArrowLeft } from "lucide-react";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const searchParams = useSearchParams();
@@ -41,12 +42,8 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/${id}`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/${id}`, {
                 method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
                 body: JSON.stringify({
                     diaCursado: diaCursado,
                     horaInicio: horaInicio,

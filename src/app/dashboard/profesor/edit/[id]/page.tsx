@@ -12,6 +12,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { toast } from "react-toastify";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const params = useParams();
@@ -51,12 +52,8 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${id}`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${id}`, {
                 method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,

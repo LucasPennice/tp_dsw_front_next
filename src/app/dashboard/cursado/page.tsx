@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { Cursado } from "../../lib/definitions";
+import { Cursado, PAGINATION_LIMIT } from "../../lib/definitions";
 import LinkBack from "@/app/components/LinkBack";
 
 export default function Page() {
@@ -19,7 +19,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -49,7 +49,7 @@ export default function Page() {
             autoClose: 5000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },

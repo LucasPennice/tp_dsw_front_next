@@ -43,6 +43,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
     const router = useRouter();
 
     useFetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user.id}`, setReviewsEliminadas, [userInfo.auth]);
+    console.log(reviewsEliminadas)
 
     const updateReviews = useRef(false);
 
@@ -246,6 +247,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                     </div>
                     {userInfo.auth ? (
                         <div className="flex items-center space-x-4">
+                            {/* {reviewsEliminadas && reviewsEliminadas.length != 0 && ( */}
                             {reviewsEliminadas && reviewsEliminadas.filter((r) => !r.visto).length != 0 && (
                                 <DropdownMenu open={isOpenReviewsBorradas} onOpenChange={setIsOpenReviewsBorradas}>
                                     <DropdownMenuTrigger asChild>
@@ -262,9 +264,10 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                             ?.filter((r) => !r.visto)
                                             .map((r, idx) => {
                                                 return (
-                                                    <DropdownMenuItem className="flex flex-column text-left" key={idx}>
-                                                        <h5>Un administrador ha eliminada tu siguiente review:</h5>
-                                                        <p>"{r.mensaje}"</p>
+                                                    <DropdownMenuItem className="flex flex-column items-start text-left flex-wrap p-3 border-b  border-slate-200 " key={idx}>
+                                                        <h5 className="text-xs">La siguiente review ha sido eliminada por un administrador:</h5>
+                                                        <p className="italic mt-2">"{r.mensaje}"</p>
+                                                        <div className="w-full h-1 " ></div>
                                                     </DropdownMenuItem>
                                                 );
                                             })}

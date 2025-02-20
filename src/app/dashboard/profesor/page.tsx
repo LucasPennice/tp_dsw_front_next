@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ProfesorCard from "../../components/ProfesorCard";
-import { Profesor } from "../../lib/definitions";
+import { PAGINATION_LIMIT, Profesor } from "../../lib/definitions";
 import { ArrowLeft, Plus } from "lucide-react";
 import {
     Pagination,
@@ -27,7 +27,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -57,7 +57,7 @@ export default function Page() {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=6`, {
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
             headers: {
                 "Content-Type": "application/json",
             },

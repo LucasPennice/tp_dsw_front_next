@@ -35,6 +35,7 @@ export default function Component() {
     useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, setProfesor);
     useFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}`, setMateria);
 
+
     // useEffect(() => {
     //     // fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
     //     //     headers: {
@@ -69,13 +70,13 @@ export default function Component() {
     //             setMateria(data.data);
     //         });
     // }, []);
-
-    const sortedReviews = data.toSorted((reviewA, reviewB) => {
+    const sortedReviews = data!.toSorted((reviewA, reviewB) => {
         if (order === Orden.mejorPuntuacion) return reviewB.puntuacion - reviewA.puntuacion;
         if (order === Orden.peorPuntuacion) return reviewA.puntuacion - reviewB.puntuacion;
 
         return new Date(reviewB.fecha).getTime() - new Date(reviewA.fecha).getTime();
     });
+
 
     return (
         <div className="container max-w-6xl mx-auto px-4 py-8">
@@ -110,6 +111,7 @@ export default function Component() {
                 {profesor == null ? "Cargando..." : `Reviews de ${profesor.nombre} ${profesor.apellido}`}
             </h1>
 
+            
             <div className="flex gap-4 mb-8 flex-wrap">
                 {/* @ts-ignore */}
                 <Button variant={order === Orden.todos ? "default" : "outline"} onClick={() => setOrder(Orden.todos)}>
@@ -156,6 +158,8 @@ export default function Component() {
                     </Card>
                 ))}
             </div>
+              
+           
         </div>
     );
 }
