@@ -3,10 +3,10 @@
 import ConfirmDeleteModal from "@/app/components/ConfirmDeleteModal";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Pencil, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Spinner, Table } from "react-bootstrap";
+import { Button, Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Cursado, PAGINATION_LIMIT } from "../../lib/definitions";
 import LinkBack from "@/app/components/LinkBack";
@@ -213,12 +213,12 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
                         },
                     }}
                     className="btn btn-outline-dark mb-2 md:mb-0 cus-mr-10">
-                    Edit
+                    <Pencil className="h-4 w-4" />
                 </Link>
                 {
                     <motion.div
-                        animate={{ width: isLoading ? 50 : 85 }}
-                        className={`btn cus-mr-10 mb-2 transition-all ${cursado.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
+                        animate={{ width: isLoading ? 50 : 45 }}
+                        className={`btn cus-mr-10 mb-2  transition-all ${cursado.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                         onClick={async () => {
                             if (cursado.borradoLogico == true) {
                                 toast.error(`La materia ya fue eliminada`, {
@@ -247,8 +247,8 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
                             </motion.div>
                         )}
                         {!isLoading && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                Delete
+                            <motion.div className="d-flex justify-center items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                                 <Trash2 className="h-4 w-4" />
                             </motion.div>
                         )}
                     </motion.div>

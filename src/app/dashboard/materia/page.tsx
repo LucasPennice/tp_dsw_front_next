@@ -4,7 +4,7 @@ import LinkBack from "@/app/components/LinkBack";
 import { appFetch } from "@/app/hooks/useFetch";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
@@ -190,11 +190,12 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
                         },
                     }}
                     className="btn btn-outline-dark mb-2 cus-mr-10">
-                    Edit
+                    <Pencil className="h-4 w-4" />
+
                 </Link>
                 {
                     <motion.div
-                        animate={{ width: isLoading ? 50 : 85 }}
+                        animate={{ width: isLoading ? 50 : 45 }}
                         className={`btn cus-mr-10 mb-2 transition-all ${materia.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                         onClick={async () => {
                             if (materia.borradoLogico == true) {
@@ -219,8 +220,8 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
                             </motion.div>
                         )}
                         {!isLoading && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                Delete
+                            <motion.div className="d-flex justify-center items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                                 <Trash2 className="h-4 w-4" />
                             </motion.div>
                         )}
                     </motion.div>

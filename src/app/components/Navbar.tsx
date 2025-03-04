@@ -43,7 +43,9 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
     const router = useRouter();
 
     useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user._id}`, setReviewsEliminadas, [userInfo.auth]);
-
+    useEffect(() => {
+        console.log(userInfo.user)
+    }, [userInfo.user]);
     const updateReviews = useRef(false);
 
     useEffect(() => {

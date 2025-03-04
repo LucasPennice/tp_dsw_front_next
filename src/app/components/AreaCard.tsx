@@ -5,6 +5,7 @@ import { Spinner } from "react-bootstrap";
 import { Area } from "../lib/definitions.js";
 import { toast } from "react-toastify";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+import { Pencil, Trash2 } from "lucide-react";
 
 function AreaCard({ area, deleteArea, idx }: { area: Area; deleteArea: (_id: string) => Promise<void>; idx: number }) {
     const [isLoading, setLoading] = useState(false);
@@ -26,10 +27,11 @@ function AreaCard({ area, deleteArea, idx }: { area: Area; deleteArea: (_id: str
                         },
                     }}
                     className="btn btn-outline-dark mb-2 cus-mr-10">
-                    Edit
+                    <Pencil className="h-4 w-4" />
+
                 </Link>
                 <motion.div
-                    animate={{ width: isLoading ? 50 : 85 }}
+                    animate={{ width: isLoading ? 50 : 45 }}
                     className={`btn cus-mr-10 mb-2 transition-all ${area.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"}`}
                     onClick={async () => {
                         if (area.borradoLogico == true) {
@@ -48,8 +50,8 @@ function AreaCard({ area, deleteArea, idx }: { area: Area; deleteArea: (_id: str
                         </motion.div>
                     )}
                     {!isLoading && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            Delete
+                        <motion.div className="d-flex justify-center items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <Trash2 className="h-4 w-4" />
                         </motion.div>
                     )}
                 </motion.div>

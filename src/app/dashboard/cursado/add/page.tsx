@@ -27,6 +27,15 @@ export default function CursadoForm() {
 
     const tipos: TiposDocente[] = [TiposDocente.Teoria, TiposDocente.Practica];
 
+     const dias = [
+        { id: "lunes", nombre: "Lunes" },
+        { id: "martes", nombre: "Martes" },
+        { id: "miércoles", nombre: "Miércoles" },
+        { id: "jueves", nombre: "Jueves" },
+        { id: "viernes", nombre: "Viernes" },
+        { id: "sábado", nombre: "Sábado" },
+    ]
+
     const router = useRouter();
     useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/materia`, setMateriasData);
     useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor`, setProfesoresData);
@@ -102,17 +111,29 @@ export default function CursadoForm() {
                     addCursado();
                 }}
                 className="space-y-4">
-                <div className="form-group">
-                    <label htmlFor="diaCursado">Dia Cursado</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="diaCursado"
-                        placeholder="lunes, martes, etc"
-                        value={diaCursado}
-                        onChange={(e) => setDiaCursado(e.target.value)}
-                    />
+
+
+                <div className="grid grid-cols-4 gap-2">
+                    <label htmlFor="diaCursado" className="col-span-4">
+                        Dia Cursado
+                    </label>
+                    <div className="col-span-4">
+                        <Select onValueChange={(v) => setDiaCursado(v)} value={diaCursado}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Seleccionar un día" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {dias.map((dia) => (
+                            <SelectItem key={dia.id} value={dia.id}>
+                                {dia.nombre}
+                            </SelectItem>
+                            ))}
+                        </SelectContent>
+                        </Select>
+                    </div>
                 </div>
+
+                
 
                 <div className="form-group">
                     <label htmlFor="horaInicio">Hora Inicio</label>

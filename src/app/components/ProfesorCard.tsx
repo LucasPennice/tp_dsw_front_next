@@ -5,6 +5,7 @@ import { Spinner } from "react-bootstrap";
 import { Profesor } from "../lib/definitions.js";
 import { toast } from "react-toastify";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { Pencil, Trash2 } from "lucide-react";
 
 function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; deleteProfesor: (_id: string) => Promise<void>; idx: number }) {
     const [isLoading, setLoading] = useState(false);
@@ -37,10 +38,10 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
                         },
                     }}
                     className="btn btn-outline-dark mb-2 cus-mr-10">
-                    Edit
+                    <Pencil className="h-4 w-4" />
                 </Link>
                 <motion.div
-                    animate={{ width: isLoading ? 50 : 85 }}
+                    animate={{ width: isLoading ? 50 : 45 }}
                     className={`btn cus-mr-10 mb-2 transition-all ${profesor.borradoLogico == false ? "btn-outline-danger" : "bg-gray-200 text-gray-300"} `}
                     onClick={async () => {
                         if (profesor.borradoLogico == true) {
@@ -71,8 +72,8 @@ function ProfesorCard({ profesor, deleteProfesor, idx }: { profesor: Profesor; d
                         </motion.div>
                     )}
                     {!isLoading && (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            Delete
+                        <motion.div className="d-flex justify-center items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <Trash2 className="h-4 w-4" />
                         </motion.div>
                     )}
                 </motion.div>
