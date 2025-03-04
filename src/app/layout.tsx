@@ -27,7 +27,7 @@ export const ReviewSheetContext = createContext<{ reviewModalOpen: boolean; setR
 export type UserInfo = { auth: boolean; user: UsuarioEnMemoria };
 
 export const usuarioEnMemoriaDefault: UsuarioEnMemoria = {
-    id: "",
+    _id: "",
     legajo: "",
     nombre: "Usuario",
     apellido: "",

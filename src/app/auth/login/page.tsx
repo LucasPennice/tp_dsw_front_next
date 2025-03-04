@@ -37,15 +37,13 @@ export default function LoginPage() {
                 }),
             });
 
-            let res = await response.data.json();
-
             if (response.success) {
-                setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
-                await setLocalCookies(res.data as UsuarioEnMemoria);
-                toast.success(res.message);
+                setUserInfo({ auth: true, user: response.data as UsuarioEnMemoria });
+                await setLocalCookies(response.data as UsuarioEnMemoria);
+                toast.success(response.message);
                 router.push("/");
             } else {
-                toast.error(res.message);
+                toast.error(response.message);
             }
         } catch (error) {
             toast.error(`Ocurrió un error inesperado. ${error}`);

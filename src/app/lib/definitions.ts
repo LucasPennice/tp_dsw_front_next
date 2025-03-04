@@ -93,7 +93,7 @@ export type Review = {
 };
 
 export type Usuario = {
-    id: string;
+    _id: string;
     legajo: string;
     nombre: string;
     apellido: string;
@@ -122,5 +122,5 @@ export type ExpressResponse_Migration<T> = {
     message: string;
     data: T | null;
     totalPages: number | undefined;
-    error?: [{}];
+    error?: [{ message: string }];
 };

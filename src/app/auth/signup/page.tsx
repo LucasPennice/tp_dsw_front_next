@@ -83,18 +83,16 @@ export default function SignupPage() {
                 }),
             });
 
-            let res = await response.data.json();
-
             if (response.success) {
-                setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
+                setUserInfo({ auth: true, user: response.data as UsuarioEnMemoria });
 
-                await setLocalCookies(res.data);
+                await setLocalCookies(response.data);
 
-                toast.success(res.message);
+                toast.success(response.message);
 
                 router.push("/");
             } else {
-                res.errors.map((err: { message: string }) => {
+                response.error!.map((err) => {
                     toast.error(err.message, {
                         autoClose: 6000,
                     });

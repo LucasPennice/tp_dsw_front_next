@@ -42,7 +42,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
     const router = useRouter();
 
-    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user.id}`, setReviewsEliminadas, [userInfo.auth]);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user._id}`, setReviewsEliminadas, [userInfo.auth]);
 
     const updateReviews = useRef(false);
 
@@ -52,7 +52,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
             if (reviewsEliminadas?.length == 0) return;
             if (updateReviews.current) return;
             updateReviews.current = true;
-            const id = userInfo.user.id;
+            const id = userInfo.user._id;
             const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario/${id}`, {
                 method: "PATCH",
                 body: JSON.stringify({
@@ -124,7 +124,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 body: JSON.stringify({
                     descripcion: review,
                     puntuacion,
-                    usuarioId: userInfo.user.id,
+                    usuarioId: userInfo.user._id,
                     anio: year![0],
                     profesorId,
                     materiaId,
@@ -132,13 +132,11 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 }),
             });
 
-            let res = await response.data.json();
-
             if (response.success) {
-                toast.success(res.message);
+                toast.success(response.message);
                 setReviewModalOpen(false);
             } else {
-                toast.error(res.message);
+                toast.error(response.message);
                 setReviewModalOpen(false);
             }
         } catch (error) {
@@ -154,11 +152,9 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingMaterias(true);
 
-            let res = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${year}`);
+            let response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${year}`);
 
-            let response = await res.data.json();
-
-            if (res.success) {
+            if (response.success) {
                 toast.success(response.message);
                 setMateriasPorAno(response.data);
                 setLoadingMaterias(false);
@@ -176,10 +172,9 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingProfesores(true);
 
-            let res = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`);
-            let response = await res.data.json();
+            let response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`);
 
-            if (res.success) {
+            if (response.success) {
                 setProfesores(response.data);
                 setLoadingProfesores(false);
                 toast.success(response.message);
