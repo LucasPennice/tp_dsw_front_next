@@ -20,7 +20,7 @@ export default function Component() {
 
     useEffect(() => {
         appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((res) => res.data.json())
+            .then((res) => res.data)
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -28,7 +28,6 @@ export default function Component() {
             });
     }, [pageNumber]);
 
-    if (!data) return <p>No hay reviews disponibles.</p>;
 
     const reviews = data ?? [];
 

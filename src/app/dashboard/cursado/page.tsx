@@ -21,15 +21,14 @@ export default function Page() {
 
     useEffect(() => {
         appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
-                setTotalPages(data.totalPages);
+                setTotalPages(data.totalPages!);
             });
     }, [pageNumber]);
 
-    if (!data) return <p>No hay cursados</p>;
+    // if (!data) return <p>No hay cursados</p>;
 
     const cursados = data ?? [];
 
@@ -44,13 +43,13 @@ export default function Page() {
             autoClose: 5000,
         });
 
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((res) => res.data.json())
-            .then((data) => {
+        const data = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            // .then((data) => {
                 setData(data.data);
                 setLoading(false);
-                setTotalPages(data.totalPages);
-            });
+                setTotalPages(data.totalPages!);
+            // });
+        console.log(data)
     };
 
     const handlePageChange = (page: number) => {

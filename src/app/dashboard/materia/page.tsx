@@ -29,11 +29,10 @@ export default function Page() {
 
     useEffect(() => {
         appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
-                setTotalPages(data.totalPages);
+                setTotalPages(data.totalPages!);
             });
     }, [pageNumber]);
 
@@ -52,8 +51,13 @@ export default function Page() {
             autoClose: 6000,
         });
 
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado`)
-            .then((res) => res.data.json())
+        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+        })
+            .then((res) => res.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
