@@ -74,9 +74,8 @@ export default function SignupPage() {
         try {
             setLoading(true);
 
-            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/signup`, {
                 method: "POST",
-
                 body: JSON.stringify({
                     ...formData,
                     fechaNacimiento: `${formData.fechaNacimiento!.getFullYear()}/${formData.fechaNacimiento!.getMonth() < 10 ? "0" : ""}${formData.fechaNacimiento!.getMonth()}/${formData.fechaNacimiento!.getDay() < 10 ? "0" : ""}${formData.fechaNacimiento!.getDay()}`,
@@ -85,11 +84,8 @@ export default function SignupPage() {
 
             if (response.success) {
                 setUserInfo({ auth: true, user: response.data as UsuarioEnMemoria });
-
-                await setLocalCookies(response.data);
-
+                await setLocalCookies(response.data as UsuarioEnMemoria);
                 toast.success(response.message);
-
                 router.push("/");
             } else {
                 response.error!.map((err) => {
