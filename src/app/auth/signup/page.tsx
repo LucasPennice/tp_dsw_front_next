@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { UserInfoContext } from "@/app/layout";
 import { setLocalCookies } from "@/authlib";
+import { appFetch } from "@/app/hooks/useFetch";
 
 interface FormData {
     nombre: string;
@@ -73,20 +74,18 @@ export default function SignupPage() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario`, {
-                // const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/signup`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+
                 body: JSON.stringify({
                     ...formData,
                     fechaNacimiento: `${formData.fechaNacimiento!.getFullYear()}/${formData.fechaNacimiento!.getMonth() < 10 ? "0" : ""}${formData.fechaNacimiento!.getMonth()}/${formData.fechaNacimiento!.getDay() < 10 ? "0" : ""}${formData.fechaNacimiento!.getDay()}`,
                 }),
-                credentials: "include",
             });
 
-            let res = await response.json();
+            let res = await response.data.json();
 
-            if (response.ok) {
+            if (response.success) {
                 setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
 
                 await setLocalCookies(res.data);

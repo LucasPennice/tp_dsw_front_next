@@ -10,6 +10,7 @@ import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Cursado, PAGINATION_LIMIT } from "../../lib/definitions";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const [data, setData] = useState<Cursado[]>([]);
@@ -19,13 +20,8 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -40,22 +36,16 @@ export default function Page() {
     const deleteCursado = async (_id: string) => {
         setLoading(true);
 
-        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/${_id}`, {
+        await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/${_id}`, {
             method: "Delete",
-            credentials: "include",
         });
 
         toast.success("Cursado borrado exitosamente", {
             autoClose: 5000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);

@@ -116,3 +116,11 @@ export type AreaTesting = {
 export const PAGINATION_LIMIT = 10;
 
 export type UsuarioEnMemoria = Omit<Usuario, "reviews" | "cursados">;
+
+export type ExpressResponse_Migration<T> = {
+    success: boolean;
+    message: string;
+    data: T | null;
+    totalPages: number | undefined;
+    error?: [{}];
+};

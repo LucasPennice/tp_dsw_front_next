@@ -41,10 +41,6 @@ export default function Page() {
         try {
             setLoading(true);
 
-            if (dateFromString(`${dia}/${mes}/${year}`) > new Date()) {
-                throw "Fecha Invalida";
-            }
-
             const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -57,15 +53,15 @@ export default function Page() {
                 }),
             });
 
-            if (response.ok) {
-                toast.success("Profesor agregado exitosamente", {
+            if (response.success) {
+                toast.success(response.message, {
                     autoClose: 6000,
                 });
                 router.push("/dashboard/profesor");
             } else {
-                const error = await response.json();
-                // @ts-ignore
-                error.errors.map((err: { message: string }) => {
+                //@ts-ignore
+                response.error.map((err) => {
+                    //@ts-ignore
                     toast.error(err.message, {
                         autoClose: 6000,
                     });

@@ -10,7 +10,7 @@ import { ArrowLeft, StarIcon } from "lucide-react";
 import { Materia, Profesor, Review } from "@/app/lib/definitions";
 import { useParams } from "next/navigation";
 import LinkBack from "@/app/components/LinkBack";
-import { useFetch } from "@/app/hooks/useFetch";
+import { useFetchForGet } from "@/app/hooks/useFetch";
 
 enum Orden {
     todos = "Todos",
@@ -31,52 +31,16 @@ export default function Component() {
     const [profesor, setProfesor] = useState<Profesor | null>(null);
     const [materia, setMateria] = useState<Materia | null>(null);
 
-    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, setData);
-    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, setProfesor);
-    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}`, setMateria);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, setData);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, setProfesor);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}`, setMateria);
 
-
-    // useEffect(() => {
-    //     // fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, {
-    //     //     headers: {
-    //     //         "Content-Type": "application/json",
-    //     //     },
-    //     //     credentials: "include",
-    //     // })
-    //     //     .then((res) => res.json())
-    //     //     .then((data) => {
-    //     //         setData(data.data);
-    //     //     });
-
-    //     fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         credentials: "include",
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setProfesor(data.data);
-    //         });
-
-    //     fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}`, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         credentials: "include",
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setMateria(data.data);
-    //         });
-    // }, []);
     const sortedReviews = data!.toSorted((reviewA, reviewB) => {
         if (order === Orden.mejorPuntuacion) return reviewB.puntuacion - reviewA.puntuacion;
         if (order === Orden.peorPuntuacion) return reviewA.puntuacion - reviewB.puntuacion;
 
         return new Date(reviewB.fecha).getTime() - new Date(reviewA.fecha).getTime();
     });
-
 
     return (
         <div className="container max-w-6xl mx-auto px-4 py-8">
@@ -111,7 +75,6 @@ export default function Component() {
                 {profesor == null ? "Cargando..." : `Reviews de ${profesor.nombre} ${profesor.apellido}`}
             </h1>
 
-            
             <div className="flex gap-4 mb-8 flex-wrap">
                 {/* @ts-ignore */}
                 <Button variant={order === Orden.todos ? "default" : "outline"} onClick={() => setOrder(Orden.todos)}>
@@ -158,8 +121,6 @@ export default function Component() {
                     </Card>
                 ))}
             </div>
-              
-           
         </div>
     );
 }

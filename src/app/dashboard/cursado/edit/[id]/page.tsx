@@ -1,14 +1,11 @@
 "use client";
 
 import { TiposDocente } from "@/app/lib/definitions";
-import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
-import Link from "next/link.js";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-toastify";
-import { ArrowLeft } from "lucide-react";
 import LinkBack from "@/app/components/LinkBack";
 import { appFetch } from "@/app/hooks/useFetch";
 
@@ -55,14 +52,15 @@ export default function Page() {
                 }),
             });
 
-            if (response.ok) {
-                toast.success("Cursado Modificado correctamente", {
-                    autoClose: 5000,
+            if (response.success) {
+                toast.success(response.message, {
+                    autoClose: 6000,
                 });
                 router.push("/dashboard/cursado");
             } else {
-                const error = await response.json();
-                error.errors.map((err: { message: string }) => {
+                //@ts-ignore
+                response.error.map((err) => {
+                    //@ts-ignore
                     toast.error(err.message, {
                         autoClose: 6000,
                     });
@@ -72,8 +70,6 @@ export default function Page() {
             toast.error(`Ocurrió un error inesperado. ${error}`, {
                 autoClose: 5000,
             });
-        } finally {
-            setLoading(false);
         }
     };
 

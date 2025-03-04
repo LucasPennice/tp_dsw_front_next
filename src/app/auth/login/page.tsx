@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { setLocalCookies } from "../../../authlib";
 import { Usuario, UsuarioEnMemoria } from "@/app/lib/definitions";
 import { UserInfoContext } from "@/app/layout";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -28,19 +29,17 @@ export default function LoginPage() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/login`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/login`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     username: user,
                     password: pass,
                 }),
-                credentials: "include",
             });
 
-            let res = await response.json();
+            let res = await response.data.json();
 
-            if (response.ok) {
+            if (response.success) {
                 setUserInfo({ auth: true, user: res.data as UsuarioEnMemoria });
                 await setLocalCookies(res.data as UsuarioEnMemoria);
                 toast.success(res.message);

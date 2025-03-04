@@ -8,6 +8,7 @@ import { Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ReviewCard from "../components/ReviewCard";
 import { PAGINATION_LIMIT, Review } from "../lib/definitions";
+import { appFetch } from "../hooks/useFetch";
 
 export default function Component() {
     const [data, setData] = useState<Review[] | []>([]);
@@ -18,13 +19,8 @@ export default function Component() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -39,22 +35,16 @@ export default function Component() {
     const deleteReview = async (_id: string) => {
         setLoading(true);
 
-        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/review/${_id}`, {
+        await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review/${_id}`, {
             method: "Delete",
-            credentials: "include",
         });
 
         toast.success("Review borrada exitosamente", {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -94,7 +84,7 @@ export default function Component() {
                 {/* <AnimatePresence> */}
                 <h2 className="text-4xl mb-6 font-semibold">Dashboard</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Link href="/dashboard/materias">
+                    <Link href="/dashboard/materia">
                         <div className="relative h-52 rounded-2xl border-2 border-gray-200 overflow-hidden group transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:border-blue-500">
                             <div className="absolute inset-0 bg-slate-10 rounded-lg p-6 flex items-center justify-center flex-col ">
                                 <h2 className="text-4xl font-semibold text-gray-700 group-hover:text-blue-600 transition-colors duration-300">

@@ -1,8 +1,10 @@
 export const dateFromString = (input: string): Date => {
     const [day, month, year] = input.split("/").map(Number);
 
-    // Months are 0-indexed in JavaScript Date object
-    return new Date(year, month - 1, day);
+    const date = new Date(year, month - 1, day);
+
+    if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) return date;
+    return new Date(1000, 0, 1);
 };
 
 function validarHora(hora: string): boolean {

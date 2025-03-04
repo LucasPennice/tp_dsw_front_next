@@ -18,7 +18,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import LinkBack from "@/app/components/LinkBack";
-
+import { appFetch, useFetchForGet } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const [data, setData] = useState<Area[]>([]);
@@ -28,13 +28,8 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -49,22 +44,16 @@ export default function Page() {
     const deleteArea = async (_id: string) => {
         setLoading(true);
 
-        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/${_id}`, {
+        await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/area/${_id}`, {
             method: "Delete",
-            credentials: "include",
         });
 
         toast.success("Area borrada exitosamente", {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/area/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setLoading(false);
                 setData(data.data);

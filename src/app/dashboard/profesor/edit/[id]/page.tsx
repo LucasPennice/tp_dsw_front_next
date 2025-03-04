@@ -1,18 +1,15 @@
 "use client";
 
 import { Sexo } from "@/app/lib/definitions";
-import { validarDni } from "@/app/lib/utils";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link.js";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
 import { toast } from "react-toastify";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LinkBack from "@/app/components/LinkBack";
 import { appFetch } from "@/app/hooks/useFetch";
+import { dateFromString } from "@/app/lib/utils";
 
 export default function Page() {
     const params = useParams();
@@ -57,21 +54,21 @@ export default function Page() {
                 body: JSON.stringify({
                     nombre: nombre,
                     apellido: apellido,
-                    fechaNacimiento: `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")}/${year}`,
+                    fechaNacimiento: dateFromString(`${dia}/${mes}/${year}`),
                     dni: Number(dni),
                     sexo: sexo,
                 }),
             });
 
-            if (response.ok) {
-                toast.success("Profesor modificado correctamente", {
+            if (response.success) {
+                toast.success(response.message, {
                     autoClose: 6000,
                 });
                 router.push("/dashboard/profesor");
             } else {
-                const error = await response.json();
-                // @ts-ignore
-                error.errors.map((err: { message: string }) => {
+                //@ts-ignore
+                response.error.map((err) => {
+                    //@ts-ignore
                     toast.error(err.message, {
                         autoClose: 6000,
                     });

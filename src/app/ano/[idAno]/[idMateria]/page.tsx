@@ -10,7 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import GridProfMateria from "@/app/components/GridProfMateria";
 import { useParams } from "next/navigation";
 import LinkBack from "@/app/components/LinkBack";
-import { useFetch } from "@/app/hooks/useFetch";
+import { useFetchForGet } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[] | null>(null);
@@ -21,35 +21,17 @@ export default function Page() {
     const idAno = params.idAno as string;
     const idMateria = params.idMateria as string;
 
-    // useEffect(() => {
-    //     fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         credentials: "include",
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setData(data.data);
-    //             setLoading(false);
-    //         });
-    // }, []);
-
-    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, setData);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, setData);
 
     useEffect(() => {
         if (data) setLoading(false);
-    }
-    , [data]);
-    
+    }, [data]);
 
     const profesores = data ?? [];
-
 
     const filtrados = profesores.filter((p) => {
         return (p.nombre + p.apellido).toLowerCase().startsWith(filter.replace(/\s+/g, "").toLowerCase());
     });
-
 
     return (
         <>

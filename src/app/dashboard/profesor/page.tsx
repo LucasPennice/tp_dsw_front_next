@@ -18,6 +18,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -27,13 +28,8 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -48,22 +44,16 @@ export default function Page() {
     const deleteProfesor = async (_id: string) => {
         setLoading(true);
 
-        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${_id}`, {
+        await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${_id}`, {
             method: "Delete",
-            credentials: "include",
         });
 
         toast.success("Profesor borrado exitosamente", {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);

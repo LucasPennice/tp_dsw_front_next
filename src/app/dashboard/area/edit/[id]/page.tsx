@@ -3,8 +3,6 @@
 import LinkBack from "@/app/components/LinkBack";
 import { appFetch } from "@/app/hooks/useFetch";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link.js";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
@@ -35,13 +33,18 @@ export default function Page() {
                 }),
             });
 
-            if (response.ok) {
-                toast.success("Area modificado correctamente");
+            if (response.success) {
+                toast.success(response.message, {
+                    autoClose: 6000,
+                });
                 router.push("/dashboard/area");
             } else {
-                const error = await response.json();
-                toast.error(error.errors[0].message, {
-                    autoClose: 6000,
+                //@ts-ignore
+                response.error.map((err) => {
+                    //@ts-ignore
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
                 });
             }
         } catch (error) {

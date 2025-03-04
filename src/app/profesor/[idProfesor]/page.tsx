@@ -11,6 +11,7 @@ import { Profesor, Review } from "@/app/lib/definitions";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 enum Orden {
     todos = "Todos",
@@ -27,24 +28,14 @@ export default function Component() {
     const [profesor, setProfesor] = useState<Profesor | null>(null);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviews`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviews`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
             });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setProfesor(data.data);
             });

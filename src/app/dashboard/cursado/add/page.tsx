@@ -1,22 +1,17 @@
 "use client";
 
 import { Materia, Profesor, TiposDocente } from "@/app/lib/definitions";
-import { validarAnio, validarComision, validarDiaSemana, validarHora } from "@/app/lib/utils";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-toastify";
-import { ArrowLeft } from "lucide-react";
 import LinkBack from "@/app/components/LinkBack";
-import { appFetch } from "@/app/hooks/useFetch";
+import { appFetch, useFetchForGet } from "@/app/hooks/useFetch";
 
 export default function CursadoForm() {
-    const [loadingProfesores, setLoadingProfesores] = useState(true);
-    const [loadingMaterias, setLoadingMaterias] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [diaCursado, setDiaCursado] = useState("");
     const [horaInicio, setHoraInicio] = useState("");
     const [horaFin, setHoraFin] = useState("");
@@ -26,74 +21,25 @@ export default function CursadoForm() {
     const [ano, setAno] = useState("");
 
     const [materiaId, setMateriaId] = useState<string>("");
-    const [materias, setMaterias] = useState<Materia[]>([]);
+    const [materiasData, setMateriasData] = useState<Materia[] | null>(null);
     const [profesorId, setProfesorId] = useState<string>("");
-    const [profesores, setProfesores] = useState<Profesor[]>([]);
+    const [profesoresData, setProfesoresData] = useState<Profesor[] | null>(null);
 
     const tipos: TiposDocente[] = [TiposDocente.Teoria, TiposDocente.Practica];
 
     const router = useRouter();
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/materia`, setMateriasData);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor`, setProfesoresData);
 
     useEffect(() => {
-        (async () => {
-            setLoadingMaterias(true);
+        if (materiasData && profesoresData) setLoading(false);
+    }, [materiasData, profesoresData]);
 
-            let res = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia`, {});
-
-            let response = await res.json();
-
-            if (res.ok) {
-                setMaterias(response.data);
-                setLoadingMaterias(false);
-            } else {
-                toast.error(response.message, {
-                    autoClose: 5000,
-                });
-                setLoadingMaterias(false);
-            }
-
-            fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    setProfesores(data.data);
-                    setLoadingProfesores(false);
-                })
-                .catch((error) => {
-                    //@ts-ignore
-                    toast.error(data.message, {
-                        autoClose: 5000,
-                    });
-                    setLoadingProfesores(false);
-                });
-        })();
-    }, []);
-
-    // const validaCampos = async () => {
-    //     if (
-    //         validarDiaSemana(diaCursado) &&
-    //         validarComision(comision) &&
-    //         tipoCursado &&
-    //         validarAnio(ano) &&
-    //         materiaId != "" &&
-    //         profesorId != "" &&
-    //         validarHora(horaInicio) &&
-    //         validarHora(horaFin) &&
-    //         horaFin > horaInicio
-    //     ) {
-    //         addCursado();
-    //     }
-    // }
+    const materias = materiasData ?? [];
+    const profesores = profesoresData ?? [];
 
     const addCursado = async () => {
         try {
-            setLoadingProfesores(true);
-            setLoadingMaterias(true);
-
             if (materiaId === null) {
                 throw new Error("Materia ID null");
             }
@@ -102,12 +48,8 @@ export default function CursadoForm() {
                 throw new Error("Profesor ID null");
             }
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
                 body: JSON.stringify({
                     diaCursado: diaCursado,
                     horaInicio: horaInicio,
@@ -120,37 +62,29 @@ export default function CursadoForm() {
                     profesorId: profesorId,
                 }),
             });
-            //@ts-ignore
-            if (response.ok) {
-                toast.success("Cursado agregado exitosamente", {
-                    autoClose: 5000,
+
+            if (response.success) {
+                toast.success(response.message, {
+                    autoClose: 6000,
                 });
                 router.push("/dashboard/cursado");
             } else {
-                const error = await response.json();
-                if (error.errors) {
-                    error.errors.map((err: { message: string }) => {
-                        toast.error(err.message, {
-                            autoClose: 6000,
-                        });
-                    });
-                } else {
-                    toast.error(error.message, {
+                //@ts-ignore
+                response.error.map((err) => {
+                    //@ts-ignore
+                    toast.error(err.message, {
                         autoClose: 6000,
                     });
-                }
+                });
             }
         } catch (error) {
             toast.error(`Ocurrió un error inesperado. ${error}`, {
                 autoClose: 5000,
             });
-        } finally {
-            setLoadingProfesores(false);
-            setLoadingMaterias(false);
         }
     };
 
-    if (loadingProfesores || loadingMaterias) {
+    if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
                 <Spinner animation="border" variant="primary" />
@@ -296,22 +230,7 @@ export default function CursadoForm() {
                     </div>
                 </div>
 
-                <motion.button
-                    type="submit"
-                    className="btn btn-primary mt-5"
-                    // disabled={
-                    //     !validarDiaSemana(diaCursado) ||
-                    //     !validarComision(comision) ||
-                    //     !tipoCursado ||
-                    //     !validarAnio(ano) ||
-                    //     materiaId == "" ||
-                    //     profesorId == "" ||
-                    //     !validarHora(horaInicio) ||
-                    //     !validarHora(horaFin) ||
-                    //     horaFin <= horaInicio
-                    // }
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}>
+                <motion.button type="submit" className="btn btn-primary mt-5" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     Aceptar
                 </motion.button>
             </form>

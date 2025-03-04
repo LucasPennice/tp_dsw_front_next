@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import LinkBack from "../components/LinkBack";
+import { appFetch } from "../hooks/useFetch";
 
 export default function Page() {
     const [data, setData] = useState<Profesor[]>([]);
@@ -16,13 +17,8 @@ export default function Page() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);

@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { getLocalSession, clearCookies, setLocalCookies } from "../../authlib";
 import { Materia, NotificacionReview, Profesor, years } from "../lib/definitions";
 import { UserInfoContext, usuarioEnMemoriaDefault } from "../layout";
-import { useFetch } from "../hooks/useFetch";
+import { appFetch, useFetchForGet } from "../hooks/useFetch";
 import { FaRegBell } from "react-icons/fa6";
 
 export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { reviewModalOpen: boolean; setReviewModalOpen: (v: boolean) => void }) {
@@ -42,8 +42,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
     const router = useRouter();
 
-    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user.id}`, setReviewsEliminadas, [userInfo.auth]);
-    console.log(reviewsEliminadas)
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user.id}`, setReviewsEliminadas, [userInfo.auth]);
 
     const updateReviews = useRef(false);
 
@@ -54,12 +53,8 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
             if (updateReviews.current) return;
             updateReviews.current = true;
             const id = userInfo.user.id;
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario/${id}`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/usuario/${id}`, {
                 method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
                 body: JSON.stringify({
                     reviewsEliminadas: reviewsEliminadas!.map((r) => {
                         return { ...r, visto: true };
@@ -81,14 +76,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             // After that we check if the session is still valid
 
-            const unparsedResponse = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/session-status`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            });
-
-            const response = await unparsedResponse.json();
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/session-status`);
             const updateSession = response.success === false;
 
             // If not we clear the cookies and reset the user info
@@ -131,12 +119,8 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
             e.preventDefault();
             setSendingReview(true);
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/review`, {
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
                 body: JSON.stringify({
                     descripcion: review,
                     puntuacion,
@@ -148,9 +132,9 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                 }),
             });
 
-            let res = await response.json();
+            let res = await response.data.json();
 
-            if (response.ok) {
+            if (response.success) {
                 toast.success(res.message);
                 setReviewModalOpen(false);
             } else {
@@ -170,16 +154,11 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingMaterias(true);
 
-            let res = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${year}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            });
+            let res = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${year}`);
 
-            let response = await res.json();
+            let response = await res.data.json();
 
-            if (res.ok) {
+            if (res.success) {
                 toast.success(response.message);
                 setMateriasPorAno(response.data);
                 setLoadingMaterias(false);
@@ -197,15 +176,10 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingProfesores(true);
 
-            let res = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            });
-            let response = await res.json();
+            let res = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`);
+            let response = await res.data.json();
 
-            if (res.ok) {
+            if (res.success) {
                 setProfesores(response.data);
                 setLoadingProfesores(false);
                 toast.success(response.message);
@@ -224,10 +198,8 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
         await clearCookies();
 
         // Notify the backend of the logout
-        await fetch(`${process.env.NEXT_PUBLIC_URI}/logout`, {
+        await appFetch(`${process.env.NEXT_PUBLIC_URI}/logout`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
         });
     };
 
@@ -259,10 +231,12 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                             ?.filter((r) => !r.visto)
                                             .map((r, idx) => {
                                                 return (
-                                                    <DropdownMenuItem className="flex flex-column items-start text-left flex-wrap p-3 border-b  border-slate-200 " key={idx}>
+                                                    <DropdownMenuItem
+                                                        className="flex flex-column items-start text-left flex-wrap p-3 border-b  border-slate-200 "
+                                                        key={idx}>
                                                         <h5 className="text-xs">La siguiente review ha sido eliminada por un administrador:</h5>
                                                         <p className="italic mt-2">"{r.mensaje}"</p>
-                                                        <div className="w-full h-1 " ></div>
+                                                        <div className="w-full h-1 "></div>
                                                     </DropdownMenuItem>
                                                 );
                                             })}
@@ -289,9 +263,9 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                     <DropdownMenuSeparator /> */}
                                     {userInfo.user.rol === "Administrador" ? (
                                         <DropdownMenuItem>
-                                            <Link href="/dashboard" onClick={() => setIsOpen(false)}>
+                                            <Link className="w-full" href="/dashboard" onClick={() => setIsOpen(false)}>
                                                 <button className="flex items-center">
-                                                    <Grid className="mr-2 h-4 w-4" />
+                                                    <Grid className="mr-2 h-4 w-full" />
 
                                                     <span>Dashboard </span>
                                                 </button>
@@ -302,7 +276,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
                                     )}
                                     <DropdownMenuItem>
                                         <button
-                                            className="flex items-center"
+                                            className="flex items-center w-full"
                                             onClick={async () => {
                                                 await logoutAndResetState();
                                                 // Redirect to homescreen

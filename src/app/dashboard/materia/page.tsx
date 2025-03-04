@@ -18,6 +18,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
 
 export default function Page() {
     const [data, setData] = useState<Materia[]>([]);
@@ -27,13 +28,8 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -48,22 +44,16 @@ export default function Page() {
     const deleteMateria = async (_id: string) => {
         setLoading(false);
 
-        await fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${_id}`, {
+        await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/${_id}`, {
             method: "Delete",
-            credentials: "include",
         });
 
         toast.success("Materia borrada exitosamente", {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado`)
+            .then((res) => res.data.json())
             .then((data) => {
                 setData(data.data);
                 setLoading(false);
@@ -125,7 +115,7 @@ export default function Page() {
                             <LinkBack route="/dashboard"></LinkBack>
                             <div className="button-container">
                                 <Link
-                                    href={`materias/add`}
+                                    href={`materia/add`}
                                     className="btn bg-blue-500 text-slate-50 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-102 hover:text-stale-800 hover:shadow-sm hover:border-slate-200">
                                     <Plus />
                                     Nueva Materia
@@ -198,7 +188,7 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
             <td className="text-right">
                 <Link
                     href={{
-                        pathname: `/dashboard/materias/edit/${materia.id}`,
+                        pathname: `/dashboard/materia/edit/${materia.id}`,
                         query: {
                             id: materia.id,
                             nombre: materia.nombre,

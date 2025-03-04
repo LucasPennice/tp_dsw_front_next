@@ -32,12 +32,16 @@ export default function Page() {
                 }),
             });
 
-            if (response.ok) {
-                toast.success("Materia Modificada correctamente");
-                router.push("/dashboard/materias");
+            console.log(response);
+            if (response.success) {
+                toast.success(response.message, {
+                    autoClose: 6000,
+                });
+                router.push("/dashboard/materia");
             } else {
-                const error = await response.json();
-                error.errors.map((err: { message: string }) => {
+                //@ts-ignore
+                response.error.map((err) => {
+                    //@ts-ignore
                     toast.error(err.message, {
                         autoClose: 6000,
                     });
@@ -53,7 +57,7 @@ export default function Page() {
     return (
         <div className="max-w-6xl mx-auto p-6 mb-14 space-y-6">
             <div className="container">
-                <LinkBack route="/dashboard/materias"></LinkBack>
+                <LinkBack route="/dashboard/materia"></LinkBack>
 
                 <form
                     onSubmit={(e) => {

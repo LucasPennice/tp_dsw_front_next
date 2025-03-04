@@ -2,6 +2,7 @@
 
 import LinkBack from "@/app/components/LinkBack";
 import { appFetch } from "@/app/hooks/useFetch";
+import { ExpressResponse_Migration } from "@/app/lib/definitions";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link.js";
@@ -21,30 +22,24 @@ export default function Page() {
         try {
             setLoading(true);
 
-            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/area/`, 
-                {method: "POST", body: JSON.stringify({
+            const response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/area/`, {
+                method: "POST",
+                body: JSON.stringify({
                     nombre: nombre,
-                })
-            }) 
-            // const response = await fetch(`${process.env.NEXT_PUBLIC_URI}/api/area/`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     credentials: "include",
-            //     body: JSON.stringify({
-            //         nombre: nombre,
-            //     }),
-            // });
-            if (response.ok) {
-                toast.success("Area agregada correctamente", {
+                }),
+            });
+            if (response.success) {
+                toast.success(response.message, {
                     autoClose: 6000,
                 });
                 router.push("/dashboard/area");
             } else {
-                const error = await response.json();
-                toast.error(error.errors[0].message, {
-                    autoClose: 6000,
+                //@ts-ignore
+                response.error.map((err) => {
+                    //@ts-ignore
+                    toast.error(err.message, {
+                        autoClose: 6000,
+                    });
                 });
             }
         } catch (error) {

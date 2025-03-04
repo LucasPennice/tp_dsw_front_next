@@ -7,7 +7,7 @@ import { Materia } from "@/app/lib/definitions";
 import { AnimatePresence, motion } from "framer-motion";
 import { Spinner } from "react-bootstrap";
 import LinkBack from "@/app/components/LinkBack";
-import { useFetch } from "@/app/hooks/useFetch";
+import { useFetchForGet } from "@/app/hooks/useFetch";
 
 const BookIcon = () => (
     <svg
@@ -33,29 +33,12 @@ export default function SubjectsLayout() {
     const params = useParams();
     const idAno = params.idAno as string;
 
-    // useEffect(() => {
-    //     fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${idAno[0]}`, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         credentials: "include",
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setData(data.data);
-    //             setLoading(false);
-    //         });
-    // }, []);
-
-    
-    useFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${idAno[0]}`, setData);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/materia/porAno/${idAno[0]}`, setData);
 
     useEffect(() => {
         if (data) setLoading(false);
-    }
-    , [data]);
+    }, [data]);
 
-    console.log(data);
     const materia = data ?? [];
 
     return (
@@ -71,7 +54,6 @@ export default function SubjectsLayout() {
                     </motion.div>
                 )}
 
-                
                 {!isLoading && data!.length != 0 && (
                     <motion.div className="max-w-4xl mx-auto p-6">
                         <nav className="flex items-center justify-between mb-6">
