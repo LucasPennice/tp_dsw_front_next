@@ -19,7 +19,7 @@ export const appFetch = async (endpoint: string | URL | Request, init?: RequestI
     });
     //@ts-ignore
     const response = (await res.json()) as ExpressResponse_Migration<T>;
-    console.log(response)
+    console.log(response);
     return response;
 };
 

@@ -1,24 +1,16 @@
 "use client";
 
+import LinkBack from "@/app/components/LinkBack";
+import { appFetch } from "@/app/hooks/useFetch";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { AnimatePresence, motion } from "framer-motion";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spinner, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { Materia, PAGINATION_LIMIT } from "../../lib/definitions";
-import { ArrowLeft, Plus } from "lucide-react";
 import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-import LinkBack from "@/app/components/LinkBack";
-import { appFetch } from "@/app/hooks/useFetch";
+import { Materia, PAGINATION_LIMIT } from "../../lib/definitions";
 
 export default function Page() {
     const [data, setData] = useState<Materia[]>([]);
@@ -28,12 +20,11 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-                setTotalPages(data.totalPages!);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`).then((data) => {
+            setData(data.data);
+            setLoading(false);
+            setTotalPages(data.totalPages!);
+        });
     }, [pageNumber]);
 
     if (!data) return <p>No hay materias</p>;
