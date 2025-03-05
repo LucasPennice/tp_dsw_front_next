@@ -12,6 +12,7 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "incremental": true,
+        "types": ["jest", "@testing-library/jest-dom"],
         "plugins": [
             {
                 "name": "next"
@@ -21,6 +22,16 @@
             "@/*": ["./src/*"]
         }
     },
-    "include": ["next-env.d.ts", "new-types.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/axios.mts", "jest.setup.js"],
+    "include": [
+        "next-env.d.ts",
+        "new-types.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "src/axios.mts",
+        "jest.setup.js",
+        "src/app/components/AreaCard.test.jsx",
+        "jest.config.js"
+    ],
     "exclude": ["node_modules"]
 }
