@@ -32,7 +32,6 @@ export default function Page() {
                 }),
             });
 
-            console.log(response);
             if (response.success) {
                 toast.success(response.message, {
                     autoClose: 6000,

@@ -20,12 +20,11 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-                setTotalPages(data.totalPages!);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`).then((data) => {
+            setData(data.data);
+            setLoading(false);
+            setTotalPages(data.totalPages!);
+        });
     }, [pageNumber]);
 
     // if (!data) return <p>No hay cursados</p>;
@@ -43,13 +42,10 @@ export default function Page() {
             autoClose: 5000,
         });
 
-        const data = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            // .then((data) => {
-                setData(data.data);
-                setLoading(false);
-                setTotalPages(data.totalPages!);
-            // });
-        console.log(data)
+        const data = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`);
+        setData(data.data);
+        setLoading(false);
+        setTotalPages(data.totalPages!);
     };
 
     const handlePageChange = (page: number) => {
@@ -248,7 +244,7 @@ function CursadoCard({ cursado, deleteCursado, idx }: { cursado: Cursado; delete
                         )}
                         {!isLoading && (
                             <motion.div className="d-flex justify-center items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                 <Trash2 className="h-4 w-4" />
+                                <Trash2 className="h-4 w-4" />
                             </motion.div>
                         )}
                     </motion.div>
