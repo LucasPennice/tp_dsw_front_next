@@ -20,7 +20,7 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`).then((data) => {
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado?page=${pageNumber}&limit=${PAGINATION_LIMIT}&isDeleted=true`).then((data) => {
             setData(data.data);
             setLoading(false);
             setTotalPages(data.totalPages!);
@@ -42,7 +42,7 @@ export default function Page() {
             autoClose: 5000,
         });
 
-        const data = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`);
+        const data = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/cursado?page=${pageNumber}&limit=${PAGINATION_LIMIT}&isDeleted=true`);
         setData(data.data);
         setLoading(false);
         setTotalPages(data.totalPages!);

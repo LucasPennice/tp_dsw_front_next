@@ -42,7 +42,7 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
     const router = useRouter();
 
-    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/usuario/reviewsEliminadas/${userInfo.user._id}`, setReviewsEliminadas, [userInfo.auth]);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/usuario/${userInfo.user._id}/deleted-reviews`, setReviewsEliminadas, [userInfo.auth]);
     const updateReviews = useRef(false);
 
     useEffect(() => {
@@ -171,7 +171,9 @@ export default function Navbar({ reviewModalOpen, setReviewModalOpen }: { review
 
             setLoadingProfesores(true);
 
-            let response = await appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${year[0]}/${materiaId}/${courseYear}`);
+            let response = await appFetch(
+                `${process.env.NEXT_PUBLIC_URI}/api/materia/${materiaId}/profesores?ano=${year[0]}&anoCursado=${courseYear}`
+            );
 
             if (response.success) {
                 setProfesores(response.data);

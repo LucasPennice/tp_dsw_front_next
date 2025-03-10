@@ -31,7 +31,7 @@ export default function Component() {
     const [profesor, setProfesor] = useState<Profesor | null>(null);
     const [materia, setMateria] = useState<Materia | null>(null);
 
-    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviewsDeMateria/${idMateria}`, setData);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviews?idMateria=${idMateria}`, setData);
     useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`, setProfesor);
     useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}`, setMateria);
 

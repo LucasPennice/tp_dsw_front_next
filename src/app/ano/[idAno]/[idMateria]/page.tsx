@@ -21,7 +21,7 @@ export default function Page() {
     const idAno = params.idAno as string;
     const idMateria = params.idMateria as string;
 
-    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/profesor/porMateriaYAno/${idAno}/${idMateria}`, setData);
+    useFetchForGet(`${process.env.NEXT_PUBLIC_URI}/api/materia/${idMateria}/profesores?ano=${idAno}`, setData);
 
     useEffect(() => {
         if (data) setLoading(false);

@@ -28,12 +28,11 @@ export default function Page() {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-                setTotalPages(data.totalPages!);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor?page=${pageNumber}&limit=${PAGINATION_LIMIT}&isDeleted=true`).then((data) => {
+            setData(data.data);
+            setLoading(false);
+            setTotalPages(data.totalPages!);
+        });
     }, [pageNumber]);
 
     if (!data) return <p>No profile data</p>;
@@ -51,12 +50,11 @@ export default function Page() {
             autoClose: 6000,
         });
 
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/conBorrado?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-                setTotalPages(data.totalPages!);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor?page=${pageNumber}&limit=${PAGINATION_LIMIT}&isDeleted=true`).then((data) => {
+            setData(data.data);
+            setLoading(false);
+            setTotalPages(data.totalPages!);
+        });
     };
 
     const handlePageChange = (page: number) => {
