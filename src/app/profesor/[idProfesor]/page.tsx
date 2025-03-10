@@ -28,17 +28,13 @@ export default function Component() {
     const [profesor, setProfesor] = useState<Profesor | null>(null);
 
     useEffect(() => {
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviews`)
-            .then((res) => res.data.json())
-            .then((data) => {
-                setData(data.data);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}/reviews`).then((data) => {
+            setData(data.data);
+        });
 
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`)
-            .then((res) => res.data.json())
-            .then((data) => {
-                setProfesor(data.data);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor/${idProfesor}`).then((data) => {
+            setProfesor(data.data);
+        });
     }, []);
     const [order, setOrder] = useState<Orden>(Orden.todos);
 

@@ -28,7 +28,6 @@ export default function Component() {
             });
     }, [pageNumber]);
 
-
     const reviews = data ?? [];
 
     const deleteReview = async (_id: string) => {
@@ -42,13 +41,11 @@ export default function Component() {
             autoClose: 6000,
         });
 
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
-            .then((res) => res.data.json())
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-                setTotalPages(data.totalPages);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`).then((data) => {
+            setData(data.data);
+            setLoading(false);
+            setTotalPages(data.totalPages!);
+        });
     };
 
     const handlePageChange = (page: number) => {

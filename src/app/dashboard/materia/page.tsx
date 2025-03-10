@@ -42,17 +42,10 @@ export default function Page() {
             autoClose: 6000,
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/materia/conBorrado`).then((data) => {
+            setData(data.data);
+            setLoading(false);
+        });
     };
 
     const handlePageChange = (page: number) => {
@@ -191,7 +184,6 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
                     }}
                     className="btn btn-outline-dark mb-2 cus-mr-10">
                     <Pencil className="h-4 w-4" />
-
                 </Link>
                 {
                     <motion.div
@@ -221,7 +213,7 @@ function MateriaCard({ materia, deleteMateria, idx }: { materia: Materia; delete
                         )}
                         {!isLoading && (
                             <motion.div className="d-flex justify-center items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                 <Trash2 className="h-4 w-4" />
+                                <Trash2 className="h-4 w-4" />
                             </motion.div>
                         )}
                     </motion.div>

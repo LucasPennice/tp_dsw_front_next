@@ -17,12 +17,10 @@ export default function Page() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor`)
-            .then((res) => res.data.json())
-            .then((data) => {
-                setData(data.data);
-                setLoading(false);
-            });
+        appFetch(`${process.env.NEXT_PUBLIC_URI}/api/profesor`).then((data) => {
+            setData(data.data);
+            setLoading(false);
+        });
     }, []);
 
     if (!data) return <p>No profile data</p>;
