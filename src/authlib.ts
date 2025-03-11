@@ -23,7 +23,7 @@ export async function decryptSession(input: string): Promise<SessionPayload> {
 export async function clearCookies() {
     // Destroy the session
     cookies().set("session", "", { expires: new Date(0) });
-    cookies().delete("connect.sid");
+    cookies().delete("RenderCookieName");
 }
 
 export async function getLocalSession(): Promise<SessionPayload | null> {
