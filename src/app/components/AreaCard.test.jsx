@@ -8,7 +8,6 @@ describe("AreaCard Component", () => {
         id: "1",
         nombre: "Test Area",
         borradoLogico: false,
-        //@ts-ignore
         materias: [{}],
     };
 
@@ -20,7 +19,6 @@ describe("AreaCard Component", () => {
                 </tbody>
             </table>
         );
-        //@ts-ignore
         expect(screen.getByText("Test Area")).toBeInTheDocument();
     });
 });

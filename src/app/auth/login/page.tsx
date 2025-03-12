@@ -64,7 +64,12 @@ export default function LoginPage() {
                         <div className="grid w-full items-center gap-4">
                             <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="email">Usuario</Label>
-                                <Input value={user} onChange={(e) => setUser(e.target.value)} placeholder="usuario123" />
+                                <Input
+                                    data-cy="usuario-username-input"
+                                    value={user}
+                                    onChange={(e) => setUser(e.target.value)}
+                                    placeholder="usuario123"
+                                />
                             </div>
                             <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="password">Contraseña</Label>
@@ -74,6 +79,7 @@ export default function LoginPage() {
                                         onChange={(e) => setPass(e.target.value)}
                                         type={showPassword ? "text" : "password"}
                                         placeholder="contraseña321"
+                                        data-cy="usuario-pass-input"
                                     />
                                     <Button
                                         type="button"
@@ -92,7 +98,9 @@ export default function LoginPage() {
                 <CardFooter className="flex justify-between">
                     <motion.button
                         className="btn btn-primary cus-mr-10"
+                        data-cy="usuario-button"
                         onClick={attemptLogin}
+                        type="submit"
                         disabled={user == "" || pass == ""}
                         animate={{ width: loading ? 50 : 85 }}>
                         {loading && (

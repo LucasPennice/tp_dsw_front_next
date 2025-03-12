@@ -22,13 +22,18 @@ export default function Component() {
         appFetch(`${process.env.NEXT_PUBLIC_URI}/api/review?page=${pageNumber}&limit=${PAGINATION_LIMIT}`)
             .then((res) => res.data)
             .then((data) => {
-                setData(data.data);
+                setData(data);
                 setLoading(false);
                 setTotalPages(data.totalPages);
             });
+        console.log("adentro" + data);
     }, [pageNumber]);
 
     const reviews = data ?? [];
+
+    console.log(data);
+
+    console.log(reviews);
 
     const deleteReview = async (_id: string) => {
         setLoading(true);
