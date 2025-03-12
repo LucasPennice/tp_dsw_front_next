@@ -26,14 +26,9 @@ export default function Component() {
                 setLoading(false);
                 setTotalPages(data.totalPages);
             });
-        console.log("adentro" + data);
     }, [pageNumber]);
 
     const reviews = data ?? [];
-
-    console.log(data);
-
-    console.log(reviews);
 
     const deleteReview = async (_id: string) => {
         setLoading(true);
